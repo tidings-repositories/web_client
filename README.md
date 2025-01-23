@@ -2,9 +2,13 @@
 
 ## Tech
 
-| <h4> Library </h4> |              |         |      |
-| ------------------ | ------------ | ------- | ---- |
-| React              | Tailwind CSS | Zustand | Vite |
+| <h3> Tool </h3> |      |
+| --------------- | ---- |
+| Npm             | Vite |
+
+| <h3> Library </h3> |              |         |
+| ------------------ | ------------ | ------- |
+| React              | Tailwind CSS | Zustand |
 
 ---
 
