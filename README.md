@@ -2,13 +2,13 @@
 
 ## Tech
 
-| <h3> #Tool </h3> |      |
-| ---------------- | ---- |
-| Npm              | Vite |
+| <h3> Tool </h3> |      |
+| --------------- | ---- |
+| Npm             | Vite |
 
-| <h3> #Library </h3> |              |         |
-| ------------------- | ------------ | ------- |
-| React               | Tailwind CSS | Zustand |
+| <h3> Library </h3> |              |         |              |
+| ------------------ | ------------ | ------- | ------------ |
+| React              | Tailwind CSS | Zustand | React-router |
 
 ---
 
