@@ -6,9 +6,10 @@
 | --------------- | ---- |
 | Npm             | Vite |
 
-| <h3> Library </h3> |              |         |              |
-| ------------------ | ------------ | ------- | ------------ |
-| React              | Tailwind CSS | Zustand | React-router |
+| <h3> Library </h3> |              |         |              |         |
+| ------------------ | ------------ | ------- | ------------ | ------- |
+| React              | Tailwind CSS | Zustand | React-router | i18next |
+| fontawesome        |              |         |              |         |
 
 ---
 
@@ -59,6 +60,30 @@ export default defineConfig({
 });
 ```
 
+#### Add reactI18n package
+
+```bash
+npm install i18next
+```
+
+#### Add icon package
+
+- https://fontawesome.com/search?o=r&ic=free&s=solid&ip=classic
+
+```bash
+npm install @fortawesome/fontawesome-free
+```
+
+```html
+<!--index.html-->
+<head>
+  <script
+    src="https://kit.fontawesome.com/98033d33dd.js"
+    crossorigin="anonymous"
+  ></script>
+</head>
+```
+
 </div>
 </details>
 
@@ -88,6 +113,23 @@ export default defineConfig({
 </details>
 
 ### Component
+
+#### tailwindcss style from
+
+- https://tailwindcss.com/docs/width
+
+#### Widget
+
+<details>
+<summary>post/content</summary>
+<div markdown="1">
+
+```ts
+
+```
+
+</div>
+</details>
 
 <details>
 <summary>detail</summary>
