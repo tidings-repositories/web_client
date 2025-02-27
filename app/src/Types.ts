@@ -30,6 +30,9 @@ export type Post = {
     text: string;
     media: PostMediaStructure[];
   };
+  comment_count: number;
+  like_count: number;
+  scrap_count: number;
 };
 
 /**/

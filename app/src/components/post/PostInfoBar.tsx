@@ -1,15 +1,20 @@
 import * as l10n from "i18next";
 import { PostInfo } from "../../Types";
+import IconButton from "../button/IconButton";
 
 function PostInfoBar({ user_name, badge, user_id, create_at }: PostInfo) {
   const contentCreateFrom = createTimeDifferenceText(create_at);
+  const postMenuEvent = () => {}; //TODO: 팝업 생성 이벤트
 
   return (
-    <div className="rounded-xs flex justify-start gap-1 items-center">
-      <p className="font-medium line-clamp-1"> {user_name} </p>
-      {badge && <img className="max-w-5 max-h-5" src={badge} />}
-      <div className="text-gray-500"> {user_id} </div>
-      <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
+    <div className="flex justify-between">
+      <div className="rounded-xs flex justify-start gap-1 items-center">
+        <p className="font-medium line-clamp-1"> {user_name} </p>
+        {badge && <img className="max-w-5 max-h-5" src={badge} />}
+        <div className="text-gray-500"> {user_id} </div>
+        <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
+      </div>
+      <IconButton icon="fa-solid fa-ellipsis" onPressed={postMenuEvent} />
     </div>
   );
 }

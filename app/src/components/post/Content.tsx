@@ -11,7 +11,11 @@ function Content(post: Post) {
         <PostInfoBar {...(post as PostInfo)} />
         <p className="line-clamp-6">{post.content.text}</p>
         <MediaContent contents={post.content.media} post_id={post.post_id} />
-        <PostBottomBar comment_count={1} like_count={201} scrap_count={0} />
+        <PostBottomBar
+          comment_count={post.comment_count}
+          like_count={post.like_count}
+          scrap_count={post.scrap_count}
+        />
       </div>
     </div>
   );
