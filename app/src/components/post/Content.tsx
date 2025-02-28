@@ -5,7 +5,7 @@ import PostBottomBar from "./PostBottomBar";
 
 function Content(post: Post) {
   return (
-    <div className="w-screen max-w-173 flex justify-start gap-2 rounded-xs m-3 pl-8 pr-8 overflow-hidden">
+    <div className="w-screen max-w-173 flex justify-start gap-2 rounded-xs my-3 px-8 overflow-hidden">
       <img className="rounded-xl max-w-10 max-h-10" src={post.profile_image} />
       <div className="w-full flex flex-col justify-start gap-2">
         <PostInfoBar {...(post as PostInfo)} />
