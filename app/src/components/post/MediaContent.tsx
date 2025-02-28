@@ -8,11 +8,10 @@ type MediaContentProps = {
 
 function MediaContent({ contents, post_id }: MediaContentProps) {
   const [mediaIndex, setState] = useState(0);
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isDesktop = !/mobile|tablet|ip(ad|hone|od)|android/i.test(userAgent);
 
   useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isDesktop = !/mobile|tablet|ip(ad|hone|od)|android/i.test(userAgent);
-
     const removeHandler = isDesktop ? desktopMediaSwapEvent(post_id) : () => {};
     if (!isDesktop)
       document.getElementById(`${post_id}-media-navigator`)!.style.display =
@@ -51,7 +50,7 @@ function MediaContent({ contents, post_id }: MediaContentProps) {
           <div className="absolute z-0 top-0 w-full h-full bg-black brightness-50"></div>
           <video
             controls
-            autoPlay
+            autoPlay={isDesktop}
             muted
             className="relative w-full h-full z-1 object-contain rounded-xl blur-none"
             src={contents[mediaIndex].url}
