@@ -4,13 +4,17 @@ import PostInfoBar from "./PostInfoBar";
 import PostBottomBar from "./PostBottomBar";
 
 function Content(post: Post) {
+  const mediaCount = post.content.media.length ?? 0;
+
   return (
     <div className="w-screen max-w-173 flex justify-start gap-2 rounded-xs my-3 px-8 overflow-hidden">
       <img className="rounded-xl max-w-10 max-h-10" src={post.profile_image} />
       <div className="w-full flex flex-col justify-start gap-2">
         <PostInfoBar {...(post as PostInfo)} />
         <p className="line-clamp-6">{post.content.text}</p>
-        <MediaContent contents={post.content.media} post_id={post.post_id} />
+        {mediaCount >= 1 && (
+          <MediaContent contents={post.content.media} post_id={post.post_id} />
+        )}
         <PostBottomBar
           comment_count={post.comment_count}
           like_count={post.like_count}
