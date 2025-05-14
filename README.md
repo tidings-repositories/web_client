@@ -6,10 +6,10 @@
 | --------------- | ---- |
 | Npm             | Vite |
 
-| <h3> Library </h3> |              |         |              |         |
-| ------------------ | ------------ | ------- | ------------ | ------- |
-| React              | Tailwind CSS | Zustand | React-router | i18next |
-| fontawesome        |              |         |              |         |
+| <h3> Library </h3> |                 |         |              |         |
+| ------------------ | --------------- | ------- | ------------ | ------- |
+| React              | Tailwind CSS    | Zustand | React-router | i18next |
+| fontawesome        | react-swipeable |         |              |         |
 
 ---
 
@@ -64,6 +64,12 @@ export default defineConfig({
 
 ```bash
 npm install i18next
+```
+
+#### Add react swipeable package
+
+```bash
+npm i react-swipeable
 ```
 
 #### Add icon package
