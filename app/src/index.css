@@ -53,6 +53,16 @@ button:hover {
   border-color: #646cff;
 }
 
+textarea {
+  resize: none;
+  outline: none;
+  overflow: hidden;
+}
+
+input {
+  outline: none;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -1,5 +1,7 @@
 {
   "secondUnit": "s",
   "minuteUnit": "m",
-  "hourUnit": "h"
+  "hourUnit": "h",
+  "upload": "Upload",
+  "postPlaceholder": "What are your Tidings?"
 }

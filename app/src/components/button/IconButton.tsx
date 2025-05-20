@@ -1,12 +1,15 @@
 type IconButtonProps = {
   icon: string;
+  size?: string;
   onPressed: () => void;
 };
 
-function IconButton({ icon, onPressed }: IconButtonProps) {
+function IconButton({ icon, size = "base", onPressed }: IconButtonProps) {
   return (
     <button onClick={onPressed}>
-      <div className={`flex items-center text-gray-500 font-light`}>
+      <div
+        className={`flex items-center text-${size} text-gray-500 font-light`}
+      >
         <i className={icon}></i>
       </div>
     </button>

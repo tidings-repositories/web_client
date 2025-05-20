@@ -5,21 +5,25 @@ import { useSwipeable } from "react-swipeable";
 type MediaContentProps = {
   contents: PostMediaStructure[];
   post_id: string;
+  context?: { index: number };
 };
 
-function MediaContent({ contents, post_id }: MediaContentProps) {
+function MediaContent({ contents, post_id, context }: MediaContentProps) {
   const [mediaIndex, setState] = useState(0);
   const userAgent = navigator.userAgent.toLowerCase();
   const isDesktop = !/mobile|tablet|ip(ad|hone|od)|android/i.test(userAgent);
 
-  useEffect(() => {
-    const removeHandler = isDesktop
-      ? desktopMediaSwapEvent(post_id)
-      : mobileVideoPauseAndPlayEvent(post_id);
+  if (mediaIndex >= contents.length) setState(contents.length - 1);
+  if (context != null) context.index = mediaIndex;
 
-    return () => {
-      removeHandler();
-    };
+  useEffect(() => {
+    if (isDesktop) {
+      const removeHandler = desktopMediaSwapEvent(post_id);
+
+      return () => {
+        removeHandler();
+      };
+    }
   });
 
   const mobileMediaSwapEvent = useSwipeable({
@@ -147,7 +151,11 @@ function MediaComponent({ content, isDesktop }: MediaComponentProps) {
             playsInline
             autoPlay={isDesktop}
             muted
-            className="relative w-full h-full z-1 object-contain rounded-xl blur-none pointer-events-none"
+            onTouchEnd={(e) => {
+              const videoElement = e.target as HTMLVideoElement;
+              mobileVideoPauseAndPlayEvent(videoElement);
+            }}
+            className="relative w-full h-full z-1 object-contain rounded-xl blur-none"
             src={content.url}
           />
           <div className="absolute z-0 top-0 w-full h-full bg-black brightness-50"></div>
@@ -181,23 +189,9 @@ function desktopMediaSwapEvent(post_id: string) {
   return removeEvent;
 }
 
-function mobileVideoPauseAndPlayEvent(post_id: string) {
-  const thisComponent = document.getElementById(`${post_id}-media`);
-
-  const pauseAndPlayEvent = () => {
-    const videoComponent = thisComponent?.querySelector("video");
-
-    if (videoComponent?.paused) videoComponent?.play();
-    else videoComponent?.pause();
-  };
-
-  thisComponent!.addEventListener("click", pauseAndPlayEvent);
-
-  function removeEvent() {
-    thisComponent?.removeEventListener("click", pauseAndPlayEvent);
-  }
-
-  return removeEvent;
+function mobileVideoPauseAndPlayEvent(videoComponent: HTMLVideoElement) {
+  if (videoComponent!.paused) videoComponent!.play();
+  else videoComponent!.pause();
 }
 
 function preloadNextMedia(content: PostMediaStructure) {

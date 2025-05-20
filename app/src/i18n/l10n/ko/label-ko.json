@@ -1,5 +1,7 @@
 {
   "secondUnit": "초 전",
   "minuteUnit": "분 전",
-  "hourUnit": "시간 전"
+  "hourUnit": "시간 전",
+  "upload": "업로드",
+  "postPlaceholder": "어떤 소식이 있나요?"
 }
