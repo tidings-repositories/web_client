@@ -1,0 +1,48 @@
+import IconButton from "../button/IconButton";
+import usePostComposerStore from "../../store/PostComposerStore";
+
+function PostComposerTagBar() {
+  const QUICK_POST_TAGFIELD_ID = "quick-post-tag";
+  const tagList = usePostComposerStore((state) => state.tagList);
+  const removeTag = usePostComposerStore((state) => state.removeTag);
+
+  return (
+    <div
+      className="w-full flex flex-wrap gap-4 item-start"
+      id={QUICK_POST_TAGFIELD_ID}
+    >
+      {/*TODO: 태그 마다 제거 버튼 및 이벤트*/}
+      {tagList.map((content, idx) => (
+        <div key={`${content}${idx}`} className="relative">
+          {/*delete tag button*/}
+          <div className="absolute bg-transparent w-1 h-1 z-1 -top-3 -left-3">
+            <IconButton
+              icon="fa-solid fa-xmark-circle"
+              size="base"
+              onPressed={() => removeTag(idx)}
+            />
+          </div>
+
+          <Tag content={content as string} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+type TagProps = {
+  content: string;
+};
+
+function Tag({ content }: TagProps) {
+  return (
+    <div
+      className={`px-3 py-1 rounded-lg border-2 border-solid border-gray-300`}
+    >
+      {/*TODO: overflow ellipsis, overflow rendering lower*/}
+      <p className={`text-base text-gray-500`}>{`#${content}`}</p>
+    </div>
+  );
+}
+
+export default PostComposerTagBar;
