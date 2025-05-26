@@ -16,7 +16,9 @@ function Dropdown({ id, position, direction, child }: DropdownProps) {
   useEffect(() => {
     const thisElement = document.getElementById(id)!;
     const rect = thisElement.getBoundingClientRect();
-    document.addEventListener("mousedown", (e) => closeDropdownEvent(e, id));
+    const eventHandler = (e: MouseEvent) =>
+      closeDropdownEvent(e, id, eventHandler);
+    document.addEventListener("mousedown", eventHandler);
 
     thisElement.style.left = `${position.x}px`;
     thisElement.style.top = `${position.y + window.scrollY}px`;
@@ -37,7 +39,7 @@ function Dropdown({ id, position, direction, child }: DropdownProps) {
   );
 }
 
-function closeDropdownEvent(e, id) {
+function closeDropdownEvent(e, id, eventHandler: (e: MouseEvent) => void) {
   if (!document.getElementById(id)) return;
 
   const { left, right, top, bottom } = document
@@ -50,7 +52,7 @@ function closeDropdownEvent(e, id) {
     top > e.clientY ||
     bottom < e.clientY
   ) {
-    document.removeEventListener("mousedown", (e) => closeDropdownEvent(e, id));
+    document.removeEventListener("mousedown", eventHandler);
     document.getElementById(`${id}-box`)?.remove();
   }
 }

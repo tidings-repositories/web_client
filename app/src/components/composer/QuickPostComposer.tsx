@@ -6,6 +6,7 @@ import PostComposerTagBar from "./PostComposerTagBar";
 import usePostComposerStore from "../../store/PostComposerStore";
 
 function QuickPostComposer() {
+  const MAX_LINE = 10;
   const POST_TEXT_MAXLENGTH = 280;
   const QUICK_POST_TEXTFIELD_ID = "quick-post-textfield";
 
@@ -16,15 +17,20 @@ function QuickPostComposer() {
 
   useEffect(() => {
     clearComposer();
-    const textElement = document.getElementById(QUICK_POST_TEXTFIELD_ID)!;
+    const textElement = document.getElementById(
+      QUICK_POST_TEXTFIELD_ID
+    )! as HTMLTextAreaElement;
 
-    textElement.addEventListener("input", () =>
-      textfieldResizeEvent(textElement)
-    );
-    return () =>
-      textElement.removeEventListener("input", () =>
-        textfieldResizeEvent(textElement)
-      );
+    const eventHandler = () => {
+      textfieldResizeEvent(textElement);
+      checkTextfieldMaxLine(textElement, MAX_LINE);
+    };
+
+    textElement.addEventListener("input", eventHandler);
+
+    return () => {
+      textElement.removeEventListener("input", eventHandler);
+    };
   }, []);
 
   return (
@@ -58,6 +64,19 @@ function textfieldResizeEvent(textarea: HTMLElement) {
     textarea.style.overflow = "none";
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
+  }
+}
+
+function checkTextfieldMaxLine(
+  textarea: HTMLTextAreaElement,
+  MAX_LINE_COUNT: number
+) {
+  const line = textarea.value.split("\n");
+  if (line.length > MAX_LINE_COUNT) {
+    line[MAX_LINE_COUNT - 1] = `${line[MAX_LINE_COUNT - 1]}${
+      line[MAX_LINE_COUNT]
+    }`;
+    textarea.value = line.slice(0, MAX_LINE_COUNT).join("\n");
   }
 }
 

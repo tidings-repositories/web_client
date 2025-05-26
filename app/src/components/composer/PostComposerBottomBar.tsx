@@ -22,13 +22,10 @@ function PostComposerBottomBar() {
     const clearButtonIconElement = parentElement.querySelector("button")!;
     clearButtonIconElement.style.display = "none";
 
-    textElement.addEventListener("input", (e) =>
-      changeViewStateClearButtonEvent(e, clearButtonIconElement)
-    );
-    return () =>
-      textElement.removeEventListener("input", (e) =>
-        changeViewStateClearButtonEvent(e, clearButtonIconElement)
-      );
+    const eventHandler = (e: Event) =>
+      changeViewStateClearButtonEvent(e, clearButtonIconElement);
+    textElement.addEventListener("input", eventHandler);
+    return () => textElement.removeEventListener("input", eventHandler);
   }, []);
 
   return (
