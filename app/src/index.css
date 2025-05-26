@@ -20,6 +20,7 @@
 
   box-sizing: border-box;
   object-fit: cover;
+  overflow-x: hidden;
 }
 
 a {

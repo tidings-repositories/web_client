@@ -12,8 +12,10 @@ function QuickPostComposer() {
   const changeTextState = usePostComposerStore(
     (state) => state.changeTextContent
   );
+  const clearComposer = usePostComposerStore((state) => state.clear);
 
   useEffect(() => {
+    clearComposer();
     const textElement = document.getElementById(QUICK_POST_TEXTFIELD_ID)!;
 
     textElement.addEventListener("input", () =>
@@ -23,7 +25,7 @@ function QuickPostComposer() {
       textElement.removeEventListener("input", () =>
         textfieldResizeEvent(textElement)
       );
-  });
+  }, []);
 
   return (
     <div className="w-[97vw] max-w-173 min-h-39.25 px-8 pb-2 pt-4 mx-auto flex flex-col gap-2 rounded-xs border-b-2 border-solid border-gray-300">
