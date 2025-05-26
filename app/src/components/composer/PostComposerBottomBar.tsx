@@ -19,8 +19,8 @@ function PostComposerBottomBar() {
   useEffect(() => {
     const parentElement = document.getElementById(`tag-textfield-box`)!;
     const textElement = parentElement.querySelector(`#tag-textfield`)!;
-    const clearButtonIconElement = parentElement.querySelector("i")!;
-    clearButtonIconElement.style.color = "transparent";
+    const clearButtonIconElement = parentElement.querySelector("button")!;
+    clearButtonIconElement.style.display = "none";
 
     textElement.addEventListener("input", (e) =>
       changeViewStateClearButtonEvent(e, clearButtonIconElement)
@@ -29,7 +29,7 @@ function PostComposerBottomBar() {
       textElement.removeEventListener("input", (e) =>
         changeViewStateClearButtonEvent(e, clearButtonIconElement)
       );
-  });
+  }, []);
 
   return (
     <div className="w-full h-10 mx-auto flex rounded-xs border-solid border-gray-300 items-center">
@@ -61,7 +61,7 @@ function PostComposerBottomBar() {
         {/*태그 입력창*/}
         <div
           id={`tag-textfield-box`}
-          className="pl-2 pr-1 flex rounded-lg border-2 border-solid border-transparent overflow-hidden transition-all duration-300 ease-in-out w-0"
+          className="h-9 pl-2 pr-1 flex items-center rounded-lg border-2 border-solid border-transparent overflow-hidden transition-all duration-300 ease-in-out w-0"
         >
           <form
             id={`tag-textfield`}
@@ -99,9 +99,9 @@ function PostComposerBottomBar() {
       </div>
       <OutlineButton
         fontSize="base"
-        color="gray-300"
+        color="gray" //TODO: 컬러 테마 설정
         text={`${l10n.t("upload")}`}
-        radius="lg"
+        radius={12}
         onPressed={async () => {
           await uploadPostContent({
             textContent: postComposerState.textContent,
@@ -137,9 +137,9 @@ function changeViewStateClearButtonEvent(
   const EMPTY = "";
   const TEXT = (event.target as HTMLInputElement).value;
   if (TEXT == EMPTY || !TEXT) {
-    clearButtonIconElement!.style.color = "transparent";
+    clearButtonIconElement!.style.display = "none"; //color = "transparent";
   } else {
-    clearButtonIconElement!.style.color = "gray";
+    clearButtonIconElement!.style.display = "block"; //color = "gray";
   }
 }
 

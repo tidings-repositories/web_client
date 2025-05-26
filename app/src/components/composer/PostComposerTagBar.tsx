@@ -2,14 +2,14 @@ import IconButton from "../button/IconButton";
 import usePostComposerStore from "../../store/PostComposerStore";
 
 function PostComposerTagBar() {
-  const QUICK_POST_TAGFIELD_ID = "quick-post-tag";
+  const POST_TAGFIELD_ID = "post-tag";
   const tagList = usePostComposerStore((state) => state.tagList);
   const removeTag = usePostComposerStore((state) => state.removeTag);
 
   return (
     <div
       className="w-full flex flex-wrap gap-4 item-start"
-      id={QUICK_POST_TAGFIELD_ID}
+      id={POST_TAGFIELD_ID}
     >
       {/*TODO: 태그 마다 제거 버튼 및 이벤트*/}
       {tagList.map((content, idx) => (
@@ -18,7 +18,7 @@ function PostComposerTagBar() {
           <div className="absolute bg-transparent w-1 h-1 z-1 -top-3 -left-3">
             <IconButton
               icon="fa-solid fa-xmark-circle"
-              size="base"
+              size={16}
               onPressed={() => removeTag(idx)}
             />
           </div>

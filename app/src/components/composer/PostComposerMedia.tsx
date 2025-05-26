@@ -4,7 +4,7 @@ import IconButton from "../button/IconButton";
 import usePostComposerStore from "../../store/PostComposerStore";
 
 function PostComposerMedia() {
-  const QUICK_POST_MEDIAFIELD_ID = "quick-post-media";
+  const POST_MEDIAFIELD_ID = "post-media";
   const childMediaContext = { index: 0 };
   const mediaFiles = usePostComposerStore((state) => state.mediaContentList);
   const removeMediaFile = usePostComposerStore(
@@ -12,13 +12,13 @@ function PostComposerMedia() {
   );
 
   return (
-    <div id={QUICK_POST_MEDIAFIELD_ID} className="bg-transparent">
+    <div id={POST_MEDIAFIELD_ID} className="bg-transparent">
       {/*delete media button*/}
       {mediaFiles.length != 0 && (
         <div className="absolute bg-transparent w-5 h-5 z-1 ml-4 mt-4">
           <IconButton
             icon="fa-solid fa-xmark-circle"
-            size="xl"
+            size={18}
             onPressed={() => removeMediaFile(childMediaContext.index)}
           />
         </div>
