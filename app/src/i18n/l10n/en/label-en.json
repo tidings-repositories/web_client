@@ -3,5 +3,8 @@
   "minuteUnit": "m",
   "hourUnit": "h",
   "upload": "Upload",
-  "postPlaceholder": "What are your Tidings?"
+  "postPlaceholder": "What are your Tidings?",
+  "signIn": "Sign in/Sign up",
+  "weeklyPopular": "Weekly popular tags",
+  "dailyPopular": "Daily popular tags"
 }

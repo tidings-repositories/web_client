@@ -3,5 +3,8 @@
   "minuteUnit": "분 전",
   "hourUnit": "시간 전",
   "upload": "업로드",
-  "postPlaceholder": "어떤 소식이 있나요?"
+  "postPlaceholder": "어떤 소식이 있나요?",
+  "signIn": "로그인/회원가입",
+  "weeklyPopular": "이번주에 가장 많이 언급된 태그",
+  "dailyPopular": "오늘 가장 많이 언급된 태그"
 }
