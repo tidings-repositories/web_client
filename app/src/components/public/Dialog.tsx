@@ -30,7 +30,7 @@ function Dialog({ child }: DialogProps) {
         className="fixed top-0 right-0 bottom-0 left-0 bg-black/50 z-100 content-center"
       >
         {/*modal*/}
-        <div className="bg-white opacity-100 w-132 max-w-full flex flex-col pb-4 mx-auto basis-full pointer-events-auto rounded-xl">
+        <div className="bg-white w-132 max-w-200 flex flex-col py-4 mx-auto rounded-xl">
           {/*toolbar*/}
           <div className="flex justify-between items-end pt-4 pb-2 px-6">
             <div></div>
@@ -41,7 +41,7 @@ function Dialog({ child }: DialogProps) {
             />
           </div>
           {/*child component*/}
-          <div className="px-16"> {child} </div>
+          <div className="px-4 "> {child} </div>
         </div>
       </div>
     </div>

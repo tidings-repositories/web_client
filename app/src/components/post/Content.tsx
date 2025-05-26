@@ -2,13 +2,14 @@ import { Post, PostInfo } from "../../Types";
 import MediaContent from "./MediaContent";
 import PostInfoBar from "./PostInfoBar";
 import PostBottomBar from "./PostBottomBar";
+import MiniProfile from "../public/MiniProfile";
 
 function Content(post: Post) {
   const mediaCount = post.content.media.length ?? 0;
 
   return (
-    <div className="w-screen max-w-173 flex justify-start gap-2 rounded-xs my-3 px-8 overflow-hidden">
-      <img className="rounded-xl max-w-10 max-h-10" src={post.profile_image} />
+    <div className="max-w-173 flex justify-start items-start gap-2 rounded-xs my-3 px-8">
+      <MiniProfile user_id={post.user_id} img_url={post.profile_image} />
       <div className="w-full flex flex-col justify-start gap-2">
         <PostInfoBar {...(post as PostInfo)} />
         <p className="line-clamp-6">{post.content.text}</p>
