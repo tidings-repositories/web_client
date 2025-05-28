@@ -9,7 +9,7 @@ function PostComposerTagBar() {
 
   return (
     <div
-      className="w-full flex flex-wrap gap-4 item-start"
+      className="w-full flex flex-wrap gap-2 item-start"
       id={POST_TAGFIELD_ID}
     >
       {/*TODO: 태그 마다 제거 버튼 및 이벤트*/}

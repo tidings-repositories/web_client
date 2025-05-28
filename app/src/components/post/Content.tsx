@@ -17,7 +17,7 @@ function Content(post: Post) {
         {mediaCount >= 1 && (
           <MediaContent contents={post.content.media} post_id={post.post_id} />
         )}
-        <div className="w-full flex flex-wrap gap-4 item-start">
+        <div className="w-full flex flex-wrap gap-2 item-start">
           {post.content.tag.map((text, idx) => (
             <div key={`${post.post_id}${text}${idx}`} className="relative">
               <Tag content={text} />
