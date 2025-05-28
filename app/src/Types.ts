@@ -29,10 +29,21 @@ export type Post = {
   content: {
     text: string;
     media: PostMediaStructure[];
+    tag: string[];
   };
   comment_count: number;
   like_count: number;
   scrap_count: number;
 };
 
-/**/
+/*profile*/
+
+export type UserData = {
+  user_id: string;
+  user_name: string;
+  bio: string;
+  profile_image: string;
+  badge: string;
+  following_count: number;
+  follower_count: number;
+};

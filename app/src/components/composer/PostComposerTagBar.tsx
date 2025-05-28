@@ -1,5 +1,6 @@
 import IconButton from "../button/IconButton";
 import usePostComposerStore from "../../store/PostComposerStore";
+import Tag from "../post/Tag";
 
 function PostComposerTagBar() {
   const POST_TAGFIELD_ID = "post-tag";
@@ -26,21 +27,6 @@ function PostComposerTagBar() {
           <Tag content={content as string} />
         </div>
       ))}
-    </div>
-  );
-}
-
-type TagProps = {
-  content: string;
-};
-
-function Tag({ content }: TagProps) {
-  return (
-    <div
-      className={`px-3 py-1 rounded-lg border-2 border-solid border-gray-300`}
-    >
-      {/*TODO: overflow ellipsis, overflow rendering lower*/}
-      <p className={`text-base text-gray-500`}>{`#${content}`}</p>
     </div>
   );
 }
