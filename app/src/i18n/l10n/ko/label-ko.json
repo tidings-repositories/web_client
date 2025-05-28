@@ -6,5 +6,13 @@
   "postPlaceholder": "어떤 소식이 있나요?",
   "signIn": "로그인/회원가입",
   "weeklyPopular": "이번 주에 가장 많이 언급된 태그",
-  "dailyPopular": "오늘 가장 많이 언급된 태그"
+  "dailyPopular": "오늘 가장 많이 언급된 태그",
+  "follow": "팔로우",
+  "unfollow": "언팔로우",
+  "following": "팔로잉",
+  "follower": "팔로워",
+  "editProfile": "프로필 수정",
+  "posts": "포스트",
+  "comments": "코멘트",
+  "likes": "좋아요"
 }

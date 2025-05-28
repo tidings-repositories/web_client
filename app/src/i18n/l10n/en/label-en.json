@@ -6,5 +6,13 @@
   "postPlaceholder": "What are your Tidings?",
   "signIn": "Sign in/Sign up",
   "weeklyPopular": "Weekly popular tags",
-  "dailyPopular": "Daily popular tags"
+  "dailyPopular": "Daily popular tags",
+  "follow": "Follow",
+  "unfollow": "Unfollow",
+  "following": "Following",
+  "follower": "Followers",
+  "editProfile": "Edit profile",
+  "posts": "Posts",
+  "comments": "Comments",
+  "likes": "Likes"
 }
