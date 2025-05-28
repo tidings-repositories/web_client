@@ -7,7 +7,7 @@ import MiniProfile from "../public/MiniProfile";
 import * as l10n from "i18next";
 
 function HomeAppBarItem() {
-  let test = true; //TODO: replace to uid state
+  const isLogin = true; //TODO: replace to uid state
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -16,11 +16,18 @@ function HomeAppBarItem() {
     const clearButtonIconElement = parentElement.querySelector("button")!;
     clearButtonIconElement.style.display = "none";
 
+    if (window.innerWidth < 500)
+      document.getElementById("typography")!.style.display = "none";
+
     const eventHandler = (e: Event) =>
       changeViewStateClearButtonEvent(e, clearButtonIconElement);
 
+    window.addEventListener("resize", resizeEvent);
     textElement.addEventListener("input", eventHandler);
-    return () => textElement.removeEventListener("input", eventHandler);
+    return () => {
+      textElement.removeEventListener("input", eventHandler);
+      window.removeEventListener("resize", resizeEvent);
+    };
   }, []);
 
   return (
@@ -58,7 +65,7 @@ function HomeAppBarItem() {
         />
       </div>
       {/*login feature or user feature*/}
-      {test ? (
+      {isLogin ? (
         <div className="content-center items-center flex gap-2">
           <IconButton
             icon="fa-solid fa-message"
@@ -115,5 +122,11 @@ function drawerClickEvent() {
     drawer.style.display = "block";
   else drawer.style.display = "none";
 }
+
+const resizeEvent = () => {
+  if (window.innerWidth < 500)
+    document.getElementById("typography")!.style.display = "none";
+  else document.getElementById("typography")!.style.display = "block";
+};
 
 export default HomeAppBarItem;
