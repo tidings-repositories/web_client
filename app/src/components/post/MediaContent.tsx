@@ -129,6 +129,7 @@ function MediaComponent({ content, isDesktop }: MediaComponentProps) {
       {content.type === "image" && (
         <>
           <img
+            loading="lazy"
             className="relative w-full h-full z-1 object-contain rounded-xl blur-none"
             src={content.url}
           />
