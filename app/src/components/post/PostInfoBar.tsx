@@ -1,20 +1,25 @@
 import * as l10n from "i18next";
 import { PostInfo } from "../../Types";
 import IconButton from "../button/IconButton";
+import Dropdown from "../public/Dropdown";
+import Badge from "../profile/Badge";
+import ReactDOM from "react-dom/client";
 
 function PostInfoBar({ user_name, badge, user_id, create_at }: PostInfo) {
   const contentCreateFrom = createTimeDifferenceText(create_at);
-  const postMenuEvent = () => {}; //TODO: 팝업 생성 이벤트
 
   return (
     <div className="flex justify-between">
       <div className="rounded-xs flex justify-start gap-1 items-center">
         <p className="font-medium line-clamp-1"> {user_name} </p>
-        {badge && <img className="max-w-5 max-h-5" src={badge} />}
-        <div className="text-gray-500"> {user_id} </div>
+        {badge && <Badge url={badge} />}
+        <div className="text-gray-500"> @{user_id} </div>
         <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
-      <IconButton icon="fa-solid fa-ellipsis" onPressed={postMenuEvent} />
+      <IconButton
+        icon="fa-solid fa-ellipsis"
+        onPressed={(e) => openPostDropdown(e, "post-menu")}
+      />
     </div>
   );
 }
@@ -47,6 +52,30 @@ function createTimeDifferenceText(createAt: Date) {
       Math.floor(timePerSecond / hourPerSecond).toString() + l10n.t("hourUnit")
     );
   }
+}
+
+function openPostDropdown(e, dropdownId) {
+  const SCREEN_CENTER_POS = window.innerWidth / 2;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const targetCenterPos = rect.left + rect.width / 2;
+  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
+  const pos = {
+    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    y: rect.bottom,
+  };
+
+  const newDropdown = document.createElement("div");
+  newDropdown.id = `${dropdownId}-box`;
+  document.querySelector("body")!.appendChild(newDropdown);
+  const root = ReactDOM.createRoot(newDropdown);
+  root.render(
+    <Dropdown
+      id={dropdownId}
+      direction={DIRECTION}
+      position={pos}
+      child={<div className="w-60 h-10 bg-transparent"></div>}
+    />
+  );
 }
 
 export default PostInfoBar;
