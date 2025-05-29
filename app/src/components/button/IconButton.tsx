@@ -2,7 +2,7 @@ type IconButtonProps = {
   icon: string;
   size?: number;
   color?: string;
-  onPressed: () => void;
+  onPressed: (e: any) => void;
 };
 
 function IconButton({ icon, size, color, onPressed }: IconButtonProps) {
