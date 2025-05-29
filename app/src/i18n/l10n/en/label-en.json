@@ -14,5 +14,9 @@
   "editProfile": "Edit profile",
   "posts": "Posts",
   "comments": "Comments",
-  "likes": "Likes"
+  "likes": "Likes",
+  "name": "Name",
+  "bio": "Bio",
+  "badge": "Badge",
+  "saveProfile": "Save"
 }

@@ -14,5 +14,9 @@
   "editProfile": "프로필 수정",
   "posts": "포스트",
   "comments": "코멘트",
-  "likes": "좋아요"
+  "likes": "좋아요",
+  "name": "이름",
+  "bio": "Bio",
+  "badge": "Badge",
+  "saveProfile": "프로필 저장"
 }
