@@ -12,7 +12,7 @@ function PostInfoBar({ user_name, badge, user_id, create_at }: PostInfo) {
     <div className="flex justify-between">
       <div className="rounded-xs flex justify-start gap-1 items-center">
         <p className="font-medium line-clamp-1"> {user_name} </p>
-        {badge && <Badge url={badge} />}
+        {badge && <Badge url={badge.url} />}
         <div className="text-gray-500"> @{user_id} </div>
         <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
