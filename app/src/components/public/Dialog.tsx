@@ -6,9 +6,15 @@ type DialogProps = {
 };
 
 function Dialog({ child }: DialogProps) {
+  const scrollY = window.scrollY;
+  const preventScrollEvent = () => {
+    window.scrollTo(0, scrollY);
+  };
+
   const closeDialog = () => {
-    const dialogComponent = document.getElementById("dialog")!;
+    const dialogComponent = document.getElementById("dialog-box")!;
     dialogComponent.removeEventListener("click", dialogClickEvent);
+    document.removeEventListener("scroll", preventScrollEvent);
     dialogComponent!.remove();
   };
 
@@ -18,8 +24,9 @@ function Dialog({ child }: DialogProps) {
 
   useEffect(() => {
     const dialogComponent = document.getElementById("dialog")!;
-
     dialogComponent.addEventListener("click", dialogClickEvent);
+
+    document.addEventListener("scroll", preventScrollEvent);
   }, []);
 
   return (
@@ -30,9 +37,9 @@ function Dialog({ child }: DialogProps) {
         className="fixed top-0 right-0 bottom-0 left-0 bg-black/50 z-100 content-center"
       >
         {/*modal*/}
-        <div className="bg-white w-132 max-w-200 flex flex-col py-4 mx-auto rounded-xl">
+        <div className="bg-white max-w-132 flex flex-col py-4 mx-auto rounded-xl">
           {/*toolbar*/}
-          <div className="flex justify-between items-end pt-4 pb-2 px-6">
+          <div className="flex justify-between pt-4 pb-2 px-6">
             <div></div>
             <IconButton
               icon="fa-solid fa-xmark-circle"
