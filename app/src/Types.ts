@@ -8,7 +8,7 @@ export type PostMediaStructure = {
 
 export type PostInfo = {
   user_name: string;
-  badge: Badge | null;
+  badge: BadgeProps | null;
   user_id: string;
   create_at: Date;
 };
@@ -24,7 +24,7 @@ export type Post = {
   user_id: string;
   user_name: string;
   profile_image: string; // url
-  badge: Badge | null;
+  badge: BadgeProps | null;
   create_at: Date;
   content: {
     text: string;
@@ -37,7 +37,7 @@ export type Post = {
 };
 
 /*profile*/
-type Badge = {
+export type BadgeProps = {
   name: string;
   url: string;
 };
@@ -47,7 +47,7 @@ export type UserData = {
   user_name: string;
   bio: string;
   profile_image: string;
-  badge: Badge | null;
+  badge: BadgeProps | null;
   following_count: number;
   follower_count: number;
 };
