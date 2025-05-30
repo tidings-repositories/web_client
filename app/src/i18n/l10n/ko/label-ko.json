@@ -18,5 +18,6 @@
   "name": "이름",
   "bio": "Bio",
   "badge": "Badge",
-  "saveProfile": "프로필 저장"
+  "saveProfile": "프로필 저장",
+  "editProfileImage": "프로필 사진 변경"
 }

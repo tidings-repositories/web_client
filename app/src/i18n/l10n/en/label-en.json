@@ -18,5 +18,6 @@
   "name": "Name",
   "bio": "Bio",
   "badge": "Badge",
-  "saveProfile": "Save"
+  "saveProfile": "Save",
+  "editProfileImage": "Edit profile image"
 }
