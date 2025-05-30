@@ -6,7 +6,8 @@ import PostComposerMedia from "../components/composer/PostComposerMedia";
 import PostComposerTagBar from "../components/composer/PostComposerTagBar";
 import usePostComposerStore from "../store/PostComposerStore";
 import PostComposerAppBarItem from "../components/composer/PostComposerAppBarItem";
-import Drawer from "../components/home/Drawer";
+import Drawer from "../components/drawer/Drawer";
+import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 
 export default function PostComposer() {
   const MAX_LINE = 10;
@@ -36,7 +37,7 @@ export default function PostComposer() {
   return (
     <div id="scaffold" className="w-screen h-screen mx-auto content-start">
       <AppBar child={<PostComposerAppBarItem />} />
-      <Drawer />
+      <Drawer child={<RouterDrawerItem />} />
       <div
         id="post-composer"
         className="w-[80vw] h-max px-8 pb-10 mt-14 pt-10 mx-auto flex flex-col gap-4 rounded-xs border-b-2 border-solid border-gray-300"

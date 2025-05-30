@@ -3,9 +3,10 @@ import InfiniteScroll from "../components/post/InfiniteScroll";
 import Sidebox from "../components/home/Sidebox";
 import AppBar from "../components/public/AppBar";
 import HomeAppBarItem from "../components/home/HomeAppBarItem";
-import Drawer from "../components/home/Drawer";
+import Drawer from "../components/drawer/Drawer";
 import QuickPostComposer from "../components/composer/QuickPostComposer";
 import Content from "../components/post/Content";
+import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import * as l10n from "i18next";
 
 import { createMockPost } from "../../dev/mockdata"; //TODO: remove
@@ -33,7 +34,7 @@ export default function Home() {
   return (
     <div id="scaffold" className="w-[98vw] h-screen mx-auto content-start">
       <AppBar child={<HomeAppBarItem />} />
-      <Drawer />
+      <Drawer child={<RouterDrawerItem />} />
       <div id="home" className="flex justify-center gap-10 pt-16">
         <div>
           <QuickPostComposer />
