@@ -81,7 +81,7 @@ function HomeAppBarItem() {
             icon="fa-solid fa-bell"
             size={18}
             onPressed={() => {
-              /*open dialog notification*/
+              /*open popup notification*/
             }}
           />
           <MiniProfile
@@ -92,7 +92,7 @@ function HomeAppBarItem() {
       ) : (
         <OutlineButton
           fontSize="sm"
-          color="blue" //TODO: 컬러 테마 설정
+          color="gray" //TODO: 컬러 테마 설정
           text={`${l10n.t("signIn")}`}
           radius={12}
           onPressed={() => {}}
