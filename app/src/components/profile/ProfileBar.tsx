@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserData } from "../../Types";
 import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
@@ -10,6 +9,7 @@ import Dropdown from "../public/Dropdown";
 import Badge from "./Badge";
 import Dialog from "../public/Dialog";
 import EditProfileItem from "./EditProfileItem";
+import FullScreenImageViewer from "../public/FullScreenImageViewer";
 
 import { createMockProfile } from "../../../dev/mockdata"; //TODO: remove
 
@@ -34,9 +34,7 @@ function ProfileBar({ userId }: ProfileBarProps) {
         {/*profile image*/}
         <button
           className="!p-0"
-          onClick={() => {
-            /*TODO: route to full screen image*/
-          }}
+          onClick={() => viewImageFullScreen(profileData.profile_image)}
         >
           <img
             id="profile-image"
@@ -151,6 +149,14 @@ function openDialog(profileData: UserData, onChange: React.Dispatch<any>) {
   root.render(
     <Dialog child={<EditProfileItem {...profileData} onChange={onChange} />} />
   );
+}
+
+function viewImageFullScreen(url) {
+  const newDialog = document.createElement("div");
+  newDialog.id = "fullscreen-image-box";
+  document.querySelector("body")!.appendChild(newDialog);
+  const root = ReactDOM.createRoot(newDialog);
+  root.render(<FullScreenImageViewer url={url} />);
 }
 
 export default ProfileBar;

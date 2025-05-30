@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
 import { PostMediaStructure } from "../../Types";
 import { useSwipeable } from "react-swipeable";
+import FullScreenImageViewer from "../public/FullScreenImageViewer";
 
 type MediaContentProps = {
   contents: PostMediaStructure[];
@@ -47,7 +49,18 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
       id={`${post_id}-media`}
       className="relative z-0 max-w-auto h-120 bg-black rounded-xl overflow-hidden"
     >
-      <MediaComponent content={contents[mediaIndex]} isDesktop={isDesktop} />
+      <button
+        className="!p-0 !w-full !h-full"
+        style={{
+          cursor: contents[mediaIndex].type == "image" ? "pointer" : "auto",
+        }}
+        onClick={() => {
+          if (contents[mediaIndex].type == "image")
+            viewImageFullScreen(contents[mediaIndex].url);
+        }}
+      >
+        <MediaComponent content={contents[mediaIndex]} isDesktop={isDesktop} />
+      </button>
 
       {/*Media Index*/}
       {contents.length != 0 && (
@@ -206,6 +219,14 @@ function preloadNextMedia(content: PostMediaStructure) {
     video.src = content.url;
     video.load();
   }
+}
+
+function viewImageFullScreen(url) {
+  const newDialog = document.createElement("div");
+  newDialog.id = "fullscreen-image-box";
+  document.querySelector("body")!.appendChild(newDialog);
+  const root = ReactDOM.createRoot(newDialog);
+  root.render(<FullScreenImageViewer url={url} />);
 }
 
 export default MediaContent;
