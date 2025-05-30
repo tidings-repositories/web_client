@@ -86,7 +86,9 @@ function ProfileBar({ userId }: ProfileBarProps) {
             {profileData.badge && <Badge {...profileData.badge} />}
           </div>
         </span>
-        <p id="profile-bio">{profileData.bio}</p>
+        <p id="profile-bio" style={{ whiteSpace: "pre-wrap" }}>
+          {profileData.bio}
+        </p>
       </div>
       {/*팔로잉, 팔로워*/}
       <div className="flex gap-4">

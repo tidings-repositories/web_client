@@ -13,7 +13,9 @@ function Content(post: Post) {
       <MiniProfile user_id={post.user_id} img_url={post.profile_image} />
       <div className="w-full flex flex-col justify-start gap-2">
         <PostInfoBar {...(post as PostInfo)} />
-        <p className="line-clamp-6">{post.content.text}</p>
+        <p className="line-clamp-6" style={{ whiteSpace: "pre-wrap" }}>
+          {post.content.text}
+        </p>
         {mediaCount >= 1 && (
           <MediaContent contents={post.content.media} post_id={post.post_id} />
         )}
