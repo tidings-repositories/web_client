@@ -32,7 +32,7 @@ function Dropdown({ id, position, direction, child }: DropdownProps) {
   return (
     <div
       id={id}
-      className="invisible absolute py-1 bg-gray-100 z-20 content-center rounded-lg"
+      className="invisible absolute py-1 bg-gray-200 z-20 content-center rounded-lg"
     >
       {child}
     </div>
