@@ -52,3 +52,13 @@ export type UserData = {
   following_count: number;
   follower_count: number;
 };
+
+/*notification*/
+export type NotificationType = "comment" | "scrap" | "like" | "follow";
+
+export type NotificationData = {
+  type: NotificationType;
+  detail: string;
+  published_by: string;
+  published_at: Date;
+};

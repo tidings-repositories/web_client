@@ -2,8 +2,12 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "../button/IconButton";
 import Logo from "../public/Logo";
 import MiniProfile from "../public/MiniProfile";
+import NotificationDropdownItem from "../notification/NotificationDropdownItem";
+import Dropdown from "../public/Dropdown";
+import ReactDOM from "react-dom/client";
 
 function PostComposerAppBarItem() {
+  const userId = "test1"; //TODO: replace to uid state
   const navigator = useNavigate();
 
   return (
@@ -30,9 +34,9 @@ function PostComposerAppBarItem() {
         <IconButton
           icon="fa-solid fa-bell"
           size={18}
-          onPressed={() => {
-            /*open dialog notification*/
-          }}
+          onPressed={(e) =>
+            openNotificationDropdown(e, "notification-dropdown", userId)
+          }
         />
         <MiniProfile
           user_id="test1"
@@ -43,11 +47,40 @@ function PostComposerAppBarItem() {
   );
 }
 
+/*----------------------*/
+
 function drawerClickEvent() {
   const drawer = document.getElementById("drawer")!;
   if (drawer.style.display === "none" || !drawer.style.display)
     drawer.style.display = "block";
   else drawer.style.display = "none";
+}
+
+function openNotificationDropdown(e, dropdownId, userId) {
+  const SCREEN_CENTER_POS = window.innerWidth / 2;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const targetCenterPos = rect.left + rect.width / 2;
+  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
+  const pos = {
+    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    y: -window.scrollY,
+  };
+
+  const newDropdown = document.createElement("div");
+  newDropdown.id = `${dropdownId}-box`;
+  newDropdown.style.zIndex = "51";
+  newDropdown.style.top = `${rect.bottom}px`;
+  newDropdown.style.position = "fixed";
+  document.querySelector("body")!.appendChild(newDropdown);
+  const root = ReactDOM.createRoot(newDropdown);
+  root.render(
+    <Dropdown
+      id={dropdownId}
+      direction={DIRECTION}
+      position={pos}
+      child={<NotificationDropdownItem user_id={userId} />}
+    />
+  );
 }
 
 export default PostComposerAppBarItem;

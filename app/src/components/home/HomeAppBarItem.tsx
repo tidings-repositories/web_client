@@ -4,10 +4,13 @@ import IconButton from "../button/IconButton";
 import Logo from "../public/Logo";
 import OutlineButton from "../button/OutlineButton";
 import MiniProfile from "../public/MiniProfile";
+import NotificationDropdownItem from "../notification/NotificationDropdownItem";
+import Dropdown from "../public/Dropdown";
+import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
 
 function HomeAppBarItem() {
-  const isLogin = true; //TODO: replace to uid state
+  const userId = "test1"; //TODO: replace to uid state
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -65,7 +68,7 @@ function HomeAppBarItem() {
         />
       </div>
       {/*login feature or user feature*/}
-      {isLogin ? (
+      {userId ? (
         <div className="content-center items-center flex gap-2">
           <IconButton
             icon="fa-solid fa-message"
@@ -80,9 +83,9 @@ function HomeAppBarItem() {
           <IconButton
             icon="fa-solid fa-bell"
             size={18}
-            onPressed={() => {
-              /*open popup notification*/
-            }}
+            onPressed={(e) =>
+              openNotificationDropdown(e, "notification-dropdown", userId)
+            }
           />
           <MiniProfile
             user_id="test1"
@@ -128,5 +131,32 @@ const resizeEvent = () => {
     document.getElementById("typography")!.style.display = "none";
   else document.getElementById("typography")!.style.display = "block";
 };
+
+function openNotificationDropdown(e, dropdownId, userId) {
+  const SCREEN_CENTER_POS = window.innerWidth / 2;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const targetCenterPos = rect.left + rect.width / 2;
+  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
+  const pos = {
+    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    y: -window.scrollY,
+  };
+
+  const newDropdown = document.createElement("div");
+  newDropdown.id = `${dropdownId}-box`;
+  newDropdown.style.zIndex = "51";
+  newDropdown.style.top = `${rect.bottom}px`;
+  newDropdown.style.position = "fixed";
+  document.querySelector("body")!.appendChild(newDropdown);
+  const root = ReactDOM.createRoot(newDropdown);
+  root.render(
+    <Dropdown
+      id={dropdownId}
+      direction={DIRECTION}
+      position={pos}
+      child={<NotificationDropdownItem user_id={userId} />}
+    />
+  );
+}
 
 export default HomeAppBarItem;
