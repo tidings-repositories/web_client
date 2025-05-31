@@ -19,5 +19,10 @@
   "bio": "Bio",
   "badge": "Badge",
   "saveProfile": "Save",
-  "editProfileImage": "Edit profile image"
+  "editProfileImage": "Edit profile image",
+  "home": "Home",
+  "search": "Search",
+  "profile": "Profile",
+  "message": "Messages",
+  "setting": "Settings"
 }

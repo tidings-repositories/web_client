@@ -19,5 +19,10 @@
   "bio": "Bio",
   "badge": "Badge",
   "saveProfile": "프로필 저장",
-  "editProfileImage": "프로필 사진 변경"
+  "editProfileImage": "프로필 사진 변경",
+  "home": "홈",
+  "search": "검색",
+  "profile": "프로필",
+  "message": "메시지",
+  "setting": "설정"
 }

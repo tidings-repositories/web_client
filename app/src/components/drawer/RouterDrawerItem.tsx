@@ -1,5 +1,6 @@
 import Slot from "./Slot";
 import { useNavigate } from "react-router-dom";
+import * as l10n from "i18next";
 
 function RouterDrawerItem() {
   const myUserId = "test1"; //TODO: change to user id state
@@ -9,29 +10,35 @@ function RouterDrawerItem() {
     <div className="flex flex-col gap-2">
       <Slot
         icon="fa-solid fa-house-chimney-window"
-        text="Home"
+        text={l10n.t("home")}
         behavior={() => navigator("/")}
       />
       <Slot
         icon="fa-solid fa-magnifying-glass"
-        text="Search"
+        text={l10n.t("search")}
         behavior={() => navigator("/search")}
       />
-      <Slot
-        icon="fa-solid fa-user"
-        text="Profile"
-        behavior={() => navigator(`/profile/${myUserId}`)}
-      />
-      <Slot
-        icon="fa-solid fa-message"
-        text="Direct Message"
-        behavior={() => navigator("/message")}
-      />
-      <Slot
-        icon="fa-solid fa-gear"
-        text="Settings"
-        behavior={() => navigator("/setting")}
-      />
+      {myUserId && (
+        <Slot
+          icon="fa-solid fa-user"
+          text={l10n.t("profile")}
+          behavior={() => navigator(`/profile/${myUserId}`)}
+        />
+      )}
+      {myUserId && (
+        <Slot
+          icon="fa-solid fa-message"
+          text={l10n.t("message")}
+          behavior={() => navigator("/message")}
+        />
+      )}
+      {myUserId && (
+        <Slot
+          icon="fa-solid fa-gear"
+          text={l10n.t("setting")}
+          behavior={() => navigator("/setting")}
+        />
+      )}
     </div>
   );
 }
