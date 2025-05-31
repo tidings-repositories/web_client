@@ -48,6 +48,7 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
       {...mobileMediaSwapEvent}
       id={`${post_id}-media`}
       className="relative z-0 max-w-auto h-120 bg-black rounded-xl overflow-hidden"
+      onClick={(event) => event.stopPropagation()}
     >
       <button
         className="!p-0 !w-full !h-full"
@@ -79,7 +80,8 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
           >
             {mediaIndex >= 1 && (
               <button
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   setState((prev) => prev - 1);
                 }}
               >
@@ -99,7 +101,8 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
             )}
             {mediaIndex < contents.length - 1 && (
               <button
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   if (mediaIndex < contents.length - 1)
                     setState((prev) => prev + 1);
 

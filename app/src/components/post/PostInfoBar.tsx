@@ -5,6 +5,7 @@ import Dropdown from "../public/Dropdown";
 import Badge from "../profile/Badge";
 import PostDropdownItem from "./PostDropdownItem";
 import ReactDOM from "react-dom/client";
+import { useNavigate } from "react-router-dom";
 
 function PostInfoBar({
   user_name,
@@ -13,19 +14,52 @@ function PostInfoBar({
   create_at,
   post_id,
 }: PostInfo) {
+  const navigator = useNavigate();
   const contentCreateFrom = createTimeDifferenceText(create_at);
+
+  let isDragging = false;
+  const handleMouseDown = () => {
+    isDragging = false;
+  };
+  const handleMouseMove = () => {
+    isDragging = true;
+  };
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    if (!isDragging) {
+      navigator(`/profile/${user_id}`);
+    }
+  };
 
   return (
     <div className="flex justify-between">
       <div className="rounded-xs flex justify-start gap-1 items-center">
-        <p className="font-medium line-clamp-1"> {user_name} </p>
+        <p
+          className="font-medium line-clamp-1 select-text cursor-text"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onClick={handleClick}
+        >
+          {user_name}
+        </p>
         {badge && <Badge {...badge} />}
-        <div className="text-gray-500"> @{user_id} </div>
+        <div
+          className="text-gray-500 select-text cursor-text"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onClick={handleClick}
+        >
+          @{user_id}
+        </div>
         <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
       <IconButton
         icon="fa-solid fa-ellipsis"
-        onPressed={(e) => openPostDropdown(e, "post-menu", user_id, post_id)}
+        onPressed={(e) => {
+          e.stopPropagation();
+          openPostDropdown(e, "post-menu", user_id, post_id);
+        }}
       />
     </div>
   );
