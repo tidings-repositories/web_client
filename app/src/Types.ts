@@ -7,6 +7,7 @@ export type PostMediaStructure = {
 };
 
 export type PostInfo = {
+  post_id: string;
   user_name: string;
   badge: BadgeProps | null;
   user_id: string;
