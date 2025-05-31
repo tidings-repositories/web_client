@@ -32,7 +32,7 @@ function Dropdown({ id, position, direction, child }: DropdownProps) {
   return (
     <div
       id={id}
-      className="invisible absolute py-1 bg-gray-100 z-20 content-center"
+      className="invisible absolute py-1 bg-gray-100 z-20 content-center rounded-lg"
     >
       {child}
     </div>
@@ -55,6 +55,30 @@ function closeDropdownEvent(e, id, eventHandler: (e: MouseEvent) => void) {
     document.removeEventListener("mousedown", eventHandler);
     document.getElementById(`${id}-box`)?.remove();
   }
+}
+
+type DropdownSlotProps = {
+  text: string;
+  extraBeforeNode?: React.ReactNode;
+  extraAfterNode?: React.ReactNode;
+  behavior: (e?: any) => void;
+};
+
+export function DropwdownSlot({
+  text,
+  extraBeforeNode,
+  extraAfterNode,
+  behavior,
+}: DropdownSlotProps) {
+  return (
+    <button className="!p-0" onClick={behavior}>
+      <div className="flex w-full gap-1 py-1 px-4 rounded-lg hover:bg-white items-center">
+        {extraBeforeNode}
+        <p className="text-base">{text}</p>
+        {extraAfterNode}
+      </div>
+    </button>
+  );
 }
 
 export default Dropdown;

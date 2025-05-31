@@ -24,5 +24,7 @@
   "search": "검색",
   "profile": "프로필",
   "message": "메시지",
-  "setting": "설정"
+  "setting": "설정",
+  "report": "신고",
+  "deletePost": "이 포스트 삭제하기"
 }

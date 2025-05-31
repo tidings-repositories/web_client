@@ -24,5 +24,7 @@
   "search": "Search",
   "profile": "Profile",
   "message": "Messages",
-  "setting": "Settings"
+  "setting": "Settings",
+  "report": "Report",
+  "deletePost": "Delete this Post"
 }

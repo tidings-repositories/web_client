@@ -3,9 +3,16 @@ import { PostInfo } from "../../Types";
 import IconButton from "../button/IconButton";
 import Dropdown from "../public/Dropdown";
 import Badge from "../profile/Badge";
+import PostDropdownItem from "./PostDropdownItem";
 import ReactDOM from "react-dom/client";
 
-function PostInfoBar({ user_name, badge, user_id, create_at }: PostInfo) {
+function PostInfoBar({
+  user_name,
+  badge,
+  user_id,
+  create_at,
+  post_id,
+}: PostInfo) {
   const contentCreateFrom = createTimeDifferenceText(create_at);
 
   return (
@@ -18,7 +25,7 @@ function PostInfoBar({ user_name, badge, user_id, create_at }: PostInfo) {
       </div>
       <IconButton
         icon="fa-solid fa-ellipsis"
-        onPressed={(e) => openPostDropdown(e, "post-menu")}
+        onPressed={(e) => openPostDropdown(e, "post-menu", user_id, post_id)}
       />
     </div>
   );
@@ -54,7 +61,7 @@ function createTimeDifferenceText(createAt: Date) {
   }
 }
 
-function openPostDropdown(e, dropdownId) {
+function openPostDropdown(e, dropdownId, userId, postId) {
   const SCREEN_CENTER_POS = window.innerWidth / 2;
   const rect = e.currentTarget.getBoundingClientRect();
   const targetCenterPos = rect.left + rect.width / 2;
@@ -73,7 +80,7 @@ function openPostDropdown(e, dropdownId) {
       id={dropdownId}
       direction={DIRECTION}
       position={pos}
-      child={<div className="w-60 h-10 bg-transparent"></div>}
+      child={<PostDropdownItem user_id={userId} post_id={postId} />}
     />
   );
 }
