@@ -10,14 +10,14 @@ function MiniProfile({ user_id, img_url }: MiniProfileProps) {
 
   return (
     <button
-      className="!p-1"
+      className="!min-w-12 !min-h-12 !p-0 !flex !justify-center !items-center"
       onClick={(event) => {
         event.stopPropagation();
         navigator(`/profile/${user_id}`);
       }}
     >
       <img
-        className="rounded-xl max-w-10 max-h-10"
+        className="rounded-xl w-10 h-10"
         style={{ objectFit: "cover" }}
         src={img_url}
       />
