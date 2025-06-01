@@ -32,7 +32,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div id="scaffold" className="w-[98vw] h-screen mx-auto content-start">
+    <div id="scaffold" className="w-full h-screen mx-auto content-start">
       <AppBar child={<HomeAppBarItem />} />
       <Drawer child={<RouterDrawerItem />} />
       <div id="home" className="flex justify-center gap-10 pt-16">

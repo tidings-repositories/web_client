@@ -35,7 +35,7 @@ export default function PostComposer() {
   }, []);
 
   return (
-    <div id="scaffold" className="w-screen h-screen mx-auto content-start">
+    <div id="scaffold" className="w-full h-screen mx-auto content-start">
       <AppBar child={<PostComposerAppBarItem />} />
       <Drawer child={<RouterDrawerItem />} />
       <div
