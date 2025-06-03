@@ -1,6 +1,7 @@
 import { PostBottom } from "../../Types";
 import MixedButton from "../button/MixedButton";
 import IconButton from "../button/IconButton";
+import { useNavigate } from "react-router-dom";
 
 /*
 유저는 `좋아요` 기능을 이용했을 때 해당 포스트를 좋아요 표시 했는지, 안했는지 알 수 있어야 한다.
@@ -19,9 +20,17 @@ function PostBottomBar({
   like_count,
   scrap_count,
 }: PostBottom) {
+  const navigator = useNavigate();
+
   //TODO: 버튼 이벤트 설정, 전역 관리중인 `좋아요 객체`에서 포스트가 존재한다면 color: "red"
-  const commentEvent = (e) => {};
+  const commentEvent = (e: Event) => {
+    e.stopPropagation();
+    //window.location 검사해서 포스트 페이지면 무반응, 아니라면 포스트 페이지로 이동
+    const firstPath = window.location.pathname.split("/")[1] ?? "";
+    if (firstPath !== "post") navigator(`/post/${post_id}`);
+  };
   const likeEvent = (e: Event) => {
+    e.stopPropagation();
     const iconElement = (e.currentTarget as HTMLButtonElement).querySelector(
       "i"
     )!;
@@ -37,8 +46,10 @@ function PostBottomBar({
       textElement.textContent = (+textElement.textContent! - 1).toString();
     }
   };
-  const scrapEvent = (e) => {};
-  const shareEvent = (e) => {};
+  const scrapEvent = (e: Event) => {
+    e.stopPropagation();
+    //TODO: 본인 포스트 생성으로 포스트 스크랩
+  };
 
   return (
     <div
@@ -63,7 +74,6 @@ function PostBottomBar({
         gap={1}
         onPressed={scrapEvent}
       />
-      <IconButton icon="fa-solid fa-share" onPressed={shareEvent} />
     </div>
   );
 }

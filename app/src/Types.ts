@@ -15,6 +15,7 @@ export type PostInfo = {
 };
 
 export type PostBottom = {
+  post_id: string;
   comment_count: number;
   like_count: number;
   scrap_count: number;
@@ -35,6 +36,19 @@ export type Post = {
   comment_count: number;
   like_count: number;
   scrap_count: number;
+};
+
+export type CommentProps = {
+  post_id: string;
+  comment_id: string;
+  user_id: string;
+  user_name: string;
+  badge: BadgeProps | null;
+  profile_image: string;
+  create_at: Date;
+  text: string;
+  origin: boolean;
+  reply?: CommentProps[] | null;
 };
 
 /*profile*/
