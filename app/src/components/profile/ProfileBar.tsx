@@ -118,12 +118,9 @@ function ProfileBar({ userId }: ProfileBarProps) {
 /*-----------*/
 
 function openPostDropdown(e, dropdownId) {
-  const SCREEN_CENTER_POS = window.innerWidth / 2;
   const rect = e.currentTarget.getBoundingClientRect();
-  const targetCenterPos = rect.left + rect.width / 2;
-  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
   const pos = {
-    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    x: rect.right,
     y: rect.bottom,
   };
 
@@ -134,7 +131,6 @@ function openPostDropdown(e, dropdownId) {
   root.render(
     <Dropdown
       id={dropdownId}
-      direction={DIRECTION}
       position={pos}
       child={<div className="w-60 h-10 bg-transparent"></div>}
     />

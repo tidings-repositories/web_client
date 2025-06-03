@@ -8,11 +8,10 @@ type pos = {
 type DropdownProps = {
   id: string;
   position: pos;
-  direction: "LEFT" | "RIGHT";
   child: React.ReactNode;
 };
 
-function Dropdown({ id, position, direction, child }: DropdownProps) {
+function Dropdown({ id, position, child }: DropdownProps) {
   useEffect(() => {
     const thisElement = document.getElementById(id)!;
     const rect = thisElement.getBoundingClientRect();
@@ -20,12 +19,8 @@ function Dropdown({ id, position, direction, child }: DropdownProps) {
       closeDropdownEvent(e, id, eventHandler);
     document.addEventListener("mousedown", eventHandler);
 
-    thisElement.style.left = `${position.x}px`;
     thisElement.style.top = `${position.y + window.scrollY}px`;
-    if (direction === "LEFT") {
-      const thisWidth = rect.width;
-      thisElement.style.left = `${position.x - thisWidth}px`;
-    }
+    thisElement.style.left = `${position.x - rect.width}px`;
     thisElement.style.visibility = "visible";
   }, []);
 

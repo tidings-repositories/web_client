@@ -96,12 +96,9 @@ function createTimeDifferenceText(createAt: Date) {
 }
 
 function openPostDropdown(e, dropdownId, userId, postId) {
-  const SCREEN_CENTER_POS = window.innerWidth / 2;
   const rect = e.currentTarget.getBoundingClientRect();
-  const targetCenterPos = rect.left + rect.width / 2;
-  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
   const pos = {
-    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    x: rect.right,
     y: rect.bottom,
   };
 
@@ -112,7 +109,6 @@ function openPostDropdown(e, dropdownId, userId, postId) {
   root.render(
     <Dropdown
       id={dropdownId}
-      direction={DIRECTION}
       position={pos}
       child={<PostDropdownItem user_id={userId} post_id={postId} />}
     />
