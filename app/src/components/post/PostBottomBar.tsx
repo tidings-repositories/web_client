@@ -13,15 +13,38 @@ import IconButton from "../button/IconButton";
 클라이언트에서 좋아요가 눌리지 않은 포스트를 확인할 때는 좋아요 여부를 서버로 부터 응답 받기?
 */
 
-function PostBottomBar({ comment_count, like_count, scrap_count }: PostBottom) {
+function PostBottomBar({
+  post_id,
+  comment_count,
+  like_count,
+  scrap_count,
+}: PostBottom) {
   //TODO: 버튼 이벤트 설정, 전역 관리중인 `좋아요 객체`에서 포스트가 존재한다면 color: "red"
-  const commentEvent = () => {};
-  const likeEvent = () => {};
-  const scrapEvent = () => {};
-  const shareEvent = () => {};
+  const commentEvent = (e) => {};
+  const likeEvent = (e: Event) => {
+    const iconElement = (e.currentTarget as HTMLButtonElement).querySelector(
+      "i"
+    )!;
+    const textElement = (e.currentTarget as HTMLButtonElement).querySelector(
+      "p"
+    )!;
+
+    if (iconElement.style.color == "gray") {
+      iconElement.style.color = "lightcoral";
+      textElement.textContent = (+textElement.textContent! + 1).toString();
+    } else {
+      iconElement.style.color = "gray";
+      textElement.textContent = (+textElement.textContent! - 1).toString();
+    }
+  };
+  const scrapEvent = (e) => {};
+  const shareEvent = (e) => {};
 
   return (
-    <div className="w-full h-fit flex justify-around">
+    <div
+      id={`${post_id}-bottom-bar`}
+      className="w-full h-fit flex justify-around"
+    >
       <MixedButton
         icon="fa-solid fa-comment"
         text={comment_count}
