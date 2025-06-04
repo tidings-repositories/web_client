@@ -5,7 +5,7 @@ type OutlineButtonProps = {
   fontColor?: string;
   backgroundColor?: string;
   radius: number;
-  onPressed: () => void;
+  onPressed: (e?: any) => void;
 };
 
 function OutlineButton({
