@@ -9,7 +9,7 @@
 | <h3> Library </h3> |                 |         |              |         |
 | ------------------ | --------------- | ------- | ------------ | ------- |
 | React              | Tailwind CSS    | Zustand | React-router | i18next |
-| fontawesome        | react-swipeable |         |              |         |
+| fontawesome        | react-swipeable | immer   |              |         |
 
 ---
 
@@ -88,6 +88,12 @@ npm install @fortawesome/fontawesome-free
     crossorigin="anonymous"
   ></script>
 </head>
+```
+
+#### Add Immer package
+
+```bash
+npm install immer
 ```
 
 </div>
