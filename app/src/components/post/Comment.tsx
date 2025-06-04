@@ -12,30 +12,10 @@ import * as l10n from "i18next";
 
 import { createMockProfile } from "../../../dev/mockdata";
 
-function Comment({
-  post_id,
-  comment_id,
-  user_id,
-  user_name,
-  badge,
-  profile_image,
-  create_at,
-  text,
-  origin,
-  reply,
-}: CommentProps) {
+function Comment({ ...data }: CommentProps) {
   const [replyAvailable, setState] = useState(false);
   const [comment, setCommentState] = useState({
-    post_id,
-    comment_id,
-    user_id,
-    user_name,
-    badge,
-    profile_image,
-    create_at,
-    text,
-    origin,
-    reply,
+    ...data,
   } as CommentProps);
   const myUserData = createMockProfile(); //TODO: replace to user state
   const userId = myUserData.user_id; //TODO: replace to userId state
@@ -63,7 +43,7 @@ function Comment({
               <p className="font-medium line-clamp-1 select-text cursor-text">
                 {comment.user_name}
               </p>
-              {badge && <Badge {...badge} />}
+              {comment.badge && <Badge {...comment.badge} />}
               <p className="text-gray-500 select-text cursor-text">
                 @{comment.user_id}
               </p>
@@ -91,7 +71,7 @@ function Comment({
               whiteSpace: "pre-wrap",
             }}
           >
-            {text}
+            {comment.text}
           </p>
           {/*Reply 상호작용*/}
           {comment.origin && (
