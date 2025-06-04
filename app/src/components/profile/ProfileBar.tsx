@@ -10,6 +10,7 @@ import Badge from "./Badge";
 import Dialog from "../public/Dialog";
 import EditProfileItem from "./EditProfileItem";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
+import { produce } from "immer";
 
 import { createMockProfile } from "../../../dev/mockdata"; //TODO: remove
 
@@ -19,7 +20,10 @@ type ProfileBarProps = {
 
 function ProfileBar({ userId }: ProfileBarProps) {
   const isMySelf = true; //TODO: replace to uid state
-  const [followState, setFollowState] = useState(false);
+  //TODO: replace whole area following object state
+  const [followingUsers, setFollowingUsers] = useState(
+    {} as { [key: string]: boolean }
+  );
   const [profileData, setState] = useState({} as UserData);
 
   useEffect(() => {
@@ -63,12 +67,28 @@ function ProfileBar({ userId }: ProfileBarProps) {
             />
             <IconButton icon="fa-solid fa-message" onPressed={() => {}} />
             <OutlineButton
-              text={l10n.t(followState ? "unfollow" : "follow")}
+              text={l10n.t(
+                followingUsers[profileData.user_id] ? "unfollow" : "follow"
+              )}
               color="gray"
               fontSize="base"
               radius={16}
               onPressed={() => {
-                setFollowState((state) => !state);
+                setFollowingUsers(
+                  produce((state) => {
+                    state[profileData.user_id] = !(
+                      state[profileData.user_id] ?? false
+                    );
+                  })
+                );
+
+                if (followingUsers[profileData.user_id]) {
+                  console.log(followingUsers[profileData.user_id]);
+                  //TODO: fetch 팔로잉 취소
+                } else {
+                  console.log(followingUsers[profileData.user_id]);
+                  //TODO: fetch 팔로잉 요청
+                }
               }}
             />
           </div>
