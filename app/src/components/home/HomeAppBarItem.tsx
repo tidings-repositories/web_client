@@ -53,8 +53,17 @@ function HomeAppBarItem() {
           className="fa-solid fa-magnifying-glass"
           style={{ fontSize: 18, color: "gray" }}
         ></i>
-        <form id="search" className="w-full">
-          <input type="text" className="w-full" />
+        <form
+          id="search"
+          className="w-full"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target as HTMLFormElement;
+            const query = form.elements.search.value.trim();
+            navigator(`/search?q=${query}`);
+          }}
+        >
+          <input type="text" name="search" className="w-full" />
         </form>
         <IconButton
           icon="fa-solid fa-xmark"
