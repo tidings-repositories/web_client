@@ -1,11 +1,11 @@
 import * as l10n from "i18next";
 
-type ProfileAppBarItemProps = {
+type ProfileTabBarItemProps = {
   idx: number;
   idxDispatcher: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function ProfileTabBarItem({ idx, idxDispatcher }: ProfileAppBarItemProps) {
+function ProfileTabBarItem({ idx, idxDispatcher }: ProfileTabBarItemProps) {
   return (
     <div className="flex w-full divide-x-1 divide-solid divide-gray-300">
       <button
