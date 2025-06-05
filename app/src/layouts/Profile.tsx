@@ -10,12 +10,18 @@ import TabBar from "../components/profile/TabBar";
 import ProfileTabBarItem from "../components/profile/ProfileTabBarItem";
 import Content from "../components/post/Content";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
+import ProfileComment from "../components/profile/ProfileComment";
+import { Post, CommentProps } from "../Types";
 
-import { createMockPost } from "../../dev/mockdata";
+import { createMockPost, createMockComment } from "../../dev/mockdata";
 
 export default function Profile() {
   const [tabIdx, setState] = useState(0);
   const { userId } = useParams();
+
+  const [postList, setPostList] = useState([] as Post[]);
+  const [commentList, setCommentList] = useState([] as CommentProps[]);
+  const [likePostList, setLikePostList] = useState([] as Post[]);
 
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
@@ -33,6 +39,11 @@ export default function Profile() {
 
   useEffect(() => {
     //TODO: fetch user data
+    setPostList(Array.from({ length: 10 }).map(() => createMockPost()));
+    setCommentList(Array.from({ length: 10 }).map(() => createMockComment()));
+    setLikePostList(Array.from({ length: 10 }).map(() => createMockPost()));
+    //
+
     window.scrollTo(0, 0);
 
     window.addEventListener("resize", resizeEvent);
@@ -49,11 +60,27 @@ export default function Profile() {
           <TabBar
             child={<ProfileTabBarItem idx={tabIdx} idxDispatcher={setState} />}
           />
-          <InfiniteScroll
-            component={Content}
-            item={Array.from({ length: 10 }).map(() => createMockPost())}
-            loadMore={() => {}}
-          />
+          {(tabIdx == 0 && (
+            <InfiniteScroll
+              component={Content}
+              item={postList}
+              loadMore={() => {}}
+            />
+          )) ||
+            (tabIdx == 1 && (
+              <InfiniteScroll
+                component={ProfileComment}
+                item={commentList}
+                loadMore={() => {}}
+              />
+            )) ||
+            (tabIdx == 2 && (
+              <InfiniteScroll
+                component={Content}
+                item={likePostList}
+                loadMore={() => {}}
+              />
+            ))}
         </div>
         <div
           id="side"
