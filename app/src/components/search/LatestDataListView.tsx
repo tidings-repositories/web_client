@@ -30,7 +30,7 @@ function LatestDataListView({
         {/*더보기*/}
         <div className="w-full px-4 pb-2 text-end">
           <TextButton
-            text="전체보기"
+            text={l10n.t("seeMore")}
             fontSize="base"
             color="gray-500"
             onPressed={() => {
