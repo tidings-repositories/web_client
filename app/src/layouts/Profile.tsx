@@ -15,7 +15,7 @@ import { createMockPost } from "../../dev/mockdata";
 
 export default function Profile() {
   const [tabIdx, setState] = useState(0);
-  const { postUserId } = useParams();
+  const { userId } = useParams();
 
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
@@ -45,7 +45,7 @@ export default function Profile() {
       <Drawer child={<RouterDrawerItem />} />
       <div id="profile" className="flex justify-center gap-10 pt-14">
         <div>
-          <ProfileBar userId={postUserId!} />
+          <ProfileBar userId={userId!} />
           <TabBar
             child={<ProfileTabBarItem idx={tabIdx} idxDispatcher={setState} />}
           />
