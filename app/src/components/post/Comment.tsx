@@ -25,7 +25,7 @@ function Comment({ ...data }: CommentProps) {
   const REPLY_TEXTFIELD_ID = `${comment.comment_id}-reply-textfield`;
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
+    <div className="w-full h-full flex flex-col gap-4 py-2">
       {/*comment*/}
       <div className="w-full max-w-200 flex gap-2 box-border">
         {/*MiniProfile / comment height line*/}
