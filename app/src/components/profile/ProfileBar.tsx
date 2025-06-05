@@ -11,6 +11,7 @@ import Dialog from "../public/Dialog";
 import EditProfileItem from "./EditProfileItem";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
 import { produce } from "immer";
+import { useNavigate } from "react-router-dom";
 
 import { createMockProfile } from "../../../dev/mockdata"; //TODO: remove
 
@@ -25,6 +26,7 @@ function ProfileBar({ userId }: ProfileBarProps) {
     {} as { [key: string]: boolean }
   );
   const [profileData, setState] = useState({} as UserData);
+  const navigator = useNavigate();
 
   useEffect(() => {
     //TODO: fetch userId UserData
@@ -117,7 +119,9 @@ function ProfileBar({ userId }: ProfileBarProps) {
           fontSize="base"
           color="black"
           onPressed={() => {
-            /*TODO: route to user following list*/
+            navigator(`/profile/${userId}/following`, {
+              state: profileData,
+            });
           }}
         />
         <TextButton
@@ -127,7 +131,9 @@ function ProfileBar({ userId }: ProfileBarProps) {
           fontSize="base"
           color="black"
           onPressed={() => {
-            /*TODO: route to user follower list*/
+            navigator(`/profile/${userId}/followers`, {
+              state: profileData,
+            });
           }}
         />
       </div>

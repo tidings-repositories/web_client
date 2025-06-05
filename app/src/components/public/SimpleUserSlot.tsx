@@ -16,7 +16,7 @@ function SimpleUserSlot({ ...userInfo }: SimpleUserSlotProps) {
   return (
     <div
       role="button"
-      className="flex justify-start gap-1 p-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      className="flex justify-start gap-1 pl-1 pr-2 rounded-lg hover:bg-gray-100 cursor-pointer"
       onClick={(event) => {
         event.stopPropagation();
         navigator(`/profile/${userInfo.user_id}`);
