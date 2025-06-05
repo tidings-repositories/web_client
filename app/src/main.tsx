@@ -6,9 +6,11 @@ import Profile from "./layouts/Profile";
 import PostComposer from "./layouts/PostComposer";
 import Message from "./layouts/Message";
 import Setting from "./layouts/Setting";
+import Post from "./layouts/Post";
+import Search from "./layouts/Search";
+import Follow from "./layouts/Follow";
 import "./i18n/label";
 import "./index.css";
-import "./layouts/layouts.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,8 +18,12 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile/:userId" element={<Profile />} />
+        <Route path="/profile/:userId/followers" element={<Follow />} />
+        <Route path="/profile/:userId/following" element={<Follow />} />
+        <Route path="/post/:postId" element={<Post />} />
         <Route path="/compose/post" element={<PostComposer />} />
         <Route path="/message" element={<Message />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/setting" element={<Setting />} />
       </Routes>
     </Router>
