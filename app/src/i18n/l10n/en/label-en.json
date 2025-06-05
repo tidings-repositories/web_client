@@ -34,5 +34,7 @@
   "leftComment": "Left a comment",
   "scrapPost": "Quoted your post",
   "likePost": "Liked your post",
-  "followYou": "Started following you"
+  "followYou": "Started following you",
+  "people": "People",
+  "latest": "Latest"
 }
