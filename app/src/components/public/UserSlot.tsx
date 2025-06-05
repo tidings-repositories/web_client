@@ -25,7 +25,7 @@ function UserSlot({ ...userInfo }: UserSlotProps) {
   return (
     <div
       role="button"
-      className="flex flex-col py-2 rounded-xl hover:bg-gray-100 cursor-pointer overflow-hidden"
+      className="flex flex-col py-2 hover:bg-gray-100 cursor-pointer overflow-hidden"
       onClick={(event) => {
         event.stopPropagation();
         navigator(`/profile/${userInfo.user_id}`);
