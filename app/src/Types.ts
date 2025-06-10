@@ -76,3 +76,21 @@ export type NotificationData = {
   published_by: string;
   published_at: Date;
 };
+
+/*message*/
+export type MessageUserSlotProps = {
+  userInfo: UserData;
+  dm_id: string;
+  recentText: string;
+  recentTextTime: Date;
+};
+
+export type MessageProps = {
+  dm_id: string;
+  message_id: string;
+  user_id: string;
+  create_at: Date;
+  text?: string;
+  media?: string;
+  share?: string;
+};
