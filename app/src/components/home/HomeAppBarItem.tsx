@@ -6,11 +6,13 @@ import OutlineButton from "../button/OutlineButton";
 import MiniProfile from "../public/MiniProfile";
 import NotificationDropdownItem from "../notification/NotificationDropdownItem";
 import Dropdown from "../public/Dropdown";
+import Dialog from "../public/Dialog";
+import Sign from "../sign/Sign";
 import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
 
 function HomeAppBarItem() {
-  const userId = "test1"; //TODO: replace to uid state
+  const userId = null; //TODO: replace to uid state
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -107,7 +109,7 @@ function HomeAppBarItem() {
           color="gray" //TODO: 컬러 테마 설정
           text={`${l10n.t("signIn")}`}
           radius={12}
-          onPressed={() => {}}
+          onPressed={openDialog}
         />
       )}
     </div>
@@ -115,6 +117,14 @@ function HomeAppBarItem() {
 }
 
 /*--------------*/
+function openDialog() {
+  const newDialog = document.createElement("div");
+  newDialog.id = `dialog-box`;
+  document.querySelector("body")!.appendChild(newDialog);
+  const root = ReactDOM.createRoot(newDialog);
+  root.render(<Dialog child={<Sign />} />);
+}
+
 function changeViewStateClearButtonEvent(
   event: Event,
   clearButtonIconElement: HTMLElement

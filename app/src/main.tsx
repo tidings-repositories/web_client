@@ -5,7 +5,6 @@ import Home from "./layouts/Home";
 import Profile from "./layouts/Profile";
 import PostComposer from "./layouts/PostComposer";
 import Message from "./layouts/Message";
-import DirectMessage from "./layouts/DirectMessage";
 import Setting from "./layouts/Setting";
 import Post from "./layouts/Post";
 import Search from "./layouts/Search";
@@ -24,7 +23,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/post/:postId" element={<Post />} />
         <Route path="/compose/post" element={<PostComposer />} />
         <Route path="/message" element={<Message />} />
-        <Route path="/message/:directMessageId" element={<DirectMessage />} />
+        <Route path="/message/:directMessageId" element={<Message />} />
         <Route path="/search" element={<Search />} />
         <Route path="/setting" element={<Setting />} />
       </Routes>

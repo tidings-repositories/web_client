@@ -39,5 +39,10 @@
   "latest": "Latest",
   "lookingForSomeone": "Are you looking for someone?",
   "seeMore": "See more",
-  "leaveDM": "Leave conversation"
+  "leaveDM": "Leave conversation",
+  "userAgreement": "User Agreement",
+  "privacyPolicy": "Privacy Policy",
+  "signNoti1": "By continuing, you agree to our",
+  "signNoti2": "and acknowledge that you understand the",
+  "signNoti3": "."
 }
