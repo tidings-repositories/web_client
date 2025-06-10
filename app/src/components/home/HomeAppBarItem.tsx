@@ -19,7 +19,7 @@ function HomeAppBarItem() {
     const clearButtonIconElement = parentElement.querySelector("button")!;
     clearButtonIconElement.style.display = "none";
 
-    if (window.innerWidth < 500)
+    if (window.innerWidth < 550)
       document.getElementById("typography")!.style.display = "none";
 
     const eventHandler = (e: Event) =>
@@ -136,7 +136,7 @@ function drawerClickEvent() {
 }
 
 const resizeEvent = () => {
-  if (window.innerWidth < 500)
+  if (window.innerWidth < 550)
     document.getElementById("typography")!.style.display = "none";
   else document.getElementById("typography")!.style.display = "block";
 };

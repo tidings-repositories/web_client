@@ -28,7 +28,7 @@ function EditProfileItem({ ...origin }: EditProfileItem) {
 
     const mockBadgeData = {
       name: "마비노기 모바일 오픈 뱃지",
-      url: "/assets/mabinogi_badge.png",
+      url: "/dev/mabinogi_badge.png",
     }; //mockData
     setBadgeList([mockBadgeData]); //TODO: fetch user_id 보유 badge 리스트
 
