@@ -12,7 +12,7 @@ function Sign() {
           {l10n.t("signNoti3")}
         </p>
       </span>
-      <GoogleSignButton onClick={() => {}} disabled={true} />
+      <GoogleSignButton onClick={() => {}} />
     </div>
   );
 }
