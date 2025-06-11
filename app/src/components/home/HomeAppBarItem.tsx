@@ -60,9 +60,9 @@ function HomeAppBarItem() {
           className="w-full"
           onSubmit={(e) => {
             e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const query = form.elements.search.value.trim();
-            navigator(`/search?q=${query}`);
+            const formData = new FormData(e.currentTarget);
+            const query = (formData.get("search") as string) ?? "";
+            navigator(`/search?q=${query.trim()}`);
           }}
         >
           <input type="text" name="search" className="w-full" />
@@ -152,12 +152,9 @@ const resizeEvent = () => {
 };
 
 function openNotificationDropdown(e, dropdownId, userId) {
-  const SCREEN_CENTER_POS = window.innerWidth / 2;
   const rect = e.currentTarget.getBoundingClientRect();
-  const targetCenterPos = rect.left + rect.width / 2;
-  const DIRECTION = SCREEN_CENTER_POS < targetCenterPos ? "LEFT" : "RIGHT";
   const pos = {
-    x: DIRECTION === "LEFT" ? rect.right : rect.left,
+    x: rect.right,
     y: -window.scrollY,
   };
 
@@ -171,7 +168,6 @@ function openNotificationDropdown(e, dropdownId, userId) {
   root.render(
     <Dropdown
       id={dropdownId}
-      direction={DIRECTION}
       position={pos}
       child={<NotificationDropdownItem user_id={userId} />}
     />
