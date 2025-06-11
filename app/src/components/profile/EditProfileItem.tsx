@@ -129,7 +129,7 @@ function EditProfileItem({ ...origin }: EditProfileItem) {
               borderColor: !profileData.badge ? "gold" : "transparent",
             }}
           >
-            <Badge name="null" url="/assets/none_badge.png" />
+            <Badge name="null" url="/none_badge.png" />
           </div>
         </button>
         {badgeList.map((thisBadge, idx) => (
