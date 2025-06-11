@@ -178,7 +178,7 @@ export default function DirectMessage({
                       "fileSearch"
                     )! as HTMLInputElement;
                     const files = fileInputHideComponent.files ?? [];
-                    let image = undefined;
+                    let image: null | File = null;
                     if (files.length != 0) {
                       image = files[0];
                       fileInputHideComponent.value = "";
@@ -201,7 +201,7 @@ export default function DirectMessage({
                           message_id: (125125124124 * Math.random()).toString(),
                           user_id: myUserId,
                           text: text,
-                          media: image ? URL.createObjectURL(image) : undefined,
+                          media: image ? URL.createObjectURL(image) : null,
                         } as MessageProps);
                       })
                     );
