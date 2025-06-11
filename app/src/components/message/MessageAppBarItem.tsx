@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import IconButton from "../button/IconButton";
 import Logo from "../public/Logo";
-import OutlineButton from "../button/OutlineButton";
 import MiniProfile from "../public/MiniProfile";
 import NotificationDropdownItem from "../notification/NotificationDropdownItem";
 import Dropdown from "../public/Dropdown";
 import ReactDOM from "react-dom/client";
-import * as l10n from "i18next";
 
 function MessageAppBarItem() {
   const userId = "test1"; //TODO: replace to uid state
