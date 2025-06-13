@@ -9,7 +9,7 @@
 | <h3> Library </h3> |                 |         |              |         |
 | ------------------ | --------------- | ------- | ------------ | ------- |
 | React              | Tailwind CSS    | Zustand | React-router | i18next |
-| fontawesome        | react-swipeable | immer   |              |         |
+| fontawesome        | react-swipeable | immer   | Axios        |         |
 
 ---
 
@@ -94,6 +94,12 @@ npm install @fortawesome/fontawesome-free
 
 ```bash
 npm install immer
+```
+
+#### Add Axios package
+
+```bash
+npm install axios
 ```
 
 </div>
