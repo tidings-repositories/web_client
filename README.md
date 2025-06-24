@@ -102,6 +102,12 @@ npm install immer
 npm install axios
 ```
 
+#### Add dotenv package
+
+```bash
+npm install dotenv
+```
+
 </div>
 </details>
 
