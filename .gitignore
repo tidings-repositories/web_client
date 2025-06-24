@@ -28,3 +28,6 @@ dist-ssr
 
 # Dev
 dev/
+
+# Environment
+.env
