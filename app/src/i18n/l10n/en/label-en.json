@@ -44,5 +44,14 @@
   "privacyPolicy": "Privacy Policy",
   "signNoti1": "By continuing, you agree to our",
   "signNoti2": "and acknowledge that you understand the",
-  "signNoti3": "."
+  "signNoti3": ".",
+  "createUniqueId": "Create your unique ID to use",
+  "username": "username",
+  "registerInformation": "is your unique ID that cannot be changed once set",
+  "getStarted": "Get Started",
+  "enableId": "This username is available",
+  "disableId": "This username is not available.",
+  "overRangeString": "Please enter between 4 and 15 characters",
+  "noSupportCharacter": "Only letters, numbers, and underscores (\"_\") are allowed",
+  "alreadyTaken": "This username is already taken"
 }
