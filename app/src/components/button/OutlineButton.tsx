@@ -20,14 +20,16 @@ function OutlineButton({
   return (
     <button onClick={onPressed}>
       <div
-        className={`px-3 py-1 min-x-1 min-h-1 border-2 border-solid `}
+        className={`px-3 py-1 min-x-1 min-h-1 border-1 border-solid `}
         style={{
           borderRadius: `${radius}px`,
           borderColor: `${color}`,
           backgroundColor: backgroundColor,
         }}
       >
-        <p className={`text-${fontSize} text-${fontColor}`}>{text}</p>
+        <p className={`text-${fontSize} text-${fontColor} whitespace-nowrap`}>
+          {text}
+        </p>
       </div>
     </button>
   );

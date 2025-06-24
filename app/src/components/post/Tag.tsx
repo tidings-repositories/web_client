@@ -19,7 +19,7 @@ function Tag({ content }: TagProps) {
 
   return (
     <div
-      className={`px-3 py-1 rounded-lg border-2 border-solid border-gray-300`}
+      className={`px-3 py-1 rounded-lg border-1 border-solid border-gray-400`}
     >
       <p
         className={`text-base text-gray-500 select-text cursor-text`}
