@@ -1,8 +1,28 @@
+import { useEffect } from "react";
+import useUserDataStore from "../../store/UserDataStore";
+import { requestGETWithToken } from "../../scripts/requestWithToken";
+import { AxiosResponse } from "axios";
+
 type AppBarProps = {
   child: React.ReactNode;
 };
 
 function AppBar({ child }: AppBarProps) {
+  const MY_USERDTA_REQUEST_URL = `${import.meta.env.VITE_API_URL}/profile`;
+  const userId = useUserDataStore((state) => state.user_id);
+  const dataInjection = useUserDataStore((state) => state.dataInjection);
+
+  useEffect(() => {
+    const fetchMyUserData = async () => {
+      const OK = 200;
+      const response = await requestGETWithToken(MY_USERDTA_REQUEST_URL);
+      if (response.status == OK)
+        dataInjection((response as AxiosResponse).data);
+    };
+
+    if (userId == null) fetchMyUserData();
+  }, []);
+
   return (
     <div
       id="appbar"

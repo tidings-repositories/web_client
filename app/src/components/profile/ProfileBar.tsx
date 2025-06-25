@@ -14,13 +14,15 @@ import { produce } from "immer";
 import { useNavigate } from "react-router-dom";
 
 import { createMockProfile } from "../../../dev/mockdata"; //TODO: remove
+import useUserDataStore from "../../store/UserDataStore";
 
 type ProfileBarProps = {
-  userId: string;
+  profileUser: string;
 };
 
-function ProfileBar({ userId }: ProfileBarProps) {
-  const isMySelf = true; //TODO: replace to uid state
+function ProfileBar({ profileUser }: ProfileBarProps) {
+  const userId = useUserDataStore((state) => state.user_id);
+  const isMySelf = userId === profileUser;
   //TODO: replace whole area following object state
   const [followingUsers, setFollowingUsers] = useState(
     {} as { [key: string]: boolean }
@@ -119,7 +121,7 @@ function ProfileBar({ userId }: ProfileBarProps) {
           fontSize="base"
           color="black"
           onPressed={() => {
-            navigator(`/profile/${userId}/following`, {
+            navigator(`/profile/${profileUser}/following`, {
               state: profileData,
             });
           }}
@@ -131,7 +133,7 @@ function ProfileBar({ userId }: ProfileBarProps) {
           fontSize="base"
           color="black"
           onPressed={() => {
-            navigator(`/profile/${userId}/followers`, {
+            navigator(`/profile/${profileUser}/followers`, {
               state: profileData,
             });
           }}

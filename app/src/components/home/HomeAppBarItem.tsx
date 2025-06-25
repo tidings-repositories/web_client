@@ -10,9 +10,11 @@ import Dialog from "../public/Dialog";
 import Sign from "../sign/Sign";
 import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
+import useUserDataStore from "../../store/UserDataStore";
 
 function HomeAppBarItem() {
-  const userId = null; //TODO: replace to uid state
+  const userId = useUserDataStore((state) => state.user_id);
+  const profileImage = useUserDataStore((state) => state.profile_image);
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -98,10 +100,7 @@ function HomeAppBarItem() {
               openNotificationDropdown(e, "notification-dropdown", userId)
             }
           />
-          <MiniProfile
-            user_id="test1"
-            img_url="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png"
-          />
+          <MiniProfile user_id={userId} img_url={profileImage ?? ""} />
         </div>
       ) : (
         <OutlineButton

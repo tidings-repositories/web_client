@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MessageUserSlotProps } from "../Types";
+import { MessageUserSlotProps, UserData } from "../Types";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
 import MessageAppBarItem from "../components/message/MessageAppBarItem";
@@ -7,11 +7,16 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import MessageList from "../components/message/MessageList";
 import DirectMessage from "../components/message/DirectMessage";
 
-import { createMockDM, createMockProfile } from "../../dev/mockdata";
+import { createMockDM } from "../../dev/mockdata";
+import useUserDataStore from "../store/UserDataStore";
 
 export default function Message() {
-  //TODO: replace to my user data state
-  const [userInfo, setUserInfo] = useState(createMockProfile());
+  const userInfo = useUserDataStore((state) => ({
+    user_id: state.user_id,
+    user_name: state.user_name,
+    profile_image: state.profile_image,
+    badge: state.badge,
+  })) as UserData;
   const [messageList, setMessageList] = useState([] as MessageUserSlotProps[]);
   const [selectedIdx, setSelectedDM] = useState(null as number | null);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { PostInfo, CommentProps } from "../Types";
+import { PostInfo, CommentProps, UserData } from "../Types";
 import MediaContent from "../components/post/MediaContent";
 import PostInfoBar from "../components/post/PostInfoBar";
 import PostBottomBar from "../components/post/PostBottomBar";
@@ -13,18 +13,19 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import Comment from "../components/post/Comment";
 import OutlineButton from "../components/button/OutlineButton";
 
-import {
-  createMockPost,
-  createMockComment,
-  createMockProfile,
-} from "../../dev/mockdata";
+import { createMockPost, createMockComment } from "../../dev/mockdata";
+import useUserDataStore from "../store/UserDataStore";
 
 export default function Post() {
   const COMMENT_TEXTFIELD_ID = "comment-textfield";
   const COMMENT_TEXT_MAXLENGTH = 100;
 
-  const myUserData = createMockProfile(); //TODO: replace to user state
-  const userId = myUserData.user_id; //TODO: replace to userId state
+  const myUserData = useUserDataStore((state) => ({
+    user_id: state.user_id,
+    user_name: state.user_name,
+    profile_image: state.profile_image,
+    badge: state.badge,
+  })) as UserData;
 
   const { postId } = useParams();
   const location = useLocation();
@@ -92,7 +93,7 @@ export default function Post() {
           <div></div>
         )}
         {/*Post Input Comment Area*/}
-        {userId && (
+        {myUserData.user_id && (
           <div
             id="comment-input"
             className="flex gap-2 w-full max-w-200 h-40 py-3 px-8 mx-auto border-2 border-gray-400 rounded-xl items-start"
@@ -140,7 +141,7 @@ export default function Post() {
                       const tempCommentId = 214252112123 * Math.random();
                       const newComment = {
                         comment_id: tempCommentId.toString(),
-                        user_id: userId,
+                        user_id: myUserData.user_id,
                         user_name: myUserData.user_name,
                         badge: myUserData.badge,
                         create_at: new Date(Date.now()),

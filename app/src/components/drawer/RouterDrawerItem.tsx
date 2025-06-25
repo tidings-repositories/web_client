@@ -1,9 +1,10 @@
 import Slot from "./Slot";
 import { useNavigate } from "react-router-dom";
 import * as l10n from "i18next";
+import useUserDataStore from "../../store/UserDataStore";
 
 function RouterDrawerItem() {
-  const myUserId = "test1"; //TODO: change to user id state
+  const userId = useUserDataStore((state) => state.user_id);
   const navigator = useNavigate();
 
   return (
@@ -18,21 +19,21 @@ function RouterDrawerItem() {
         text={l10n.t("search")}
         behavior={() => navigator("/search")}
       />
-      {myUserId && (
+      {userId && (
         <Slot
           icon="fa-solid fa-user"
           text={l10n.t("profile")}
-          behavior={() => navigator(`/profile/${myUserId}`)}
+          behavior={() => navigator(`/profile/${userId}`)}
         />
       )}
-      {myUserId && (
+      {userId && (
         <Slot
           icon="fa-solid fa-message"
           text={l10n.t("message")}
           behavior={() => navigator("/message")}
         />
       )}
-      {myUserId && (
+      {userId && (
         <Slot
           icon="fa-solid fa-gear"
           text={l10n.t("setting")}

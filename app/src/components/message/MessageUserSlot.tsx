@@ -12,8 +12,6 @@ type DirectMessageUserProps = {
 };
 
 function MessageUserSlot({ data, event }: DirectMessageUserProps) {
-  const myUserId = "test1"; //TODO: replace my User state
-
   return (
     <div
       role="button"
@@ -26,7 +24,7 @@ function MessageUserSlot({ data, event }: DirectMessageUserProps) {
           icon="fa-solid fa-ellipsis"
           onPressed={(e) => {
             e.stopPropagation();
-            openMessageDropdown(e, "message-menu", myUserId, data.dm_id);
+            openMessageDropdown(e, "message-menu", data.dm_id);
           }}
         />
       </div>
@@ -78,7 +76,7 @@ function createTimeDifferenceText(createAt: Date) {
   }
 }
 
-function openMessageDropdown(e, dropdownId, userId, dmId) {
+function openMessageDropdown(e, dropdownId, dmId) {
   const rect = e.currentTarget.getBoundingClientRect();
   const pos = {
     x: rect.right,
@@ -94,7 +92,7 @@ function openMessageDropdown(e, dropdownId, userId, dmId) {
     <Dropdown
       id={dropdownId}
       position={pos}
-      child={<MessageDropdownItem user_id={userId} dm_id={dmId} />}
+      child={<MessageDropdownItem dm_id={dmId} />}
     />
   );
 }

@@ -6,13 +6,16 @@ import MiniProfile from "../public/MiniProfile";
 import NotificationDropdownItem from "../notification/NotificationDropdownItem";
 import Dropdown from "../public/Dropdown";
 import ReactDOM from "react-dom/client";
+import useUserDataStore from "../../store/UserDataStore";
 
 function ProfileAppBarItem() {
-  const userId = "test1"; //TODO: replace to uid state
+  const userId = useUserDataStore((state) => state.user_id);
+  const profileImage = useUserDataStore((state) => state.profile_image);
   const navigator = useNavigate();
 
   useEffect(() => {
     //TODO: 로그인 상태 아니면 redirect
+    if (userId == null) navigator("/");
   }, []);
 
   return (
@@ -45,10 +48,7 @@ function ProfileAppBarItem() {
             openNotificationDropdown(e, "notification-dropdown", userId)
           }
         />
-        <MiniProfile
-          user_id="test1"
-          img_url="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png"
-        />
+        <MiniProfile user_id={userId ?? ""} img_url={profileImage ?? ""} />
       </div>
     </div>
   );

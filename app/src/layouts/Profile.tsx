@@ -56,7 +56,7 @@ export default function Profile() {
       <Drawer child={<RouterDrawerItem />} />
       <div id="profile" className="flex justify-center gap-10 pt-14">
         <div className="sticky left-0 ">
-          <ProfileBar userId={userId!} />
+          <ProfileBar profileUser={userId!} />
           <TabBar
             child={<ProfileTabBarItem idx={tabIdx} idxDispatcher={setState} />}
           />

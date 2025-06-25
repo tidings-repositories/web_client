@@ -1,13 +1,13 @@
+import useUserDataStore from "../../store/UserDataStore";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
 
 type MessageDropdownItemProps = {
-  user_id: string;
   dm_id: string;
 };
 
-function MessageDropdownItem({ user_id, dm_id }: MessageDropdownItemProps) {
-  const myUserId = "test1"; //TOOD: replace to userid state
+function MessageDropdownItem({ dm_id }: MessageDropdownItemProps) {
+  const userId = useUserDataStore((state) => state.user_id);
 
   return (
     <div className="w-60 flex flex-col gap-1">

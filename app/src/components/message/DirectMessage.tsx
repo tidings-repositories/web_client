@@ -7,6 +7,7 @@ import MyMessage from "./MyMessage";
 import TheirMessage from "./TheirMessage";
 import { createMockMessage } from "../../../dev/mockdata";
 import { produce } from "immer";
+import useUserDataStore from "../../store/UserDataStore";
 
 type DirectMessageProps = {
   directMessageInfo: MessageUserSlotProps | null;
@@ -17,7 +18,7 @@ export default function DirectMessage({
   directMessageInfo,
   stateDispatcher,
 }: DirectMessageProps) {
-  const myUserId = "test1"; //TODO: replace to my user id state
+  const userId = useUserDataStore((state) => state.user_id);
   const navigator = useNavigate();
   const [messages, setMessages] = useState([] as MessageProps[]);
   const [inputImage, setInputImage] = useState(null as string | null);
@@ -105,7 +106,7 @@ export default function DirectMessage({
             className="w-full h-full flex flex-col gap-1 px-1 py-4 overflow-y-auto"
           >
             {messages.map((message) => {
-              return message.user_id == myUserId ? (
+              return message.user_id == userId ? (
                 <MyMessage key={message.message_id} {...message} />
               ) : (
                 <TheirMessage key={message.message_id} {...message} />
@@ -199,7 +200,7 @@ export default function DirectMessage({
                           create_at: new Date(Date.now()),
                           dm_id: directMessageInfo.dm_id,
                           message_id: (125125124124 * Math.random()).toString(),
-                          user_id: myUserId,
+                          user_id: userId,
                           text: text,
                           media: image ? URL.createObjectURL(image) : null,
                         } as MessageProps);

@@ -1,3 +1,4 @@
+import useUserDataStore from "../../store/UserDataStore";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
 
@@ -7,7 +8,7 @@ type PostDropdownItemProps = {
 };
 
 function PostDropdownItem({ user_id, post_id }: PostDropdownItemProps) {
-  const userId = "test1"; //TOOD: replace to userid state
+  const userId = useUserDataStore((state) => state.user_id);
 
   return (
     <div className="w-60 flex flex-col gap-1">
