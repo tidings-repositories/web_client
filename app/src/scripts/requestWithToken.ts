@@ -4,23 +4,27 @@ export async function requestGETWithToken(url) {
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) return { status: 401 };
 
-  const response = await axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .catch(async (failedResponse) => {
+      if (failedResponse.response.status == 401) {
+        const isSuccessRefresh = await tryRefreshToken();
+        if (isSuccessRefresh) {
+          const newAccessToken = localStorage.getItem("accessToken");
+          return axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+            },
+          });
+        }
+      } else return failedResponse;
+    });
 
-  if (response.status == 401) {
-    const isSuccessRefresh = await tryRefreshToken();
-    if (isSuccessRefresh) {
-      const newAccessToken = localStorage.getItem("accessToken");
-      return axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${newAccessToken}`,
-        },
-      });
-    }
-  } else saveToken(response);
+  if (response.status != 401) saveToken(response);
 
   return response;
 }
@@ -29,31 +33,35 @@ export async function requestPOSTWithToken(url, data: { [key: string]: any }) {
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) return { status: 401 };
 
-  const response = await axios.post(
-    url,
-    { ...data },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-
-  if (response.status == 401) {
-    const isSuccessRefresh = await tryRefreshToken();
-    if (isSuccessRefresh) {
-      const newAccessToken = localStorage.getItem("accessToken");
-      return axios.post(
-        url,
-        { ...data },
-        {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-          },
+  const response = await axios
+    .post(
+      url,
+      { ...data },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .catch(async (failedResponse) => {
+      if (failedResponse.response.status == 401) {
+        const isSuccessRefresh = await tryRefreshToken();
+        if (isSuccessRefresh) {
+          const newAccessToken = localStorage.getItem("accessToken");
+          return axios.post(
+            url,
+            { ...data },
+            {
+              headers: {
+                Authorization: `Bearer ${newAccessToken}`,
+              },
+            }
+          );
         }
-      );
-    }
-  } else saveToken(response);
+      } else return failedResponse;
+    });
+
+  if (response.status != 401) saveToken(response);
 
   return response;
 }
@@ -69,14 +77,13 @@ async function tryRefreshToken() {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) return false;
 
-  const tokenRefreshResponse = await axios.get(
-    `${import.meta.env.VITE_API_URL}/auth/refresh`,
-    {
+  const tokenRefreshResponse = await axios
+    .get(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
       },
-    }
-  );
+    })
+    .catch((e) => e);
 
   if (tokenRefreshResponse.status == 200) {
     saveToken(tokenRefreshResponse);
