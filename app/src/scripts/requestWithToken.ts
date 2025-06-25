@@ -11,7 +11,6 @@ export async function requestGETWithToken(url) {
       },
     })
     .catch(async (failedResponse) => {
-      console.log("in catch: ", failedResponse);
       if (failedResponse.response.status == 401) {
         const isSuccessRefresh = await tryRefreshToken();
         if (isSuccessRefresh) {
@@ -27,7 +26,6 @@ export async function requestGETWithToken(url) {
       return failedResponse;
     });
 
-  console.log("after: ", response);
   if (response.status != 401) saveToken(response);
 
   return response;
