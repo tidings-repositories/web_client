@@ -29,16 +29,11 @@ function Sign() {
                 const response = message.data;
 
                 if (response.result === "login") {
-                  if (response.data.refreshToken)
-                    localStorage.setItem(
-                      "refreshToken",
-                      response.data.refreshToken
-                    );
-                  if (response.data.accessToken)
-                    localStorage.setItem(
-                      "accessToken",
-                      response.data.accessToken
-                    );
+                  if (response.refreshToken)
+                    localStorage.setItem("refreshToken", response.refreshToken);
+                  if (response.accessToken)
+                    localStorage.setItem("accessToken", response.accessToken);
+                  window.location.reload();
                 } else if (response.result === "register") {
                   registerProcess();
                 }
