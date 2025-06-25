@@ -12,16 +12,15 @@ import * as l10n from "i18next";
 import useUserDataStore from "../../store/UserDataStore";
 
 function Comment({ ...data }: CommentProps) {
+  const userId = useUserDataStore((state) => state.user_id);
+  const userName = useUserDataStore((state) => state.user_name);
+  const profileImage = useUserDataStore((state) => state.profile_image);
+  const badge = useUserDataStore((state) => state.badge);
+
   const [replyAvailable, setState] = useState(false);
   const [comment, setCommentState] = useState({
     ...data,
   } as CommentProps);
-  const myUserData = useUserDataStore((state) => ({
-    user_id: state.user_id,
-    user_name: state.user_name,
-    badge: state.badge,
-    profile_image: state.profile_image,
-  }));
 
   const commentCreateFrom = createTimeDifferenceText(comment.create_at);
   const REPLY_TEXT_MAXLENGTH = 100;
@@ -91,17 +90,14 @@ function Comment({ ...data }: CommentProps) {
       </div>
 
       {/*reply textarea*/}
-      {myUserData.user_id && replyAvailable && (
+      {userId && replyAvailable && (
         <div
           id={`${comment.comment_id}-reply-input`}
           className="flex gap-2 w-full max-w-200 h-40 py-3 px-4 mx-auto border-2 border-gray-400 rounded-xl items-start"
         >
           {/*미니 프로필*/}
           <div className="min-w-12 items-center">
-            <MiniProfile
-              user_id={myUserData.user_id!}
-              img_url={myUserData.profile_image!}
-            />
+            <MiniProfile user_id={userId} img_url={profileImage ?? ""} />
           </div>
           {/*flex flex-col 코멘트 textarea, 코멘트 버튼*/}
           <div className="flex flex-col w-full h-full">
@@ -137,13 +133,13 @@ function Comment({ ...data }: CommentProps) {
                   //reply 낙관적 업데이트
                   const newReply = {
                     comment_id: (214252112123 * Math.random()).toString(),
-                    user_id: myUserData.user_id,
-                    user_name: myUserData.user_name,
-                    badge: myUserData.badge,
+                    user_id: userId,
+                    user_name: userName,
+                    badge: badge,
                     create_at: new Date(Date.now()),
                     origin: false,
                     post_id: comment.post_id,
-                    profile_image: myUserData.profile_image,
+                    profile_image: profileImage,
                     text: replyData,
                     reply: null,
                   } as CommentProps;

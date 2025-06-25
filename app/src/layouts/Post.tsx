@@ -20,12 +20,10 @@ export default function Post() {
   const COMMENT_TEXTFIELD_ID = "comment-textfield";
   const COMMENT_TEXT_MAXLENGTH = 100;
 
-  const myUserData = useUserDataStore((state) => ({
-    user_id: state.user_id,
-    user_name: state.user_name,
-    profile_image: state.profile_image,
-    badge: state.badge,
-  })) as UserData;
+  const userId = useUserDataStore((state) => state.user_id);
+  const userName = useUserDataStore((state) => state.user_name);
+  const profileImage = useUserDataStore((state) => state.profile_image);
+  const badge = useUserDataStore((state) => state.badge);
 
   const { postId } = useParams();
   const location = useLocation();
@@ -93,17 +91,14 @@ export default function Post() {
           <div></div>
         )}
         {/*Post Input Comment Area*/}
-        {myUserData.user_id && (
+        {userId && (
           <div
             id="comment-input"
             className="flex gap-2 w-full max-w-200 h-40 py-3 px-8 mx-auto border-2 border-gray-400 rounded-xl items-start"
           >
             {/*미니 프로필*/}
             <div className="min-w-12 items-center">
-              <MiniProfile
-                user_id={myUserData.user_id}
-                img_url={myUserData.profile_image}
-              />
+              <MiniProfile user_id={userId} img_url={profileImage ?? ""} />
             </div>
             {/*flex flex-col 코멘트 textarea, 코멘트 버튼*/}
             <div className="flex flex-col w-full h-full">
@@ -141,12 +136,12 @@ export default function Post() {
                       const tempCommentId = 214252112123 * Math.random();
                       const newComment = {
                         comment_id: tempCommentId.toString(),
-                        user_id: myUserData.user_id,
-                        user_name: myUserData.user_name,
-                        badge: myUserData.badge,
+                        user_id: userId,
+                        user_name: userName,
+                        badge: badge,
                         create_at: new Date(Date.now()),
                         post_id: postId,
-                        profile_image: myUserData.profile_image,
+                        profile_image: profileImage,
                         text: commentData,
                         origin: true,
                         reply: [],

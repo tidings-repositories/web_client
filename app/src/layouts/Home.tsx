@@ -10,8 +10,10 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import * as l10n from "i18next";
 
 import { createMockPost } from "../../dev/mockdata"; //TODO: remove
+import useUserDataStore from "../store/UserDataStore";
 
 export default function Home() {
+  const userId = useUserDataStore((state) => state.user_id);
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
 
@@ -37,7 +39,7 @@ export default function Home() {
       <Drawer child={<RouterDrawerItem />} />
       <div id="home" className="flex justify-center gap-10 pt-16">
         <div>
-          <QuickPostComposer />
+          {userId && <QuickPostComposer />}
           <InfiniteScroll
             component={Content}
             item={Array.from({ length: 10 }).map(() => createMockPost())}

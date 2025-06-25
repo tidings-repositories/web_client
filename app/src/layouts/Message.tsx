@@ -8,15 +8,8 @@ import MessageList from "../components/message/MessageList";
 import DirectMessage from "../components/message/DirectMessage";
 
 import { createMockDM } from "../../dev/mockdata";
-import useUserDataStore from "../store/UserDataStore";
 
 export default function Message() {
-  const userInfo = useUserDataStore((state) => ({
-    user_id: state.user_id,
-    user_name: state.user_name,
-    profile_image: state.profile_image,
-    badge: state.badge,
-  })) as UserData;
   const [messageList, setMessageList] = useState([] as MessageUserSlotProps[]);
   const [selectedIdx, setSelectedDM] = useState(null as number | null);
 
@@ -25,7 +18,7 @@ export default function Message() {
   const viewName = window.location.pathname.split("/").pop();
 
   useEffect(() => {
-    //접근한 viewName에 따라서 userInfo로 해당 정보 받아오기
+    //접근한 viewName에 따라서 토큰으로 해당 정보 받아오기
     // - dm list or dm messages 만약 dm message라면  dm list 중에 있는지 확인하고 setSelectedDM
 
     //TODO: fetch direct messages
