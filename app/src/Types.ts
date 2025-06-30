@@ -53,6 +53,7 @@ export type CommentProps = {
 
 /*profile*/
 export type BadgeProps = {
+  id: number;
   name: string;
   url: string;
 };
