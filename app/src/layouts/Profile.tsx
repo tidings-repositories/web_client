@@ -48,7 +48,7 @@ export default function Profile() {
 
     window.addEventListener("resize", resizeEvent);
     return () => window.removeEventListener("resize", resizeEvent);
-  }, []);
+  }, [userId]);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
