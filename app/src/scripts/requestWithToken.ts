@@ -70,6 +70,72 @@ export async function requestPOSTWithToken(url, data: { [key: string]: any }) {
   return response;
 }
 
+export async function requestPATCHWithToken(url, data: { [key: string]: any }) {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) return { status: 401 };
+
+  const response = await axios
+    .patch(url, data, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .catch(async (failedResponse) => {
+      if (failedResponse.response.status == 401) {
+        const isSuccessRefresh = await tryRefreshToken();
+        if (isSuccessRefresh) {
+          const newAccessToken = localStorage.getItem("accessToken");
+          return axios.patch(
+            url,
+            { ...data },
+            {
+              headers: {
+                Authorization: `Bearer ${newAccessToken}`,
+              },
+            }
+          );
+        }
+      }
+
+      return failedResponse;
+    });
+
+  if (response.status != 401) saveToken(response);
+
+  return response;
+}
+
+export async function requestDELETEWithToken(url) {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) return { status: 401 };
+
+  const response = await axios
+    .delete(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .catch(async (failedResponse) => {
+      if (failedResponse.response.status == 401) {
+        const isSuccessRefresh = await tryRefreshToken();
+        if (isSuccessRefresh) {
+          const newAccessToken = localStorage.getItem("accessToken");
+          return axios.delete(url, {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+            },
+          });
+        }
+      }
+
+      return failedResponse;
+    });
+
+  if (response.status != 401) saveToken(response);
+
+  return response;
+}
+
 function saveToken(response: AxiosResponse<any, any>) {
   if (response.data.refreshToken)
     localStorage.setItem("refreshToken", response.data.refreshToken);
