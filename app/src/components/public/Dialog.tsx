@@ -6,16 +6,45 @@ type DialogProps = {
 };
 
 function Dialog({ child }: DialogProps) {
+  let isClick = false;
+  let isDragging = false;
+
+  const handleMouseDown = () => {
+    isClick = true;
+    isDragging = false;
+  };
+
+  const handleMouseMove = () => {
+    if (isClick) isDragging = true;
+  };
+
+  const handleMouseUp = () => {
+    isClick = false;
+    setTimeout(() => {
+      isDragging = false;
+    }, 0);
+  };
+
   const scrollY = window.scrollY;
   const preventScrollEvent = () => {
     window.scrollTo(0, scrollY);
   };
 
   const closeDialog = () => {
-    const dialogComponent = document.getElementById("dialog-box")!;
-    dialogComponent.removeEventListener("click", dialogClickEvent);
-    document.removeEventListener("scroll", preventScrollEvent);
-    dialogComponent!.remove();
+    if (!isDragging) {
+      const dialogComponent = document.getElementById("dialog-box")!;
+      const childComponent = document.getElementById("child-area")!;
+
+      childComponent.removeEventListener("mousedown", handleMouseDown);
+
+      dialogComponent.removeEventListener("click", dialogClickEvent);
+      dialogComponent.removeEventListener("mousemove", handleMouseMove);
+      dialogComponent.removeEventListener("mouseup", handleMouseUp);
+
+      document.removeEventListener("scroll", preventScrollEvent);
+
+      dialogComponent!.remove();
+    }
   };
 
   const dialogClickEvent = (e: Event) => {
@@ -23,8 +52,14 @@ function Dialog({ child }: DialogProps) {
   };
 
   useEffect(() => {
-    const dialogComponent = document.getElementById("dialog")!;
+    const dialogComponent = document.getElementById("dialog-box")!;
+    const childComponent = document.getElementById("child-area")!;
+
+    childComponent.addEventListener("mousedown", handleMouseDown);
+
     dialogComponent.addEventListener("click", dialogClickEvent);
+    dialogComponent.addEventListener("mousemove", handleMouseMove);
+    dialogComponent.addEventListener("mouseup", handleMouseUp);
 
     document.addEventListener("scroll", preventScrollEvent);
   }, []);
@@ -48,7 +83,10 @@ function Dialog({ child }: DialogProps) {
             />
           </div>
           {/*child component*/}
-          <div className="px-4 "> {child} </div>
+          <div id="child-area" className="px-4 ">
+            {" "}
+            {child}{" "}
+          </div>
         </div>
       </div>
     </div>
