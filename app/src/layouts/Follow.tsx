@@ -12,7 +12,7 @@ import IconButton from "../components/button/IconButton";
 import SimpleUserSlot from "../components/public/SimpleUserSlot";
 import UserSlot from "../components/public/UserSlot";
 
-import { createMockProfile } from "../../dev/mockdata";
+import axios from "axios";
 
 export default function Follow() {
   const navigator = useNavigate();
@@ -39,13 +39,31 @@ export default function Follow() {
   };
 
   useEffect(() => {
-    //TODO: if without userinfo then fetch user data
-    if (!userInfo) setUserInfo(createMockProfile());
+    const path = location.pathname.split("/");
+    const profileUser = path[path.length - 2];
+    const PROFILE_PATH = `${
+      import.meta.env.VITE_API_URL
+    }/profile/${profileUser}`;
 
-    //fetch user following, followers
-    setUserFollowing(Array.from({ length: 20 }, () => createMockProfile()));
-    setUserFollowers(Array.from({ length: 20 }, () => createMockProfile()));
-    //
+    const fetchProfileData = async () => {
+      const OK = 200;
+      const result = await axios.get(PROFILE_PATH);
+      if (result.status == OK) setUserInfo(result.data);
+    };
+    if (!userInfo) fetchProfileData();
+
+    const fetchFollowingList = async () => {
+      const OK = 200;
+      const result = await axios.get(`${PROFILE_PATH}/followings`);
+      if (result.status == OK) setUserFollowing(result.data);
+    };
+    const fetchFollowerList = async () => {
+      const OK = 200;
+      const result = await axios.get(`${PROFILE_PATH}/followers`);
+      if (result.status == OK) setUserFollowers(result.data);
+    };
+    fetchFollowingList();
+    fetchFollowerList();
 
     window.scrollTo(0, 0);
 
@@ -75,9 +93,13 @@ export default function Follow() {
           {/*followers & following*/}
           <div className="flex flex-col">
             {(tabIdx == 0 &&
-              userFollowing.map((user) => <UserSlot {...user} />)) ||
+              userFollowing.map((user, idx) => (
+                <UserSlot key={idx} {...user} />
+              ))) ||
               (tabIdx == 1 &&
-                userFollowers.map((user) => <UserSlot {...user} />))}
+                userFollowers.map((user, idx) => (
+                  <UserSlot key={idx} {...user} />
+                )))}
           </div>
         </div>
 
