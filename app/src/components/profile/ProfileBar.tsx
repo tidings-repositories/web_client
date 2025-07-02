@@ -10,15 +10,11 @@ import Badge from "./Badge";
 import Dialog from "../public/Dialog";
 import EditProfileItem from "./EditProfileItem";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
-import { produce } from "immer";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useUserDataStore from "../../store/UserDataStore";
 import axios from "axios";
-import {
-  requestDELETEWithToken,
-  requestPOSTWithToken,
-} from "../../scripts/requestWithToken";
+import FollowButton from "./FollowButton";
 
 type ProfileBarProps = {
   profileUser: string;
@@ -28,15 +24,11 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
   const { userId } = useParams();
   const myUserId = useUserDataStore((state) => state.user_id);
   const isMySelf = myUserId === profileUser;
-  //TODO: replace whole area following object state
-  const [followingUsers, setFollowingUsers] = useState(
-    {} as { [key: string]: boolean }
-  );
+
   const [profileData, setState] = useState({} as UserData);
   const navigator = useNavigate();
 
   useEffect(() => {
-    //TODO: fetch myUserId UserData
     const fetchProfileData = async () => {
       const OK = 200;
       const result = await axios.get(
@@ -85,50 +77,7 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
                   onPressed={(e) => openPostDropdown(e, "user-menu")}
                 />
                 <IconButton icon="fa-solid fa-message" onPressed={() => {}} />
-                <OutlineButton
-                  text={l10n.t(
-                    followingUsers[profileData.user_id] ? "unfollow" : "follow"
-                  )}
-                  color="gray"
-                  fontSize="base"
-                  radius={16}
-                  onPressed={() => {
-                    setFollowingUsers(
-                      produce((state) => {
-                        state[profileData.user_id] = !(
-                          state[profileData.user_id] ?? false
-                        );
-                      })
-                    );
-
-                    if (followingUsers[profileData.user_id]) {
-                      requestDELETEWithToken(
-                        `${import.meta.env.VITE_API_URL}/follow/${
-                          profileData.user_id
-                        }`
-                      ).catch((_) => {
-                        setFollowingUsers(
-                          produce((state) => {
-                            state[profileData.user_id] = true;
-                          })
-                        );
-                      });
-                    } else {
-                      requestPOSTWithToken(
-                        `${import.meta.env.VITE_API_URL}/follow/request`,
-                        {
-                          follow: profileData.user_id,
-                        }
-                      ).catch((_) => {
-                        setFollowingUsers(
-                          produce((state) => {
-                            state[profileData.user_id] = false;
-                          })
-                        );
-                      });
-                    }
-                  }}
-                />
+                <FollowButton thisUserId={profileData.user_id} />
               </div>
             )
           )}
