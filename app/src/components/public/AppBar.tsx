@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import useUserDataStore from "../../store/UserDataStore";
+import useFollowingUserStore from "../../store/FollowingUserStore";
 import { requestGETWithToken } from "../../scripts/requestWithToken";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
 type AppBarProps = {
   child: React.ReactNode;
@@ -10,18 +11,41 @@ type AppBarProps = {
 function AppBar({ child }: AppBarProps) {
   const MY_USERDTA_REQUEST_URL = `${import.meta.env.VITE_API_URL}/profile`;
   const userId = useUserDataStore((state) => state.user_id);
-  const dataInjection = useUserDataStore((state) => state.dataInjection);
+  const userDataInjection = useUserDataStore((state) => state.dataInjection);
+
+  const followingTable = useFollowingUserStore(
+    (state) => state.followingIdTable
+  );
+  const followingDataInjection = useFollowingUserStore(
+    (state) => state.dataInjection
+  );
 
   useEffect(() => {
     const fetchMyUserData = async () => {
       const OK = 200;
       const response = await requestGETWithToken(MY_USERDTA_REQUEST_URL);
       if (response.status == OK)
-        dataInjection((response as AxiosResponse).data);
+        userDataInjection((response as AxiosResponse).data);
     };
 
     if (userId == null) fetchMyUserData();
   }, []);
+
+  useEffect(() => {
+    const fetchMyFollowingUsers = async () => {
+      const OK = 200;
+      const response = await axios
+        .get(`${import.meta.env.VITE_API_URL}/profile/${userId}/followings`)
+        .catch((_) => {
+          useFollowingUserStore((state) => state.clear)();
+        });
+
+      if (response && response.status == OK)
+        followingDataInjection(response.data);
+    };
+
+    if (userId != null && followingTable == null) fetchMyFollowingUsers();
+  }, [userId]);
 
   return (
     <div
