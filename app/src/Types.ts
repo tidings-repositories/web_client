@@ -16,6 +16,7 @@ export type PostInfo = {
 
 export type PostBottom = {
   post_id: string;
+  user_id: string;
   comment_count: number;
   like_count: number;
   scrap_count: number;
