@@ -9,7 +9,7 @@
 | <h3> Library </h3> |                 |         |              |         |
 | ------------------ | --------------- | ------- | ------------ | ------- |
 | React              | Tailwind CSS    | Zustand | React-router | i18next |
-| fontawesome        | react-swipeable | immer   | Axios        |         |
+| fontawesome        | react-swipeable | immer   | Axios        | dayjs   |
 
 ---
 
@@ -106,6 +106,12 @@ npm install axios
 
 ```bash
 npm install dotenv
+```
+
+#### Add dayjs package
+
+```bash
+npm install dayjs
 ```
 
 </div>
