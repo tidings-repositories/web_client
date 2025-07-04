@@ -19,24 +19,26 @@ function PostDropdownItem({
 
   return (
     <div className="w-60 flex flex-col gap-1">
-      <DropwdownSlot
-        text={l10n.t("report")}
-        extraBeforeNode={
-          <i
-            className="fa-solid fa-flag"
-            style={{
-              fontSize: 14,
-              color: "gray",
-              width: 20,
-              textAlign: "left",
-            }}
-          ></i>
-        }
-        behavior={() => {
-          //TODO: fetch to report post_id
-          console.log("report", post_id);
-        }}
-      />
+      {user_id !== userId && (
+        <DropwdownSlot
+          text={l10n.t("report")}
+          extraBeforeNode={
+            <i
+              className="fa-solid fa-flag"
+              style={{
+                fontSize: 14,
+                color: "gray",
+                width: 20,
+                textAlign: "left",
+              }}
+            ></i>
+          }
+          behavior={() => {
+            //TODO: fetch to report post_id
+            console.log("report", post_id);
+          }}
+        />
+      )}
       {user_id === userId && (
         <DropwdownSlot
           text={l10n.t("deletePost")}
