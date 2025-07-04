@@ -3,6 +3,8 @@ import useUserDataStore from "../../store/UserDataStore";
 import useFollowingUserStore from "../../store/FollowingUserStore";
 import { requestGETWithToken } from "../../scripts/requestWithToken";
 import axios, { AxiosResponse } from "axios";
+import useLikePostStore from "../../store/LikePostStore";
+import dayjs from "dayjs";
 
 type AppBarProps = {
   child: React.ReactNode;
@@ -20,6 +22,11 @@ function AppBar({ child }: AppBarProps) {
     (state) => state.dataInjection
   );
 
+  const likePostTable = useLikePostStore((state) => state.likePostTable);
+  const likePostDataInjection = useLikePostStore(
+    (state) => state.dataInjection
+  );
+
   useEffect(() => {
     const fetchMyUserData = async () => {
       const OK = 200;
@@ -32,19 +39,36 @@ function AppBar({ child }: AppBarProps) {
   }, []);
 
   useEffect(() => {
+    const OK = 200;
     const fetchMyFollowingUsers = async () => {
-      const OK = 200;
       const response = await axios
         .get(`${import.meta.env.VITE_API_URL}/profile/${userId}/followings`)
         .catch((_) => {
           useFollowingUserStore((state) => state.clear)();
+          return _;
         });
 
       if (response && response.status == OK)
         followingDataInjection(response.data);
     };
 
+    const fetchMyLikePosts = async () => {
+      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+      const response = await axios
+        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/likes`, {
+          createdAt: defaultCreatedAt,
+        })
+        .catch((_) => {
+          useLikePostStore((state) => state.clear)();
+          return _;
+        });
+
+      if (response && response.status == OK)
+        likePostDataInjection(response.data);
+    };
+
     if (userId != null && followingTable == null) fetchMyFollowingUsers();
+    if (userId != null && likePostTable == null) fetchMyLikePosts();
   }, [userId]);
 
   return (

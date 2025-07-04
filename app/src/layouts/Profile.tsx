@@ -13,13 +13,18 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import ProfileComment from "../components/profile/ProfileComment";
 import { Post, CommentProps } from "../Types";
 
-import { createMockPost, createMockComment } from "../../dev/mockdata";
+import { createMockComment } from "../../dev/mockdata";
 import axios from "axios";
 import { produce } from "immer";
 import dayjs from "dayjs";
 import PostContext from "../context/PostContext";
+import useUserDataStore from "../store/UserDataStore";
+import useLikePostStore from "../store/LikePostStore";
 
 export default function Profile() {
+  const myUserId = useUserDataStore((state) => state.user_id);
+  const likePostInjection = useLikePostStore((state) => state.dataInjection);
+
   const [tabIdx, setState] = useState(0);
   const { userId } = useParams();
 
@@ -27,14 +32,12 @@ export default function Profile() {
   const [postList, setPostList] = useState([] as Post[]);
 
   const [commentList, setCommentList] = useState([] as CommentProps[]);
+
+  const likePostRef = useRef<Post[]>([]);
   const [likePostList, setLikePostList] = useState([] as Post[]);
 
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
-
-  const deletePost = (postId: string) => {
-    setPostList((prev) => prev.filter((post) => post.post_id !== postId));
-  };
 
   const resizeEvent = () => {
     const sideElement = document.getElementById("side")!;
@@ -47,11 +50,15 @@ export default function Profile() {
     }
   };
 
-  const handleScrollFetch = useCallback(async () => {
+  const deletePost = (postId: string) => {
+    setPostList((prev) => prev.filter((post) => post.post_id !== postId));
+  };
+
+  const handlePostScrollFetch = useCallback(async () => {
     const lastPost: Post = postRef.current[postRef.current.length - 1];
     const OK = 200;
     const response = await axios
-      .post(`${import.meta.env.VITE_API_URL}/post/${userId}`, {
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
         postId: lastPost.post_id,
         createdAt: dayjs(lastPost.create_at).tz("Asia/Seoul").format(),
       })
@@ -68,32 +75,85 @@ export default function Profile() {
     }
   }, []);
 
+  const handleLikePostScrollFetch = useCallback(async () => {
+    const lastPost: Post = likePostRef.current[likePostRef.current.length - 1];
+    const OK = 200;
+    const lastPostCreatedAt = dayjs(lastPost.create_at)
+      .tz("Asia/Seoul")
+      .format();
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/likes`, {
+        createdAt: lastPostCreatedAt,
+        postId: lastPost.post_id,
+      })
+      .catch((_) => _);
+    if (response.status == OK && response.data.length != 0) {
+      setLikePostList(
+        produce((draft) => {
+          draft.push(...response.data);
+        })
+      );
+      if (userId == myUserId) likePostInjection(response.data);
+
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
   useEffect(() => {
-    const getUserPosts = async () => {
-      const OK = 200;
+    postRef.current = postList;
+  }, [postList]);
+
+  useEffect(() => {
+    likePostRef.current = likePostList;
+  }, [likePostList]);
+
+  useEffect(() => {
+    const POST = 0,
+      COMMENT = 1,
+      LIKE = 2;
+    const OK = 200;
+
+    const getUserPostList = async () => {
+      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
       const response = await axios
-        .post(`${import.meta.env.VITE_API_URL}/post/${userId}`, {
-          createdAt: dayjs().tz("Asia/Seoul").format(),
+        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
+          createdAt: defaultCreatedAt,
         })
         .catch((_) => _);
       if (response.status == OK) setPostList(response.data);
     };
 
-    getUserPosts();
+    const getUserCommentList = async () => {
+      //TODO:
+    };
+
+    const getUserLikePostList = async () => {
+      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+      const response = await axios
+        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/likes`, {
+          createdAt: defaultCreatedAt,
+        })
+        .catch((_) => _);
+      if (response.status == OK) setLikePostList(response.data);
+    };
+
+    if (tabIdx == POST && postList.length == 0) getUserPostList();
+    if (tabIdx == COMMENT && commentList.length == 0) getUserCommentList();
+    if (tabIdx == LIKE && likePostList.length == 0) getUserLikePostList();
+
     //TODO: fetch user data
     setCommentList(Array.from({ length: 10 }).map(() => createMockComment()));
-    setLikePostList(Array.from({ length: 10 }).map(() => createMockPost()));
     //
 
     window.scrollTo(0, 0);
-
-    window.addEventListener("resize", resizeEvent);
-    return () => window.removeEventListener("resize", resizeEvent);
-  }, [userId]);
+  }, [userId, tabIdx]);
 
   useEffect(() => {
-    postRef.current = postList;
-  }, [postList]);
+    window.addEventListener("resize", resizeEvent);
+    return () => window.removeEventListener("resize", resizeEvent);
+  }, []);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
@@ -110,7 +170,7 @@ export default function Profile() {
               <InfiniteScroll
                 component={Content}
                 item={postList}
-                loadMore={handleScrollFetch}
+                loadMore={handlePostScrollFetch}
               />
             </PostContext.Provider>
           )) ||
@@ -125,7 +185,7 @@ export default function Profile() {
               <InfiniteScroll
                 component={Content}
                 item={likePostList}
-                loadMore={async () => true}
+                loadMore={handleLikePostScrollFetch}
               />
             ))}
         </div>

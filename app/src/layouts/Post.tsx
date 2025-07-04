@@ -54,7 +54,7 @@ export default function Post() {
   }, []);
 
   return (
-    <div id="scaffold" className="w-full h-screen mx-auto content-start">
+    <div id="scaffold" className="w-screen h-screen mx-auto content-start">
       <AppBar child={<PostAppBarItem />} />
       <Drawer child={<RouterDrawerItem />} />
       <div className="w-full flex flex-col justify-center gap-2 pt-20 pb-10 divide-y-2 divide-solid divide-gray-300">
