@@ -6,6 +6,8 @@ import Badge from "../profile/Badge";
 import PostDropdownItem from "./PostDropdownItem";
 import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import PostContext, { PostContextType } from "../../context/PostContext";
 
 function PostInfoBar({
   user_name,
@@ -16,6 +18,7 @@ function PostInfoBar({
 }: PostInfo) {
   const navigator = useNavigate();
   const contentCreateFrom = createTimeDifferenceText(new Date(create_at));
+  const context = useContext(PostContext);
 
   let isDragging = false;
   const handleMouseDown = () => {
@@ -58,7 +61,7 @@ function PostInfoBar({
         icon="fa-solid fa-ellipsis"
         onPressed={(e) => {
           e.stopPropagation();
-          openPostDropdown(e, "post-menu", user_id, post_id);
+          openPostDropdown(e, "post-menu", user_id, post_id, context);
         }}
       />
     </div>
@@ -95,7 +98,13 @@ function createTimeDifferenceText(createAt: Date) {
   }
 }
 
-function openPostDropdown(e, dropdownId, userId, postId) {
+function openPostDropdown(
+  e,
+  dropdownId,
+  userId,
+  postId,
+  context: PostContextType | null
+) {
   const rect = e.currentTarget.getBoundingClientRect();
   const pos = {
     x: rect.right,
@@ -110,7 +119,9 @@ function openPostDropdown(e, dropdownId, userId, postId) {
     <Dropdown
       id={dropdownId}
       position={pos}
-      child={<PostDropdownItem user_id={userId} post_id={postId} />}
+      child={
+        <PostDropdownItem user_id={userId} post_id={postId} context={context} />
+      }
     />
   );
 }

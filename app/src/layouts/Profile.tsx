@@ -17,6 +17,7 @@ import { createMockPost, createMockComment } from "../../dev/mockdata";
 import axios from "axios";
 import { produce } from "immer";
 import dayjs from "dayjs";
+import PostContext from "../context/PostContext";
 
 export default function Profile() {
   const [tabIdx, setState] = useState(0);
@@ -30,6 +31,10 @@ export default function Profile() {
 
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
+
+  const deletePost = (postId: string) => {
+    setPostList((prev) => prev.filter((post) => post.post_id !== postId));
+  };
 
   const resizeEvent = () => {
     const sideElement = document.getElementById("side")!;
@@ -101,24 +106,26 @@ export default function Profile() {
             child={<ProfileTabBarItem idx={tabIdx} idxDispatcher={setState} />}
           />
           {(tabIdx == 0 && (
-            <InfiniteScroll
-              component={Content}
-              item={postList}
-              loadMore={handleScrollFetch}
-            />
+            <PostContext.Provider value={{ deletePost }}>
+              <InfiniteScroll
+                component={Content}
+                item={postList}
+                loadMore={handleScrollFetch}
+              />
+            </PostContext.Provider>
           )) ||
             (tabIdx == 1 && (
               <InfiniteScroll
                 component={ProfileComment}
                 item={commentList}
-                loadMore={() => {}}
+                loadMore={async () => true}
               />
             )) ||
             (tabIdx == 2 && (
               <InfiniteScroll
                 component={Content}
                 item={likePostList}
-                loadMore={() => {}}
+                loadMore={async () => true}
               />
             ))}
         </div>

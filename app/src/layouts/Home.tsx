@@ -13,6 +13,7 @@ import useUserDataStore from "../store/UserDataStore";
 import axios from "axios";
 import { Post } from "../Types";
 import dayjs from "dayjs";
+import PostContext from "../context/PostContext";
 
 export default function Home() {
   const userId = useUserDataStore((state) => state.user_id);
@@ -20,6 +21,10 @@ export default function Home() {
   const postRef = useRef<Post[]>([]);
   const [postList, setPostList] = useState<Post[]>([]);
   const checkWideView = () => window.innerWidth > wideViewStandard;
+
+  const deletePost = (postId: string) => {
+    setPostList((prev) => prev.filter((post) => post.post_id !== postId));
+  };
 
   const resizeEvent = () => {
     const sideElement = document.getElementById("side")!;
@@ -79,11 +84,13 @@ export default function Home() {
       <div id="home" className="flex justify-center gap-10 pt-16">
         <div>
           {userId && <QuickPostComposer />}
-          <InfiniteScroll
-            component={Content}
-            item={postList}
-            loadMore={handleScrollFetch}
-          />
+          <PostContext.Provider value={{ deletePost }}>
+            <InfiniteScroll
+              component={Content}
+              item={postList}
+              loadMore={handleScrollFetch}
+            />
+          </PostContext.Provider>
         </div>
         <div
           id="side"
