@@ -15,7 +15,7 @@ function PostInfoBar({
   post_id,
 }: PostInfo) {
   const navigator = useNavigate();
-  const contentCreateFrom = createTimeDifferenceText(create_at);
+  const contentCreateFrom = createTimeDifferenceText(new Date(create_at));
 
   let isDragging = false;
   const handleMouseDown = () => {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "../components/post/InfiniteScroll";
 import Sidebox from "../components/home/Sidebox";
 import AppBar from "../components/public/AppBar";
@@ -8,13 +8,17 @@ import QuickPostComposer from "../components/composer/QuickPostComposer";
 import Content from "../components/post/Content";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import * as l10n from "i18next";
-
-import { createMockPost } from "../../dev/mockdata"; //TODO: remove
+import { produce } from "immer";
 import useUserDataStore from "../store/UserDataStore";
+import axios from "axios";
+import { Post } from "../Types";
+import dayjs from "dayjs";
 
 export default function Home() {
   const userId = useUserDataStore((state) => state.user_id);
   const wideViewStandard = 1000;
+  const postRef = useRef<Post[]>([]);
+  const [postList, setPostList] = useState<Post[]>([]);
   const checkWideView = () => window.innerWidth > wideViewStandard;
 
   const resizeEvent = () => {
@@ -28,10 +32,45 @@ export default function Home() {
     }
   };
 
+  const handleScrollFetch = useCallback(async () => {
+    const lastPost: Post = postRef.current[postRef.current.length - 1];
+    const OK = 200;
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/post/recent`, {
+        postId: lastPost.post_id,
+        createdAt: dayjs(lastPost.create_at).tz("Asia/Seoul").format(),
+      })
+      .catch((_) => _);
+    if (response.status == OK && response.data.length != 0) {
+      setPostList(
+        produce((draft) => {
+          draft.push(...response.data);
+        })
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
   useEffect(() => {
+    const getRecentPosts = async () => {
+      const OK = 200;
+      const response = await axios
+        .post(`${import.meta.env.VITE_API_URL}/post/recent`, {})
+        .catch((_) => _);
+      if (response.status == OK) setPostList(response.data);
+    };
+
+    getRecentPosts();
+
     window.addEventListener("resize", resizeEvent);
     return () => window.removeEventListener("resize", resizeEvent);
   }, []);
+
+  useEffect(() => {
+    postRef.current = postList;
+  }, [postList]);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
@@ -42,8 +81,8 @@ export default function Home() {
           {userId && <QuickPostComposer />}
           <InfiniteScroll
             component={Content}
-            item={Array.from({ length: 10 }).map(() => createMockPost())}
-            loadMore={() => {}}
+            item={postList}
+            loadMore={handleScrollFetch}
           />
         </div>
         <div
