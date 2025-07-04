@@ -3,17 +3,22 @@ import * as l10n from "i18next";
 import IconButton from "../button/IconButton";
 import OutlineButton from "../button/OutlineButton";
 import usePostComposerStore from "../../store/PostComposerStore";
+import { PostMediaStructure } from "../../Types";
+import { requestPOSTWithToken } from "../../scripts/requestWithToken";
+import axios from "axios";
 
 type PostDataProps = {
   textContent: string;
   mediaFiles: File[];
   tags: string[];
+  clearFunc: () => void;
 };
 
 function PostComposerBottomBar() {
   const POST_TAG_MAXLENGTH = 20;
   const addTag = usePostComposerStore((state) => state.addTag);
   const addMediaFile = usePostComposerStore((state) => state.addMediaContent);
+  const clearComposer = usePostComposerStore((state) => state.clear);
   const postComposerState = usePostComposerStore((state) => state);
 
   useEffect(() => {
@@ -99,13 +104,14 @@ function PostComposerBottomBar() {
         color="gray" //TODO: 컬러 테마 설정
         text={`${l10n.t("upload")}`}
         radius={12}
-        onPressed={async () => {
-          await uploadPostContent({
+        onPressed={() =>
+          uploadPostContent({
             textContent: postComposerState.textContent,
             mediaFiles: postComposerState.mediaContentList,
             tags: postComposerState.tagList,
-          });
-        }}
+            clearFunc: clearComposer,
+          })
+        }
       />
     </div>
   );
@@ -144,8 +150,61 @@ async function uploadPostContent({
   textContent,
   mediaFiles,
   tags,
+  clearFunc,
 }: PostDataProps) {
-  console.log(textContent, mediaFiles, tags);
+  const OK = 200;
+  if (textContent.trim() == "" && mediaFiles.length == 0) return;
+  const mediaList: PostMediaStructure[] = [];
+  if (mediaFiles.length != 0) {
+    const contentTypeList = mediaFiles.map((file) => file.type);
+
+    const presignedResponse = await requestPOSTWithToken(
+      `${import.meta.env.VITE_API_URL}/storage/api/upload/post`,
+      {
+        "content-types": contentTypeList,
+      }
+    ).catch((_) => _);
+    if (presignedResponse.status != OK) return;
+
+    const presignedUrls = presignedResponse.data.presignedUrls;
+    if (presignedUrls == null || presignedUrls.length == 0) return;
+
+    let mediaUploadErrorFlag = false;
+    const promises = presignedUrls.map((url, idx) =>
+      axios
+        .put(url, mediaFiles[idx], {
+          headers: { "Content-Type": contentTypeList[idx] },
+        })
+        .catch((e) => {
+          mediaUploadErrorFlag = true;
+        })
+    );
+
+    await Promise.all(promises);
+    if (mediaUploadErrorFlag) return;
+    mediaList.push(
+      ...presignedUrls.map((link, idx) => ({
+        type: contentTypeList[idx].split("/")[0],
+        url: link,
+      }))
+    );
+  }
+
+  //포스트 생성 요청
+  const response = await requestPOSTWithToken(
+    `${import.meta.env.VITE_API_URL}/post`,
+    {
+      text: textContent,
+      media: mediaList,
+      tag: tags,
+    }
+  ).catch((_) => _);
+
+  clearFunc();
+  if (response.status == OK && window.location.pathname != "/")
+    window.history.back();
+  else if (response.status == OK && window.location.pathname == "/")
+    window.location.reload();
 }
 
 export default PostComposerBottomBar;
