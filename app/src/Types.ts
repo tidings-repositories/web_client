@@ -36,6 +36,10 @@ export type Post = {
   comment_count: number;
   like_count: number;
   scrap_count: number;
+  is_origin: boolean;
+
+  original_post_id: string;
+  original_user_id: string;
 };
 
 export type CommentProps = {
