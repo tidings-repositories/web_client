@@ -31,7 +31,8 @@ const useFollowingUserStore = create<FollowingUserState>()(
       }),
     dataInjection: (data: UserData[]) =>
       set((state) => {
-        if (data.length == 0) state.followingIdTable = {};
+        if (data.length == 0 && state.followingIdTable == null)
+          state.followingIdTable = {};
 
         data.forEach((thisUser) => {
           state.followingIdTable ??= {};
