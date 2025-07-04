@@ -91,6 +91,7 @@ export default function Post() {
               </div>
               <PostBottomBar
                 post_id={postId!}
+                user_id={post.user_id}
                 comment_count={post.comment_count}
                 like_count={post.like_count}
                 scrap_count={post.scrap_count}
