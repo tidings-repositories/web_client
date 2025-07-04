@@ -12,6 +12,13 @@ import Follow from "./layouts/Follow";
 import "./i18n/label";
 import "./index.css";
 
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
