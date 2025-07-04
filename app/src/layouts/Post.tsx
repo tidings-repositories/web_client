@@ -13,8 +13,9 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import Comment from "../components/post/Comment";
 import OutlineButton from "../components/button/OutlineButton";
 
-import { createMockPost, createMockComment } from "../../dev/mockdata";
+import { createMockComment } from "../../dev/mockdata";
 import useUserDataStore from "../store/UserDataStore";
+import axios from "axios";
 
 export default function Post() {
   const COMMENT_TEXTFIELD_ID = "comment-textfield";
@@ -31,8 +32,17 @@ export default function Post() {
   const [commentList, setComments] = useState([] as CommentProps[]);
 
   useEffect(() => {
-    //TODO: createMockPost replace to fetch postId post content
-    if (!location.state) setState(createMockPost());
+    const getPostData = async () => {
+      const OK = 200;
+      const NOT_FOUND = 404;
+      const response = await axios
+        .get(`${import.meta.env.VITE_API_URL}/post/${postId}`)
+        .catch((_) => _);
+
+      if (response.status == OK) setState(response.data);
+      else if (response.status == NOT_FOUND) window.location.href = "/";
+    };
+    if (!location.state) getPostData();
     window.scrollTo(0, 0);
 
     //TODO: fetch postId comments createMockComment()
