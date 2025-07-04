@@ -7,6 +7,8 @@ import { PostMediaStructure } from "../../Types";
 import { requestPOSTWithToken } from "../../scripts/requestWithToken";
 import axios from "axios";
 
+let fetchState = false;
+
 type PostDataProps = {
   textContent: string;
   mediaFiles: File[];
@@ -153,6 +155,7 @@ async function uploadPostContent({
   clearFunc,
 }: PostDataProps) {
   const OK = 200;
+  const CREATED = 201;
   if (textContent.trim() == "" && mediaFiles.length == 0) return;
   const mediaList: PostMediaStructure[] = [];
   if (mediaFiles.length != 0) {
@@ -191,20 +194,32 @@ async function uploadPostContent({
   }
 
   //포스트 생성 요청
-  const response = await requestPOSTWithToken(
-    `${import.meta.env.VITE_API_URL}/post`,
-    {
-      text: textContent,
-      media: mediaList,
-      tag: tags,
-    }
-  ).catch((_) => _);
 
-  clearFunc();
-  if (response.status == OK && window.location.pathname != "/")
-    window.history.back();
-  else if (response.status == OK && window.location.pathname == "/")
-    window.location.reload();
+  if (!fetchState) {
+    throttle();
+
+    const response = await requestPOSTWithToken(
+      `${import.meta.env.VITE_API_URL}/post`,
+      {
+        text: textContent,
+        media: mediaList,
+        tag: tags,
+      }
+    ).catch((_) => _);
+
+    clearFunc();
+    if (response.status == CREATED && window.location.pathname != "/")
+      window.history.back();
+    else if (response.status == CREATED && window.location.pathname == "/")
+      window.location.reload();
+  }
+}
+
+function throttle() {
+  fetchState = true;
+  setTimeout(() => {
+    fetchState = false;
+  }, 5000);
 }
 
 export default PostComposerBottomBar;
