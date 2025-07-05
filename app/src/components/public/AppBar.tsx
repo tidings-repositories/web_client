@@ -89,15 +89,15 @@ function AppBar({
       className="fixed top-0 left-0 w-full h-14 px-4 bg-white border-solid border-b-2 border-gray-100 z-50 content-center"
     >
       <AppBarItem
-        showDrawer
-        showLogo
-        showSearch
-        showMessage
-        showCompmoser
-        showNoti
-        showProfile
-        showLogin
-        searchKeyword
+        showDrawer={showDrawer}
+        showLogo={showLogo}
+        showSearch={showSearch}
+        showMessage={showMessage}
+        showCompmoser={showCompmoser}
+        showNoti={showNoti}
+        showProfile={showProfile}
+        showLogin={showLogin}
+        searchKeyword={searchKeyword}
       />
     </div>
   );
