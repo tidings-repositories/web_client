@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UserData } from "../Types";
 import AppBar from "../components/public/AppBar";
-import ProfileAppBarItem from "../components/profile/ProfileAppBarItem";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import TabBar from "../components/profile/TabBar";
 import FollowTabBarItem from "../components/profile/FollowTabBarItem";
-import Sidebox from "../components/home/Sidebox";
+import Sidebox from "../components/public/Sidebox";
 import IconButton from "../components/button/IconButton";
 import SimpleUserSlot from "../components/public/SimpleUserSlot";
 import UserSlot from "../components/public/UserSlot";
@@ -73,7 +72,7 @@ export default function Follow() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar child={<ProfileAppBarItem />} />
+      <AppBar showSearch={false} />
       <Drawer child={<RouterDrawerItem />} />
       <div id="follow" className="flex justify-center gap-10 pt-14">
         <div className="sticky flex flex-col left-0" style={{ top: 1 }}>

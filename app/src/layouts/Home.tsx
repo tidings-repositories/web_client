@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "../components/post/InfiniteScroll";
-import Sidebox from "../components/home/Sidebox";
+import Sidebox from "../components/public/Sidebox";
 import AppBar from "../components/public/AppBar";
-import HomeAppBarItem from "../components/home/HomeAppBarItem";
 import Drawer from "../components/drawer/Drawer";
 import QuickPostComposer from "../components/composer/QuickPostComposer";
 import Content from "../components/post/Content";
@@ -79,10 +78,11 @@ export default function Home() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar child={<HomeAppBarItem />} />
+      <AppBar />
       <Drawer child={<RouterDrawerItem />} />
       <div id="home" className="flex justify-center gap-10 pt-16">
-        <div>
+        <div className="flex flex-col">
+          <div id="dummy-area" className="w-[98vw] max-w-173"></div>
           {userId && <QuickPostComposer />}
           <PostContext.Provider value={{ deletePost }}>
             <InfiniteScroll

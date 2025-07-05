@@ -2,22 +2,26 @@ import { useEffect, useState } from "react";
 import { MessageUserSlotProps, UserData } from "../Types";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
-import MessageAppBarItem from "../components/message/MessageAppBarItem";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import MessageList from "../components/message/MessageList";
 import DirectMessage from "../components/message/DirectMessage";
 
 import { createMockDM } from "../../dev/mockdata";
+import useUserDataStore from "../store/UserDataStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Message() {
+  const userId = useUserDataStore((state) => state.user_id);
   const [messageList, setMessageList] = useState([] as MessageUserSlotProps[]);
   const [selectedIdx, setSelectedDM] = useState(null as number | null);
 
+  const navigator = useNavigate();
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
   const viewName = window.location.pathname.split("/").pop();
 
   useEffect(() => {
+    if (userId == null) navigator("/");
     //접근한 viewName에 따라서 토큰으로 해당 정보 받아오기
     // - dm list or dm messages 만약 dm message라면  dm list 중에 있는지 확인하고 setSelectedDM
 
@@ -27,7 +31,7 @@ export default function Message() {
 
   return (
     <div id="scaffold" className="w-screen h-screen mx-auto content-start">
-      <AppBar child={<MessageAppBarItem />} />
+      <AppBar showSearch={false} showMessage={false} showLogin={false} />
       <Drawer child={<RouterDrawerItem />} />
       {(checkWideView() && (
         <div

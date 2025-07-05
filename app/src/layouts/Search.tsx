@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Sidebox from "../components/home/Sidebox";
+import Sidebox from "../components/public/Sidebox";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import TabBar from "../components/profile/TabBar";
 import LatestDataListView from "../components/search/LatestDataListView";
 import PeopleDataListView from "../components/search/PeopleDataListView";
-import SearchAppBarItem from "../components/search/SearchAppBarItem";
 import SearchTabBarItem from "../components/search/SearchTabBarItem";
 
 import { createMockPost, createMockProfile } from "../../dev/mockdata";
@@ -59,7 +58,7 @@ export default function Search() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar child={<SearchAppBarItem searchKeyword={query ?? ""} />} />
+      <AppBar searchKeyword={query ?? ""} />
       <Drawer child={<RouterDrawerItem />} />
       <div id="search" className="flex justify-center gap-10 pt-14">
         <div>

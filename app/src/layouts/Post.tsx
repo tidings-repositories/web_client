@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import { PostInfo, CommentProps, UserData } from "../Types";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { CommentProps, PostBottom } from "../Types";
 import MediaContent from "../components/post/MediaContent";
 import PostInfoBar from "../components/post/PostInfoBar";
 import PostBottomBar from "../components/post/PostBottomBar";
 import MiniProfile from "../components/public/MiniProfile";
 import Tag from "../components/post/Tag";
 import AppBar from "../components/public/AppBar";
-import PostAppBarItem from "../components/post/PostAppBarItem";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import Comment from "../components/post/Comment";
@@ -16,6 +15,7 @@ import OutlineButton from "../components/button/OutlineButton";
 import { createMockComment } from "../../dev/mockdata";
 import useUserDataStore from "../store/UserDataStore";
 import axios from "axios";
+import MixedButton from "../components/button/MixedButton";
 
 export default function Post() {
   const COMMENT_TEXTFIELD_ID = "comment-textfield";
@@ -26,6 +26,7 @@ export default function Post() {
   const profileImage = useUserDataStore((state) => state.profile_image);
   const badge = useUserDataStore((state) => state.badge);
 
+  const navigator = useNavigate();
   const { postId } = useParams();
   const location = useLocation();
   const [post, setState] = useState(location.state ?? {});
@@ -55,47 +56,56 @@ export default function Post() {
 
   return (
     <div id="scaffold" className="w-screen h-screen mx-auto content-start">
-      <AppBar child={<PostAppBarItem />} />
+      <AppBar showSearch={false} />
       <Drawer child={<RouterDrawerItem />} />
       <div className="w-full flex flex-col justify-center gap-2 pt-20 pb-10 divide-y-2 divide-solid divide-gray-300">
         {/*Post Content*/}
         {post.post_id ? (
-          <div
-            id={postId}
-            className="w-full max-w-200 flex justify-start items-start gap-2 rounded-xs py-3 px-8 mx-auto"
-          >
-            <MiniProfile user_id={post.user_id} img_url={post.profile_image} />
-            <div className="w-full flex flex-col justify-start gap-2">
-              <PostInfoBar {...(post as PostInfo)} />
-              <p
-                className="line-clamp-6 select-text cursor-text"
-                style={{ whiteSpace: "pre-wrap" }}
-              >
-                {post.content.text}
-              </p>
-              {post.content.media.length >= 1 && (
-                <MediaContent
-                  contents={post.content.media}
-                  post_id={post.post_id}
+          <div className="w-full max-w-200 flex flex-col px-8 mx-auto">
+            {!post.origin && (
+              <div>
+                <MixedButton
+                  icon="fa-solid fa-repeat"
+                  text={`clipped by @${post.user_id}`}
+                  onPressed={() => navigator(`/profile/${post.user_id}`)}
+                  gap={2}
                 />
-              )}
-              <div className="w-full flex flex-wrap gap-2 item-start">
-                {post.content.tag.map((text, idx) => (
-                  <div
-                    key={`${post.post_id}${text}${idx}`}
-                    className="relative"
-                  >
-                    <Tag content={text} />
-                  </div>
-                ))}
               </div>
-              <PostBottomBar
-                post_id={postId!}
-                user_id={post.user_id}
-                comment_count={post.comment_count}
-                like_count={post.like_count}
-                scrap_count={post.scrap_count}
+            )}
+            <div
+              id={postId}
+              className="w-full max-w-200 flex justify-start items-start gap-2"
+            >
+              <MiniProfile
+                user_id={post.origin ? post.user_id : post.original_user_id}
+                img_url={post.profile_image}
               />
+              <div className="w-full flex flex-col justify-start gap-2">
+                <PostInfoBar {...post} />
+                <p
+                  className="line-clamp-6 select-text cursor-text"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {post.content.text}
+                </p>
+                {post.content.media.length >= 1 && (
+                  <MediaContent
+                    contents={post.content.media}
+                    post_id={post.post_id}
+                  />
+                )}
+                <div className="w-full flex flex-wrap gap-2 item-start">
+                  {post.content.tag.map((text, idx) => (
+                    <div
+                      key={`${post.post_id}${text}${idx}`}
+                      className="relative"
+                    >
+                      <Tag content={text} />
+                    </div>
+                  ))}
+                </div>
+                <PostBottomBar {...(post as PostBottom)} />
+              </div>
             </div>
           </div>
         ) : (

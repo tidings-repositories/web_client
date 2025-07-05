@@ -5,14 +5,18 @@ import PostComposerBottomBar from "../components/composer/PostComposerBottomBar"
 import PostComposerMedia from "../components/composer/PostComposerMedia";
 import PostComposerTagBar from "../components/composer/PostComposerTagBar";
 import usePostComposerStore from "../store/PostComposerStore";
-import PostComposerAppBarItem from "../components/composer/PostComposerAppBarItem";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
+import useUserDataStore from "../store/UserDataStore";
+import { useNavigate } from "react-router-dom";
 
 export default function PostComposer() {
   const MAX_LINE = 10;
   const POST_TEXT_MAXLENGTH = 280;
   const POST_TEXTFIELD_ID = "post-textfield";
+
+  const navigator = useNavigate();
+  const userId = useUserDataStore((state) => state.user_id);
 
   const changeTextState = usePostComposerStore(
     (state) => state.changeTextContent
@@ -20,6 +24,8 @@ export default function PostComposer() {
   const clearComposer = usePostComposerStore((state) => state.clear);
 
   useEffect(() => {
+    if (userId == null) navigator("/");
+
     clearComposer();
     const textElement = document.getElementById(
       POST_TEXTFIELD_ID
@@ -36,7 +42,7 @@ export default function PostComposer() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar child={<PostComposerAppBarItem />} />
+      <AppBar showSearch={false} showCompmoser={false} showLogin={false} />
       <Drawer child={<RouterDrawerItem />} />
       <div
         id="post-composer"

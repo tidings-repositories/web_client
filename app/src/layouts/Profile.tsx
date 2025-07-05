@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
-import ProfileAppBarItem from "../components/profile/ProfileAppBarItem";
 import ProfileBar from "../components/profile/ProfileBar";
-import Sidebox from "../components/home/Sidebox";
+import Sidebox from "../components/public/Sidebox";
 import InfiniteScroll from "../components/post/InfiniteScroll";
 import TabBar from "../components/profile/TabBar";
 import ProfileTabBarItem from "../components/profile/ProfileTabBarItem";
@@ -157,7 +156,7 @@ export default function Profile() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar child={<ProfileAppBarItem />} />
+      <AppBar showSearch={false} />
       <Drawer child={<RouterDrawerItem />} />
       <div id="profile" className="flex justify-center gap-10 pt-14">
         <div className="sticky left-0 ">
