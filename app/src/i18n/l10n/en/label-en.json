@@ -54,5 +54,6 @@
   "disableId": "This username is not available.",
   "overRangeString": "Please enter between 4 and 15 characters",
   "noSupportCharacter": "Only letters, numbers, and underscores (\"_\") are allowed",
-  "alreadyTaken": "This username is already taken"
+  "alreadyTaken": "This username is already taken",
+  "thanksReport": "Thank you for your report!\nWe'll review it and take appropriate action"
 }
