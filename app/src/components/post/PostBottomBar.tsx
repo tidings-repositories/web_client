@@ -9,6 +9,7 @@ import MixedButton from "../button/MixedButton";
 import { useNavigate } from "react-router-dom";
 
 function PostBottomBar({
+  origin,
   post_id,
   user_id,
   comment_count,
@@ -29,10 +30,11 @@ function PostBottomBar({
     if (firstPath !== "post") navigator(`/post/${post_id}`);
   };
 
-  const likeEvent = (e: Event) => {
+  const likeEvent = async (e: Event) => {
     e.stopPropagation();
     if (userId == null || userId == user_id) return;
 
+    const OK = 200;
     const isLiked = likePostTable && likePostTable[post_id];
     const textElement = (e.currentTarget as HTMLButtonElement).querySelector(
       "p"
@@ -41,24 +43,32 @@ function PostBottomBar({
     if (isLiked) {
       removeLikePost(post_id);
       textElement.textContent = (+textElement.textContent! - 1).toString();
-      requestDELETEWithToken(
+      const resposne = await requestDELETEWithToken(
         `${import.meta.env.VITE_API_URL}/post/${post_id}/like`
       ).catch((_) => _);
+      if (resposne.status != OK) addLikePost(post_id);
     } else {
       addLikePost(post_id);
       textElement.textContent = (+textElement.textContent! + 1).toString();
-      requestPOSTWithToken(
+      const resposne = await requestPOSTWithToken(
         `${import.meta.env.VITE_API_URL}/post/${post_id}/like`,
         {}
       ).catch((_) => _);
+      if (resposne.status != OK) removeLikePost(post_id);
     }
   };
 
-  const scrapEvent = (e: Event) => {
+  const scrapEvent = async (e: Event) => {
     e.stopPropagation();
     if (userId == null || userId == user_id) return;
 
-    //TODO: 본인 포스트 생성으로 포스트 스크랩
+    const CREATED = 201;
+    const response = await requestPOSTWithToken(
+      `${import.meta.env.VITE_API_URL}/post/${post_id}/scrap`,
+      {}
+    ).catch((_) => _);
+
+    if (response.status == CREATED) navigator(`/profile/${userId}`);
   };
 
   return (
@@ -72,16 +82,20 @@ function PostBottomBar({
         gap={1}
         onPressed={commentEvent}
       />
-      <MixedButton
-        icon="fa-solid fa-heart"
-        text={like_count}
-        color={likePostTable && likePostTable[post_id] ? "lightcoral" : "gray"}
-        gap={1}
-        onPressed={likeEvent}
-      />
+      {origin && (
+        <MixedButton
+          icon="fa-solid fa-heart"
+          text={like_count}
+          color={
+            likePostTable && likePostTable[post_id] ? "lightcoral" : "gray"
+          }
+          gap={1}
+          onPressed={likeEvent}
+        />
+      )}
       <MixedButton
         icon="fa-solid fa-repeat"
-        text={scrap_count}
+        text={origin ? scrap_count : ""}
         gap={1}
         onPressed={scrapEvent}
       />
