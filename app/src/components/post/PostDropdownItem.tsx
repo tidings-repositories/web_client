@@ -1,8 +1,13 @@
 import { PostContextType } from "../../context/PostContext";
-import { requestDELETEWithToken } from "../../scripts/requestWithToken";
+import {
+  requestDELETEWithToken,
+  requestPOSTWithToken,
+} from "../../scripts/requestWithToken";
 import useUserDataStore from "../../store/UserDataStore";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
+import ReactDOM from "react-dom/client";
+import Dialog from "../public/Dialog";
 
 type PostDropdownItemProps = {
   user_id: string;
@@ -33,9 +38,21 @@ function PostDropdownItem({
               }}
             ></i>
           }
-          behavior={() => {
-            //TODO: fetch to report post_id
-            console.log("report", post_id);
+          behavior={async () => {
+            const OK = 200;
+            const response = await requestPOSTWithToken(
+              `${import.meta.env.VITE_API_URL}/post/${post_id}/report`,
+              {}
+            ).catch((_) => _);
+
+            if (response.status == OK) {
+              const dropdownCloseEvent = new MouseEvent("mousedown", {
+                bubbles: true,
+              });
+              document.dispatchEvent(dropdownCloseEvent);
+
+              openDialog();
+            }
           }}
         />
       )}
@@ -71,6 +88,24 @@ function PostDropdownItem({
         />
       )}
     </div>
+  );
+}
+
+function openDialog() {
+  const newDialog = document.createElement("div");
+  newDialog.id = `dialog-box`;
+  document.querySelector("body")!.appendChild(newDialog);
+  const root = ReactDOM.createRoot(newDialog);
+  root.render(
+    <Dialog
+      child={
+        <div className="pt-10 pb-20">
+          <p className="whitespace-pre-line text-2xl text-center">
+            {l10n.t("thanksReport")}
+          </p>
+        </div>
+      }
+    />
   );
 }
 
