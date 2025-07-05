@@ -6,15 +6,8 @@ export type PostMediaStructure = {
   url: string;
 };
 
-export type PostInfo = {
-  post_id: string;
-  user_name: string;
-  badge: BadgeProps | null;
-  user_id: string;
-  create_at: Date;
-};
-
 export type PostBottom = {
+  origin: boolean;
   post_id: string;
   user_id: string;
   comment_count: number;
@@ -37,7 +30,7 @@ export type Post = {
   comment_count: number;
   like_count: number;
   scrap_count: number;
-  is_origin: boolean;
+  origin: boolean;
 
   original_post_id: string;
   original_user_id: string;

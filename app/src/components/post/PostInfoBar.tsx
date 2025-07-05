@@ -1,5 +1,5 @@
 import * as l10n from "i18next";
-import { PostInfo } from "../../Types";
+import { Post } from "../../Types";
 import IconButton from "../button/IconButton";
 import Dropdown from "../public/Dropdown";
 import Badge from "../profile/Badge";
@@ -9,15 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import PostContext, { PostContextType } from "../../context/PostContext";
 
-function PostInfoBar({
-  user_name,
-  badge,
-  user_id,
-  create_at,
-  post_id,
-}: PostInfo) {
+function PostInfoBar({ ...info }: Post) {
   const navigator = useNavigate();
-  const contentCreateFrom = createTimeDifferenceText(new Date(create_at));
+  const contentCreateFrom = createTimeDifferenceText(new Date(info.create_at));
   const context = useContext(PostContext);
 
   let isDragging = false;
@@ -31,7 +25,7 @@ function PostInfoBar({
   const handleClick = (e) => {
     e.stopPropagation();
     if (!isDragging) {
-      navigator(`/profile/${user_id}`);
+      navigator(`/profile/${info.user_id}`);
     }
   };
 
@@ -44,16 +38,16 @@ function PostInfoBar({
           onMouseMove={handleMouseMove}
           onClick={handleClick}
         >
-          {user_name}
+          {info.user_name}
         </p>
-        {badge && <Badge {...badge} />}
+        {info.badge && <Badge {...info.badge} />}
         <div
           className="text-gray-500 select-text cursor-text"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onClick={handleClick}
         >
-          @{user_id}
+          @{info.origin ? info.user_id : info.original_user_id}
         </div>
         <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
@@ -61,7 +55,7 @@ function PostInfoBar({
         icon="fa-solid fa-ellipsis"
         onPressed={(e) => {
           e.stopPropagation();
-          openPostDropdown(e, "post-menu", user_id, post_id, context);
+          openPostDropdown(e, "post-menu", info.user_id, info.post_id, context);
         }}
       />
     </div>
