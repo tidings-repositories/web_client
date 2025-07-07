@@ -84,6 +84,9 @@ function PostDropdownItem({
               });
               document.dispatchEvent(dropdownCloseEvent);
             }
+
+            const path = window.location.pathname.split("/");
+            if (path[path.length - 2] == "post") history.back();
           }}
         />
       )}
