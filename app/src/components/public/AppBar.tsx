@@ -10,7 +10,7 @@ import AppBarItem from "./AppBarItem";
 function AppBar({
   showDrawer = true,
   showLogo = true,
-  showSearch = false,
+  showSearch = true,
   showMessage = false,
   showCompmoser = true,
   showNoti = false,
