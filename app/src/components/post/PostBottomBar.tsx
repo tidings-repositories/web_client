@@ -76,12 +76,6 @@ function PostBottomBar({
       id={`${post_id}-bottom-bar`}
       className="w-full h-fit flex justify-around"
     >
-      <MixedButton
-        icon="fa-solid fa-comment"
-        text={comment_count}
-        gap={1}
-        onPressed={commentEvent}
-      />
       {origin && (
         <MixedButton
           icon="fa-solid fa-heart"
@@ -93,6 +87,12 @@ function PostBottomBar({
           onPressed={likeEvent}
         />
       )}
+      <MixedButton
+        icon="fa-solid fa-comment"
+        text={comment_count}
+        gap={1}
+        onPressed={commentEvent}
+      />
       <MixedButton
         icon="fa-solid fa-repeat"
         text={origin ? scrap_count : ""}
