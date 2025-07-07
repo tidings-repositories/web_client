@@ -45,7 +45,9 @@ export type CommentProps = {
   profile_image: string;
   create_at: Date;
   text: string;
-  origin: boolean;
+  root: boolean;
+  deleted: boolean | null;
+  root_comment_id?: string;
   reply?: CommentProps[] | null;
 };
 
