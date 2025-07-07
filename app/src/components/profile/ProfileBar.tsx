@@ -71,12 +71,12 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
           ) : (
             myUserId && (
               <div className="h-fit flex gap-1">
-                <IconButton
+                {/* <IconButton
                   icon="fa-solid fa-ellipsis"
                   size={18}
                   onPressed={(e) => openPostDropdown(e, "user-menu")}
-                />
-                <IconButton icon="fa-solid fa-message" onPressed={() => {}} />
+                /> */}
+                {/* <IconButton icon="fa-solid fa-message" onPressed={() => {}} /> */}
                 <FollowButton thisUserId={profileData.user_id} />
               </div>
             )

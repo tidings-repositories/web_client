@@ -26,13 +26,13 @@ function RouterDrawerItem() {
           behavior={() => navigator(`/profile/${userId}`)}
         />
       )}
-      {userId && (
+      {/* {userId && (
         <Slot
           icon="fa-solid fa-message"
           text={l10n.t("message")}
           behavior={() => navigator("/message")}
         />
-      )}
+      )} */}
       {userId && (
         <Slot
           icon="fa-solid fa-gear"
