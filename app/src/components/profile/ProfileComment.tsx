@@ -11,12 +11,14 @@ function ProfileComment({ ...data }: CommentProps) {
   } as CommentProps);
   const navigator = useNavigate();
 
-  const commentCreateFrom = createTimeDifferenceText(comment.create_at);
+  const commentCreateFrom = createTimeDifferenceText(
+    new Date(comment.create_at)
+  );
 
   return (
     <div
       role="button"
-      className="w-full h-full flex flex-col gap-4 py-2 px-1 cursor-pointer hover:bg-gray-100"
+      className="w-full h-full flex flex-col gap-4 py-4 px-1 cursor-pointer hover:bg-gray-100"
       onClick={() => navigator(`/post/${data.post_id}`)}
     >
       {/*comment*/}

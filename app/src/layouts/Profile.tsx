@@ -11,8 +11,6 @@ import Content from "../components/post/Content";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import ProfileComment from "../components/profile/ProfileComment";
 import { Post, CommentProps } from "../Types";
-
-import { createMockComment } from "../../dev/mockdata";
 import axios from "axios";
 import { produce } from "immer";
 import dayjs from "dayjs";
@@ -30,6 +28,7 @@ export default function Profile() {
   const postRef = useRef<Post[]>([]);
   const [postList, setPostList] = useState([] as Post[]);
 
+  const commentRef = useRef<CommentProps[]>([]);
   const [commentList, setCommentList] = useState([] as CommentProps[]);
 
   const likePostRef = useRef<Post[]>([]);
@@ -58,12 +57,32 @@ export default function Profile() {
     const OK = 200;
     const response = await axios
       .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
-        postId: lastPost.post_id,
         createdAt: dayjs(lastPost.create_at).tz("Asia/Seoul").format(),
       })
       .catch((_) => _);
     if (response.status == OK && response.data.length != 0) {
       setPostList(
+        produce((draft) => {
+          draft.push(...response.data);
+        })
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
+  const handleCommentScrollFetch = useCallback(async () => {
+    const lastComment: CommentProps =
+      commentRef.current[commentRef.current.length - 1];
+    const OK = 200;
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/comments`, {
+        createdAt: dayjs(lastComment.create_at).tz("Asia/Seoul").format(),
+      })
+      .catch((_) => _);
+    if (response.status == OK && response.data.length != 0) {
+      setCommentList(
         produce((draft) => {
           draft.push(...response.data);
         })
@@ -125,7 +144,13 @@ export default function Profile() {
     };
 
     const getUserCommentList = async () => {
-      //TODO:
+      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+      const response = await axios
+        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/comments`, {
+          createdAt: defaultCreatedAt,
+        })
+        .catch((_) => _);
+      if (response.status == OK) setCommentList(response.data);
     };
 
     const getUserLikePostList = async () => {
@@ -141,10 +166,6 @@ export default function Profile() {
     if (tabIdx == POST && postList.length == 0) getUserPostList();
     if (tabIdx == COMMENT && commentList.length == 0) getUserCommentList();
     if (tabIdx == LIKE && likePostList.length == 0) getUserLikePostList();
-
-    //TODO: fetch user data
-    setCommentList(Array.from({ length: 10 }).map(() => createMockComment()));
-    //
 
     window.scrollTo(0, 0);
   }, [userId, tabIdx]);
@@ -177,7 +198,7 @@ export default function Profile() {
               <InfiniteScroll
                 component={ProfileComment}
                 item={commentList}
-                loadMore={async () => true}
+                loadMore={handleCommentScrollFetch}
               />
             )) ||
             (tabIdx == 2 && (

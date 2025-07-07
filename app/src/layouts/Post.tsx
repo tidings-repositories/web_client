@@ -11,11 +11,12 @@ import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import Comment from "../components/post/Comment";
 import OutlineButton from "../components/button/OutlineButton";
-
-import { createMockComment } from "../../dev/mockdata";
 import useUserDataStore from "../store/UserDataStore";
 import axios from "axios";
 import MixedButton from "../components/button/MixedButton";
+import { requestPOSTWithToken } from "../scripts/requestWithToken";
+import CommentContext from "../context/CommentContext";
+import { produce } from "immer";
 
 export default function Post() {
   const COMMENT_TEXTFIELD_ID = "comment-textfield";
@@ -32,6 +33,21 @@ export default function Post() {
   const [post, setState] = useState(location.state ?? {});
   const [commentList, setComments] = useState([] as CommentProps[]);
 
+  const deleteComment = (commentId: string) => {
+    setComments((prev) =>
+      produce(prev, (draft) => {
+        const deleteComment = draft.find(
+          (comment) => comment.comment_id == commentId
+        );
+
+        if (deleteComment) {
+          deleteComment.deleted = true;
+          deleteComment.text = "삭제된 코멘트입니다";
+        }
+      })
+    );
+  };
+
   useEffect(() => {
     const getPostData = async () => {
       const OK = 200;
@@ -43,15 +59,19 @@ export default function Post() {
       if (response.status == OK) setState(response.data);
       else if (response.status == NOT_FOUND) window.location.href = "/";
     };
-    if (!location.state) getPostData();
-    window.scrollTo(0, 0);
 
-    //TODO: fetch postId comments createMockComment()
-    setComments(
-      Array.from({ length: Math.floor(5 * Math.random()) }).map(() =>
-        createMockComment()
-      ) as CommentProps[]
-    );
+    const getCommentData = async () => {
+      const OK = 200;
+      const response = await axios
+        .get(`${import.meta.env.VITE_API_URL}/comment/${postId}`)
+        .catch((_) => _);
+
+      if (response.status == OK) setComments(response.data);
+    };
+
+    if (!location.state) getPostData();
+    getCommentData();
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -144,19 +164,59 @@ export default function Post() {
                   fontColor="white"
                   radius={16}
                   onPressed={() => {
+                    const tempCommentId = (
+                      214252112123 * Math.random()
+                    ).toString();
+
                     const textarea = document.getElementById(
                       COMMENT_TEXTFIELD_ID
                     ) as HTMLTextAreaElement;
                     const commentData = textarea.value.trim();
                     textarea.value = "";
 
-                    //TODO fetch (comment + userState + posdId) @@@@@
+                    const postBottomCommentCountElement = document
+                      .getElementById(`${postId}-bottom-bar`)
+                      ?.querySelector(".fa-solid.fa-comment")
+                      ?.closest("div")
+                      ?.querySelector("p");
+
+                    const postComment = async () => {
+                      const CREATED = 201;
+
+                      const response = await requestPOSTWithToken(
+                        `${import.meta.env.VITE_API_URL}/comment/${postId}`,
+                        { text: commentData }
+                      ).catch((_) => _);
+
+                      //낙관적 업데이트 롤백
+                      if (response.status != CREATED) {
+                        setComments((state) =>
+                          state.filter((e) => e.comment_id != tempCommentId)
+                        );
+
+                        if (postBottomCommentCountElement) {
+                          postBottomCommentCountElement.textContent = (
+                            +postBottomCommentCountElement.textContent! - 1
+                          ).toString();
+                        }
+
+                        return;
+                      }
+                    };
+
+                    //코멘트 수 낙관적 업데이트
+                    if (postBottomCommentCountElement) {
+                      postBottomCommentCountElement.textContent = (
+                        +postBottomCommentCountElement.textContent! + 1
+                      ).toString();
+                    }
+
+                    postComment();
 
                     //낙관적 업데이트
                     setComments((state) => {
-                      const tempCommentId = 214252112123 * Math.random();
                       const newComment = {
-                        comment_id: tempCommentId.toString(),
+                        comment_id: tempCommentId,
                         user_id: userId,
                         user_name: userName,
                         badge: badge,
@@ -164,24 +224,13 @@ export default function Post() {
                         post_id: postId,
                         profile_image: profileImage,
                         text: commentData,
-                        origin: true,
+                        root: true,
+                        deleted: false,
                         reply: [],
                       } as CommentProps;
 
                       return [...state, newComment];
                     });
-
-                    //코멘트 수 낙관적 업데이트
-                    const postBottomCommentCountElement = document
-                      .getElementById(`${postId}-bottom-bar`)
-                      ?.querySelector(".fa-solid.fa-comment")
-                      ?.closest("div")
-                      ?.querySelector("p");
-                    if (postBottomCommentCountElement) {
-                      postBottomCommentCountElement.textContent = (
-                        +postBottomCommentCountElement.textContent! + 1
-                      ).toString();
-                    }
                   }}
                 />
               </div>
@@ -189,14 +238,16 @@ export default function Post() {
           </div>
         )}
         {/*Post Comments Area*/}
-        <div
-          id="comments"
-          className="flex flex-col gap-4 w-full max-w-200 px-8 pt-6 pb-3 mx-auto"
-        >
-          {commentList.map((comment, idx) => (
-            <Comment key={idx} {...comment} />
-          ))}
-        </div>
+        <CommentContext.Provider value={{ deleteComment }}>
+          <div
+            id="comments"
+            className="flex flex-col gap-4 w-full max-w-200 px-8 pt-6 pb-3 mx-auto"
+          >
+            {commentList.map((comment, idx) => (
+              <Comment key={idx} {...comment} />
+            ))}
+          </div>
+        </CommentContext.Provider>
       </div>
     </div>
   );
