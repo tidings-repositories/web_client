@@ -92,7 +92,7 @@ export default function Home() {
             />
           </PostContext.Provider>
         </div>
-        <div
+        {/* <div
           id="side"
           className={`relative ${checkWideView() ? "block" : "hidden"}`}
         >
@@ -106,7 +106,7 @@ export default function Home() {
               fetchUrl="https://example.com"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

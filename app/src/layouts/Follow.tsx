@@ -102,14 +102,14 @@ export default function Follow() {
           </div>
         </div>
 
-        <div
+        {/* <div
           id="side"
           className={`relative ${checkWideView() ? "block" : "hidden"}`}
         >
           <div className="sticky top-24">
             <Sidebox title={"추천 친구"} fetchUrl="https://example.com" />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
