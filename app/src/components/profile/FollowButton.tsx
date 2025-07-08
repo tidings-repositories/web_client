@@ -27,7 +27,9 @@ function FollowButton({ thisUserId }: FollowButtonProps) {
       color="gray"
       fontSize="base"
       radius={16}
-      onPressed={() => {
+      onPressed={(e) => {
+        e.stopPropagation();
+
         followingTable && followingTable[thisUserId]
           ? removeFollowing(thisUserId)
           : addFollowing(thisUserId);
