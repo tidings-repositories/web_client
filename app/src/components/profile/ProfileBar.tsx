@@ -25,22 +25,34 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
   const myUserId = useUserDataStore((state) => state.user_id);
   const isMySelf = myUserId === profileUser;
 
+  const [profileAvailable, setAvailable] = useState(true);
+  const [profileFound, setFound] = useState(true);
+
   const [profileData, setState] = useState({} as UserData);
   const navigator = useNavigate();
 
   useEffect(() => {
+    setAvailable(true);
+    setFound(true);
+
     const fetchProfileData = async () => {
       const OK = 200;
-      const result = await axios.get(
-        `${import.meta.env.VITE_API_URL}/profile/${profileUser}`
-      );
+      const NOT_FOUND = 404;
+      const GONE = 410;
+      const result = await axios
+        .get(`${import.meta.env.VITE_API_URL}/profile/${profileUser}`)
+        .catch((_) => _);
       if (result.status == OK) setState(result.data);
+      else if (result.status == NOT_FOUND) {
+        setAvailable(false);
+        setFound(false);
+      } else if (result.status == GONE) setAvailable(false);
     };
 
     fetchProfileData();
   }, [userId]);
 
-  return (
+  return profileAvailable ? (
     profileData.user_id && (
       <div className="w-full min-h-60 px-8 py-6 mx-auto flex flex-col gap-4 border-b-2 border-solid border-gray-300">
         {/*프로필 사진, 프로필 수정(본인)/팔로우&언팔로우(타인)+DM+misc(차단, 신고 등..)*/}
@@ -130,6 +142,28 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
         </div>
       </div>
     )
+  ) : profileFound ? (
+    //비활성화 프로필 카드 (회원 탈퇴)
+    <div className="w-full min-h-60 px-8 py-6 mx-auto flex gap-4 border-b-2 border-solid border-gray-300">
+      <img
+        id="profile-image"
+        src={"https://cdn.stellagram.kr/public/defaultProfile.png"}
+        style={{ objectFit: "cover" }}
+        className="w-30 h-30 my-auto rounded-3xl"
+      />
+      <p className="my-auto text-3xl">{"비활성화된 사용자입니다"}</p>
+    </div>
+  ) : (
+    //조회할 수 없는 프로필 (회원 없음)
+    <div className="w-full min-h-60 px-8 py-6 mx-auto flex gap-4 border-b-2 border-solid border-gray-300">
+      <img
+        id="profile-image"
+        src={"https://cdn.stellagram.kr/public/notFoundProfile.png"}
+        style={{ objectFit: "cover" }}
+        className="w-30 h-30 my-auto rounded-3xl"
+      />
+      <p className="my-auto text-3xl">{"존재하지 않는 사용자입니다"}</p>
+    </div>
   );
 }
 
