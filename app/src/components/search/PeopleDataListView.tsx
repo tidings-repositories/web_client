@@ -10,7 +10,11 @@ function PeopleDataListView({ people }: PeopleDataListViewProps) {
   return (
     <div>
       {/*Search post area*/}
-      <InfiniteScroll component={UserSlot} item={people} loadMore={() => {}} />
+      <InfiniteScroll
+        component={UserSlot}
+        item={people}
+        loadMore={async () => false}
+      />
     </div>
   );
 }

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Sidebox from "../components/public/Sidebox";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
-import TabBar from "../components/profile/TabBar";
+import TabBar from "../components/public/TabBar";
 import LatestDataListView from "../components/search/LatestDataListView";
 import PeopleDataListView from "../components/search/PeopleDataListView";
 import SearchTabBarItem from "../components/search/SearchTabBarItem";
-
-import { createMockPost, createMockProfile } from "../../dev/mockdata";
 import { Post, UserData } from "../Types";
+import { requestGETWithToken } from "../scripts/requestWithToken";
+import useUserDataStore from "../store/UserDataStore";
 /*
 아이디어: 탭으로 포스트, 사람 순으로 구분
 1. 일단 한 번 검색하면 쿼리에 적합한 일정 이상의 포스트와 사람 목록을 가져옴
@@ -25,11 +25,14 @@ import { Post, UserData } from "../Types";
 */
 
 export default function Search() {
+  const userId = useUserDataStore((state) => state.user_id);
   const [searchParams] = useSearchParams();
   const [tabIdx, setState] = useState(0);
   const [peopleSearchData, setPeopleState] = useState([] as UserData[]);
   const [postSearchData, setPostState] = useState([] as Post[]);
   const query = searchParams.get("q");
+
+  const navigator = useNavigate();
 
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
@@ -46,15 +49,33 @@ export default function Search() {
   };
 
   useEffect(() => {
-    //TODO: fetch search data with query
-    setPeopleState(Array.from({ length: 10 }).map(() => createMockProfile()));
-    setPostState(Array.from({ length: 10 }).map(() => createMockPost()));
-    //
+    if (userId == null) {
+      navigator("/");
+      alert("비회원은 검색을 이용할 수 없어요");
+    }
     window.scrollTo(0, 0);
 
     window.addEventListener("resize", resizeEvent);
     return () => window.removeEventListener("resize", resizeEvent);
   }, []);
+
+  useEffect(() => {
+    const OK = 200;
+    const searchUser = async () => {
+      let searchKeyword = query;
+      if (searchKeyword?.startsWith("@"))
+        searchKeyword = searchKeyword.slice(1);
+
+      const response = await requestGETWithToken(
+        `${import.meta.env.VITE_API_URL}/search/user?q=${searchKeyword}`
+      ).catch((_) => _);
+
+      if (response.status == OK) setPeopleState(response.data);
+    };
+
+    const trimQeury = query ?? "";
+    if (trimQeury !== "" && trimQeury.length > 1) searchUser();
+  }, [query]);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
