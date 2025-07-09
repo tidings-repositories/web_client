@@ -5,7 +5,7 @@ import Drawer from "../components/drawer/Drawer";
 import ProfileBar from "../components/profile/ProfileBar";
 import Sidebox from "../components/public/Sidebox";
 import InfiniteScroll from "../components/post/InfiniteScroll";
-import TabBar from "../components/profile/TabBar";
+import TabBar from "../components/public/TabBar";
 import ProfileTabBarItem from "../components/profile/ProfileTabBarItem";
 import Content from "../components/post/Content";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
@@ -50,6 +50,41 @@ export default function Profile() {
 
   const deletePost = (postId: string) => {
     setPostList((prev) => prev.filter((post) => post.post_id !== postId));
+  };
+
+  const POST = 0,
+    COMMENT = 1,
+    LIKE = 2;
+  const OK = 200;
+
+  const getUserPostList = async () => {
+    const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
+        createdAt: defaultCreatedAt,
+      })
+      .catch((_) => _);
+    if (response.status == OK) setPostList(response.data);
+  };
+
+  const getUserCommentList = async () => {
+    const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/comments`, {
+        createdAt: defaultCreatedAt,
+      })
+      .catch((_) => _);
+    if (response.status == OK) setCommentList(response.data);
+  };
+
+  const getUserLikePostList = async () => {
+    const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
+    const response = await axios
+      .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/likes`, {
+        createdAt: defaultCreatedAt,
+      })
+      .catch((_) => _);
+    if (response.status == OK) setLikePostList(response.data);
   };
 
   const handlePostScrollFetch = useCallback(async () => {
@@ -128,47 +163,22 @@ export default function Profile() {
   }, [likePostList]);
 
   useEffect(() => {
-    const POST = 0,
-      COMMENT = 1,
-      LIKE = 2;
-    const OK = 200;
+    setPostList([]);
+    setCommentList([]);
+    setLikePostList([]);
 
-    const getUserPostList = async () => {
-      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
-      const response = await axios
-        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
-          createdAt: defaultCreatedAt,
-        })
-        .catch((_) => _);
-      if (response.status == OK) setPostList(response.data);
-    };
+    if (tabIdx == POST) getUserPostList();
+    if (tabIdx == COMMENT) getUserCommentList();
+    if (tabIdx == LIKE) getUserLikePostList();
+  }, [userId]);
 
-    const getUserCommentList = async () => {
-      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
-      const response = await axios
-        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/comments`, {
-          createdAt: defaultCreatedAt,
-        })
-        .catch((_) => _);
-      if (response.status == OK) setCommentList(response.data);
-    };
-
-    const getUserLikePostList = async () => {
-      const defaultCreatedAt = dayjs().tz("Asia/Seoul").format();
-      const response = await axios
-        .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/likes`, {
-          createdAt: defaultCreatedAt,
-        })
-        .catch((_) => _);
-      if (response.status == OK) setLikePostList(response.data);
-    };
-
+  useEffect(() => {
     if (tabIdx == POST && postList.length == 0) getUserPostList();
     if (tabIdx == COMMENT && commentList.length == 0) getUserCommentList();
     if (tabIdx == LIKE && likePostList.length == 0) getUserLikePostList();
 
     window.scrollTo(0, 0);
-  }, [userId, tabIdx]);
+  }, [tabIdx]);
 
   useEffect(() => {
     window.addEventListener("resize", resizeEvent);

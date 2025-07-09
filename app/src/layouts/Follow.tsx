@@ -4,7 +4,7 @@ import { UserData } from "../Types";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
-import TabBar from "../components/profile/TabBar";
+import TabBar from "../components/public/TabBar";
 import FollowTabBarItem from "../components/profile/FollowTabBarItem";
 import Sidebox from "../components/public/Sidebox";
 import IconButton from "../components/button/IconButton";
