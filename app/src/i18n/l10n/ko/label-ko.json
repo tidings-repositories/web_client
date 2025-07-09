@@ -55,5 +55,7 @@
   "overRangeString": "4자 이상, 15자 이하로 입력해주세요",
   "noSupportCharacter": "영문, 숫자, \"_\" 문자만 사용할 수 있습니다",
   "alreadyTaken": "이미 사용 중인 아이디입니다.",
-  "thanksReport": "신고해주셔서 감사합니다!\n검토 후 처리할게요"
+  "thanksReport": "신고해주셔서 감사합니다!\n검토 후 처리할게요",
+  "notFoundPeople": "아무래도 찾는 사람이 없는 것 같아요",
+  "coupon": "쿠폰"
 }

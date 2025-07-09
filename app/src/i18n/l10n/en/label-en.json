@@ -56,5 +56,7 @@
   "overRangeString": "Please enter between 4 and 15 characters",
   "noSupportCharacter": "Only letters, numbers, and underscores (\"_\") are allowed",
   "alreadyTaken": "This username is already taken",
-  "thanksReport": "Thank you for your report!\nWe'll review it and take appropriate action"
+  "thanksReport": "Thank you for your report!\nWe'll review it and take appropriate action",
+  "notFoundPeople": "It seems like no one is looking for it",
+  "coupon": "Coupon"
 }
