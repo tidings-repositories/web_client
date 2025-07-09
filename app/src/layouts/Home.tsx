@@ -6,37 +6,55 @@ import Drawer from "../components/drawer/Drawer";
 import QuickPostComposer from "../components/composer/QuickPostComposer";
 import Content from "../components/post/Content";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
-import * as l10n from "i18next";
 import { produce } from "immer";
 import useUserDataStore from "../store/UserDataStore";
 import axios from "axios";
 import { Post } from "../Types";
 import dayjs from "dayjs";
 import PostContext from "../context/PostContext";
+import TabBar from "../components/public/TabBar";
+import HomeTabBarItem from "../components/home/HomeTabBarItem";
+import { requestPOSTWithToken } from "../scripts/requestWithToken";
 
 export default function Home() {
   const userId = useUserDataStore((state) => state.user_id);
-  const wideViewStandard = 1000;
+  const [scrolled, setScrollState] = useState(false);
+  const [tabIdx, setIdxState] = useState(0);
+
   const postRef = useRef<Post[]>([]);
   const [postList, setPostList] = useState<Post[]>([]);
+
+  const feedRef = useRef<Post[]>([]);
+  const [feedList, setFeedList] = useState<Post[]>([]);
+
+  const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
 
   const deletePost = (postId: string) => {
     setPostList((prev) => prev.filter((post) => post.post_id !== postId));
   };
 
-  const resizeEvent = () => {
-    const sideElement = document.getElementById("side")!;
-    const isSideExist = sideElement.style.display === "block";
+  // const resizeEvent = () => {
+  //   const sideElement = document.getElementById("side")!;
+  //   const isSideExist = sideElement.style.display === "block";
 
-    if (isSideExist && !checkWideView()) {
-      sideElement.style.display = "none";
-    } else if (!isSideExist && checkWideView()) {
-      sideElement.style.display = "block";
-    }
+  //   if (isSideExist && !checkWideView()) {
+  //     sideElement.style.display = "none";
+  //   } else if (!isSideExist && checkWideView()) {
+  //     sideElement.style.display = "block";
+  //   }
+  // };
+
+  const scrollEvent = () => {
+    const STANDARD = 1000;
+    setScrollState((state) => {
+      if (!state && window.scrollY > STANDARD) return true;
+      else if (state && window.scrollY <= STANDARD) return false;
+      else return state;
+    });
   };
 
-  const handleScrollFetch = useCallback(async () => {
+  const handleScrollRecentFetch = useCallback(async () => {
     const lastPost: Post = postRef.current[postRef.current.length - 1];
     const OK = 200;
     const response = await axios
@@ -57,24 +75,68 @@ export default function Home() {
     }
   }, []);
 
+  const handleScrollFeedFetch = useCallback(async () => {
+    const lastPost: Post = postRef.current[postRef.current.length - 1];
+    const OK = 200;
+    const response = await requestPOSTWithToken(
+      `${import.meta.env.VITE_API_URL}/post/feed`,
+      {
+        postId: lastPost.post_id,
+        createdAt: dayjs(lastPost.create_at).tz("Asia/Seoul").format(),
+      }
+    ).catch((_) => _);
+
+    if (response.status == OK && response.data.length != 0) {
+      setFeedList(
+        produce((draft) => {
+          draft.push(...response.data);
+        })
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
   useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const OK = 200;
     const getRecentPosts = async () => {
-      const OK = 200;
       const response = await axios
         .post(`${import.meta.env.VITE_API_URL}/post/recent`, {})
         .catch((_) => _);
       if (response.status == OK) setPostList(response.data);
     };
 
-    getRecentPosts();
+    const getFeedPosts = async () => {
+      const response = await requestPOSTWithToken(
+        `${import.meta.env.VITE_API_URL}/post/feed`,
+        {}
+      ).catch((_) => _);
+      if (response.status == OK) setFeedList(response.data);
+    };
 
-    window.addEventListener("resize", resizeEvent);
-    return () => window.removeEventListener("resize", resizeEvent);
+    if (tabIdx == 0 && postList.length == 0) getRecentPosts();
+    if (tabIdx == 1 && feedList.length == 0) getFeedPosts();
+  }, [tabIdx]);
+
+  useEffect(() => {
+    // window.addEventListener("resize", resizeEvent);
+    window.addEventListener("scroll", scrollEvent);
+    return () => {
+      // window.removeEventListener("resize", resizeEvent);
+      window.removeEventListener("scroll", scrollEvent);
+    };
   }, []);
 
   useEffect(() => {
     postRef.current = postList;
   }, [postList]);
+
+  useEffect(() => {
+    feedRef.current = feedList;
+  }, [feedList]);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
@@ -84,13 +146,29 @@ export default function Home() {
         <div className="flex flex-col">
           <div id="dummy-area" className="w-[98vw] max-w-173"></div>
           {userId && <QuickPostComposer />}
-          <PostContext.Provider value={{ deletePost }}>
+          {userId && (
+            <TabBar
+              child={
+                <HomeTabBarItem idx={tabIdx} idxDispatcher={setIdxState} />
+              }
+            />
+          )}
+          {tabIdx == 0 && (
+            <PostContext.Provider value={{ deletePost }}>
+              <InfiniteScroll
+                component={Content}
+                item={postList}
+                loadMore={handleScrollRecentFetch}
+              />
+            </PostContext.Provider>
+          )}
+          {tabIdx == 1 && (
             <InfiniteScroll
               component={Content}
-              item={postList}
-              loadMore={handleScrollFetch}
+              item={feedList}
+              loadMore={handleScrollFeedFetch}
             />
-          </PostContext.Provider>
+          )}
         </div>
         {/* <div
           id="side"
@@ -108,6 +186,19 @@ export default function Home() {
           </div>
         </div> */}
       </div>
+      {scrolled && (
+        <div
+          role="button"
+          id="floating-action-button"
+          className="sticky left-10 bottom-10 w-15 h-15 bg-white rounded-4xl content-center text-center cursor-pointer shadow shadow-md shadow-gray-500"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          <i
+            className="fa-solid fa-angle-up"
+            style={{ color: "gray", fontSize: 24 }}
+          />
+        </div>
+      )}
     </div>
   );
 }
