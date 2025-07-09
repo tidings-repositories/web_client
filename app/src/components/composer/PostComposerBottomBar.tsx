@@ -17,6 +17,7 @@ type PostDataProps = {
 };
 
 function PostComposerBottomBar() {
+  const MB = 1024 * 1024;
   const POST_TAG_MAXLENGTH = 20;
   const addTag = usePostComposerStore((state) => state.addTag);
   const addMediaFile = usePostComposerStore((state) => state.addMediaContent);
@@ -48,9 +49,10 @@ function PostComposerBottomBar() {
             const newFile = e.target.files ?? [];
             if (
               newFile.length != 0 &&
-              postComposerState.mediaContentList.length < 4
+              postComposerState.mediaContentList.length < 5
             ) {
-              addMediaFile(newFile as FileList);
+              if (newFile[0].size < 5 * MB) addMediaFile(newFile as FileList);
+              else alert("5MB 이하의 미디어 파일만 포함할 수 있습니다.");
             }
           }}
         />
