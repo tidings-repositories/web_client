@@ -14,11 +14,13 @@ function RouterDrawerItem() {
         text={l10n.t("home")}
         behavior={() => navigator("/")}
       />
-      <Slot
-        icon="fa-solid fa-magnifying-glass"
-        text={l10n.t("search")}
-        behavior={() => navigator("/search")}
-      />
+      {userId && (
+        <Slot
+          icon="fa-solid fa-magnifying-glass"
+          text={l10n.t("search")}
+          behavior={() => navigator("/search")}
+        />
+      )}
       {userId && (
         <Slot
           icon="fa-solid fa-user"
