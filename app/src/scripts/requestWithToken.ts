@@ -137,6 +137,7 @@ export async function requestDELETEWithToken(url) {
 }
 
 function saveToken(response: AxiosResponse<any, any>) {
+  if (!response.data) return;
   if (response.data.refreshToken)
     localStorage.setItem("refreshToken", response.data.refreshToken);
   if (response.data.accessToken)
