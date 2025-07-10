@@ -20,20 +20,22 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/profile/:userId" element={<Profile />} />
-        <Route path="/profile/:userId/followers" element={<Follow />} />
-        <Route path="/profile/:userId/following" element={<Follow />} />
-        <Route path="/post/:postId" element={<Post />} />
-        <Route path="/compose/post" element={<PostComposer />} />
-        <Route path="/message" element={<Message />} />
-        <Route path="/message/:directMessageId" element={<Message />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/setting" element={<Setting />} />
-      </Routes>
-    </Router>
-  </StrictMode>
+  <div className="w-screen bg-white">
+    <StrictMode>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/profile/:userId/followers" element={<Follow />} />
+          <Route path="/profile/:userId/following" element={<Follow />} />
+          <Route path="/post/:postId" element={<Post />} />
+          <Route path="/compose/post" element={<PostComposer />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/message/:directMessageId" element={<Message />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/setting" element={<Setting />} />
+        </Routes>
+      </Router>
+    </StrictMode>
+  </div>
 );
