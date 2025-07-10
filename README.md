@@ -10,6 +10,7 @@
 | ------------------ | --------------- | ------- | ------------ | ------- |
 | React              | Tailwind CSS    | Zustand | React-router | i18next |
 | fontawesome        | react-swipeable | immer   | Axios        | dayjs   |
+| react-markdown     |                 |         |              |         |
 
 ---
 
@@ -112,6 +113,12 @@ npm install dotenv
 
 ```bash
 npm install dayjs
+```
+
+#### Add react markdown package
+
+```bash
+npm install react-markdown
 ```
 
 </div>

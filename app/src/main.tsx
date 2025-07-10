@@ -15,6 +15,9 @@ import "./index.css";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import AgreementAdnPolicy from "./layouts/AgreementAndPolicy";
+import UserAgreement from "./components/setting/UserAgreement";
+import PrivacyPolicy from "./components/setting/PrivacyPolicy";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -34,6 +37,14 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/message/:directMessageId" element={<Message />} />
           <Route path="/search" element={<Search />} />
           <Route path="/setting" element={<Setting />} />
+          <Route
+            path="/setting/user-agreement"
+            element={<AgreementAdnPolicy child={<UserAgreement />} />}
+          />
+          <Route
+            path="/setting/privacy-policy"
+            element={<AgreementAdnPolicy child={<PrivacyPolicy />} />}
+          />
         </Routes>
       </Router>
     </StrictMode>
