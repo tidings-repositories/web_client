@@ -10,8 +10,22 @@ function Sign() {
         <p className="text-2xl">{l10n.t("signIn")}</p>
         <span>
           <p>
-            {l10n.t("signNoti1")} <a>{l10n.t("userAgreement")}</a>{" "}
-            {l10n.t("signNoti2")} <a>{l10n.t("privacyPolicy")}</a>
+            {l10n.t("signNoti1")}{" "}
+            <a
+              href="/setting/user-agreement"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {l10n.t("userAgreement")}
+            </a>{" "}
+            {l10n.t("signNoti2")}{" "}
+            <a
+              href="/setting/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {l10n.t("privacyPolicy")}
+            </a>
             {l10n.t("signNoti3")}
           </p>
         </span>
