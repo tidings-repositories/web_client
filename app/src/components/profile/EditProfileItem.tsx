@@ -244,8 +244,14 @@ async function updateProfileData(
     }
 
     changedProps.forEach((propName) => {
-      if (propName === "badge")
-        return (profileUpdateRequestBody[propName] = profileData[propName]!.id);
+      if (propName === "badge") {
+        if (profileData[propName] == null)
+          return (profileUpdateRequestBody[propName] = 0);
+        else
+          return (profileUpdateRequestBody[propName] =
+            profileData[propName].id);
+      }
+
       profileUpdateRequestBody[propName] = profileData[propName];
     });
 
