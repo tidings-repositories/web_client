@@ -65,7 +65,7 @@ function Register() {
       )
       .catch((_) => {
         setState(false);
-        setStatusMessage("Internal Server Error");
+        setStatusMessage("internalError");
         return _;
       })
       .then((response) => {

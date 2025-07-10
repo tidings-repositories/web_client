@@ -58,5 +58,12 @@
   "alreadyTaken": "This username is already taken",
   "thanksReport": "Thank you for your report!\nWe'll review it and take appropriate action",
   "notFoundPeople": "It seems like no one is looking for it",
-  "coupon": "Coupon"
+  "coupon": "Coupon",
+  "successfulUsedCoupon": "Coupon used successfully",
+  "alreadyUsedCoupon": "This coupon has already been used or is not available",
+  "noExistCoupon": "This coupon does not exist",
+  "internalError": "Sorry, there seems to be a problem with the server",
+  "enterCouponSentence": "Please enter the coupon to use",
+  "enterCouponWord": "Enter coupon",
+  "use": "Use now"
 }

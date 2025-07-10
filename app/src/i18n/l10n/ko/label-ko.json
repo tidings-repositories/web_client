@@ -57,5 +57,12 @@
   "alreadyTaken": "이미 사용 중인 아이디입니다.",
   "thanksReport": "신고해주셔서 감사합니다!\n검토 후 처리할게요",
   "notFoundPeople": "아무래도 찾는 사람이 없는 것 같아요",
-  "coupon": "쿠폰"
+  "coupon": "쿠폰",
+  "successfulUsedCoupon": "쿠폰을 성공적으로 사용했어요",
+  "alreadyUsedCoupon": "이미 사용되었거나, 사용하신 쿠폰이에요",
+  "noExistCoupon": "존재하지 않는 쿠폰이에요",
+  "internalError": "죄송합니다.. 아무래도 서버에 문제가 있는 것 같아요",
+  "enterCouponSentence": "사용할 쿠폰을 입력해주세요",
+  "enterCouponWord": "쿠폰 입력",
+  "use": "사용하기"
 }
