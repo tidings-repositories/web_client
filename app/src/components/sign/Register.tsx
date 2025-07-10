@@ -63,6 +63,11 @@ function Register() {
           withCredentials: true,
         }
       )
+      .catch((_) => {
+        setState(false);
+        setStatusMessage("Internal Server Error");
+        return _;
+      })
       .then((response) => {
         if (response.data) {
           if (response.data.result != "login") return;
@@ -98,7 +103,12 @@ function Register() {
           {/*input and enable state area*/}
           <div className="flex w-full gap-1 items-center justify-between">
             <p className="text-lg text-indigo-500">@</p>
-            <form id="idInput" className="w-full" onChange={chekcIdUsableEvent}>
+            <form
+              id="idInput"
+              className="w-full"
+              onChange={chekcIdUsableEvent}
+              onSubmit={(e) => e.preventDefault()}
+            >
               <input
                 type="text"
                 name="idInput"
