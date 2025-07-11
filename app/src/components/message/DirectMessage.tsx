@@ -5,7 +5,7 @@ import SimpleUserSlot from "../public/SimpleUserSlot";
 import IconButton from "../button/IconButton";
 import MyMessage from "./MyMessage";
 import TheirMessage from "./TheirMessage";
-import { createMockMessage } from "../../../dev/mockdata";
+// import { createMockMessage } from "../../../dev/mockdata";
 import { produce } from "immer";
 import useUserDataStore from "../../store/UserDataStore";
 
@@ -26,7 +26,7 @@ export default function DirectMessage({
 
   useEffect(() => {
     //TODO: fetch dm message list with directMessageInfo
-    setMessages(Array.from({ length: 10 }, () => createMockMessage()));
+    // setMessages(Array.from({ length: 10 }, () => createMockMessage()));
 
     //TODO: reverse infiniteScroll fetch and redering
 
