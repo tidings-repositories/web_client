@@ -3,7 +3,7 @@ import { DropwdownSlot } from "../public/Dropdown";
 import { NotificationData } from "../../Types";
 import * as l10n from "i18next";
 
-import { createMockNotification } from "../../../dev/mockdata"; //TODO: remove
+// import { createMockNotification } from "../../../dev/mockdata"; //TODO: remove
 
 type NotificationDropdownItemProps = {
   user_id: string;
@@ -13,11 +13,11 @@ function NotificationDropdownItem({ user_id }: NotificationDropdownItemProps) {
   const [notificationList, setState] = useState([] as NotificationData[]);
 
   useEffect(() => {
-    setState(
-      Array.from({ length: 10 }).map(() =>
-        createMockNotification()
-      ) as NotificationData[]
-    ); //fetch notification user_id
+    // setState(
+    //   Array.from({ length: 10 }).map(() =>
+    //     createMockNotification()
+    //   ) as NotificationData[]
+    // ); //fetch notification user_id
   }, []);
 
   return (

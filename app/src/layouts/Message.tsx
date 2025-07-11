@@ -6,7 +6,7 @@ import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import MessageList from "../components/message/MessageList";
 import DirectMessage from "../components/message/DirectMessage";
 
-import { createMockDM } from "../../dev/mockdata";
+// import { createMockDM } from "../../dev/mockdata";
 import useUserDataStore from "../store/UserDataStore";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export default function Message() {
     // - dm list or dm messages 만약 dm message라면  dm list 중에 있는지 확인하고 setSelectedDM
 
     //TODO: fetch direct messages
-    setMessageList(Array.from({ length: 2 }, () => createMockDM()));
+    // setMessageList(Array.from({ length: 2 }, () => createMockDM()));
   }, []);
 
   return (
