@@ -131,7 +131,7 @@ export default function Profile() {
   const handleLikePostScrollFetch = useCallback(async () => {
     const lastPost: Post = likePostRef.current[likePostRef.current.length - 1];
     const OK = 200;
-    const lastPostCreatedAt = dayjs(lastPost.create_at)
+    const lastPostCreatedAt = dayjs(lastPost.like_at ?? lastPost.create_at)
       .tz("Asia/Seoul")
       .format();
     const response = await axios

@@ -32,8 +32,10 @@ export type Post = {
   scrap_count: number;
   origin: boolean;
 
-  original_post_id: string;
-  original_user_id: string;
+  original_post_id?: string | null;
+  original_user_id?: string | null;
+
+  like_at?: Date | null;
 };
 
 export type CommentProps = {
