@@ -17,10 +17,6 @@ export default function Setting() {
 
   const navigator = useNavigate();
 
-  useEffect(() => {
-    if (userId == null) window.location.href = "/";
-  }, []);
-
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
       <AppBar
@@ -31,11 +27,13 @@ export default function Setting() {
       />
       <Drawer child={<RouterDrawerItem />} />
       <div id="setting" className="flex flex-col gap-2 px-4 pt-20 pb-10">
-        <Slot
-          icon="fa-solid fa-ticket-simple"
-          text={l10n.t("coupon")}
-          behavior={openCouponDialog}
-        />
+        {userId && (
+          <Slot
+            icon="fa-solid fa-ticket-simple"
+            text={l10n.t("coupon")}
+            behavior={openCouponDialog}
+          />
+        )}
         <Slot
           icon="fa-solid fa-clipboard-user"
           text={l10n.t("userAgreement")}

@@ -35,13 +35,13 @@ function RouterDrawerItem() {
           behavior={() => navigator("/message")}
         />
       )} */}
-      {userId && (
+      {
         <Slot
           icon="fa-solid fa-gear"
           text={l10n.t("setting")}
           behavior={() => navigator("/setting")}
         />
-      )}
+      }
     </div>
   );
 }
