@@ -48,7 +48,7 @@ function Content(post: Post) {
         )}
         <div className="flex justify-start items-start gap-2 rounded-xs">
           <MiniProfile
-            user_id={post.origin ? post.user_id : post.original_user_id}
+            user_id={post.origin ? post.user_id : post.original_user_id!}
             img_url={post.profile_image}
           />
           <div className="w-full flex flex-col justify-start gap-2">
