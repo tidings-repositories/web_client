@@ -43,7 +43,6 @@ function PostComposerBottomBar() {
         <input
           type="file"
           id="fileSearch"
-          multiple
           className="hidden"
           onChange={(e) => {
             const newFile = e.target.files ?? [];
