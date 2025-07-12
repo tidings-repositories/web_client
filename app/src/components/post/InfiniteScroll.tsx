@@ -40,9 +40,9 @@ async function scrollEvent(
   loadMore: () => Promise<boolean>,
   fetchStateDispatcher: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  const { scrollTop, offsetHeight } = document.documentElement;
+  const { scrollTop, scrollHeight } = document.documentElement;
   const currentOffset = window.innerHeight + scrollTop;
-  const requestPosition = offsetHeight - 600;
+  const requestPosition = scrollHeight - 600;
 
   if (currentOffset > requestPosition && !fetchState) {
     throttle();

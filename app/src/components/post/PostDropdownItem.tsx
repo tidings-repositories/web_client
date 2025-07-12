@@ -20,6 +20,7 @@ function PostDropdownItem({
   post_id,
   context,
 }: PostDropdownItemProps) {
+  const admin = "Stellagram";
   const userId = useUserDataStore((state) => state.user_id);
 
   return (
@@ -56,7 +57,7 @@ function PostDropdownItem({
           }}
         />
       )}
-      {user_id === userId && (
+      {(user_id === userId || userId == admin) && (
         <DropwdownSlot
           text={l10n.t("deletePost")}
           extraBeforeNode={

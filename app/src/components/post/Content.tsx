@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import MixedButton from "../button/MixedButton";
 
 function Content(post: Post) {
-  const mediaCount = post.content.media.length ?? 0;
+  if (!post.content) post.content = { text: "", media: [], tag: [] };
+  const mediaCount = post.content.media ? post.content.media.length : 0;
   const navigator = useNavigate();
 
   let isDragging = false;
