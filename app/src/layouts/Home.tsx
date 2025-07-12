@@ -76,7 +76,7 @@ export default function Home() {
   }, []);
 
   const handleScrollFeedFetch = useCallback(async () => {
-    const lastPost: Post = postRef.current[postRef.current.length - 1];
+    const lastPost: Post = feedRef.current[feedRef.current.length - 1];
     const OK = 200;
     const response = await requestPOSTWithToken(
       `${import.meta.env.VITE_API_URL}/post/feed`,
