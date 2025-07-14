@@ -49,7 +49,7 @@ function PostInfoBar({ ...info }: Post) {
         >
           @{info.origin ? info.user_id : info.original_user_id}
         </div>
-        <div className="mx-3 text-gray-500 font-light">{contentCreateFrom}</div>
+        <div className="mx-2 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
       <IconButton
         icon="fa-solid fa-ellipsis"
