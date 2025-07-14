@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 function Logo() {
   const navigator = useNavigate();
   return (
-    <button className="!p-0" onClick={() => navigator("/")}>
+    <button
+      className="!p-0"
+      onClick={() => {
+        if (location.pathname == "/") location.reload();
+        else navigator("/");
+      }}
+    >
       <div id="logo" className="flex items-center">
         <img className="min-w-8 max-w-8 min-h-8 max-h-8" src="/favicon.png" />
         <img
