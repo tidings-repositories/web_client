@@ -47,7 +47,7 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
     <div
       {...mobileMediaSwapEvent}
       id={`${post_id}-media`}
-      className="relative z-0 max-w-auto h-120 bg-black rounded-xl overflow-hidden"
+      className="relative grid max-w-auto h-full max-h-120 z-0 bg-transparent rounded-xl overflow-hidden"
       onClick={(event) => event.stopPropagation()}
     >
       <button
@@ -146,7 +146,7 @@ function MediaComponent({ content, isDesktop }: MediaComponentProps) {
         <>
           <img
             loading="lazy"
-            className="relative w-full h-full z-1 object-contain rounded-xl blur-none"
+            className="relative w-full h-full max-h-120 z-1 object-contain blur-none"
             src={content.url}
           />
           {/*background*/}
@@ -172,7 +172,7 @@ function MediaComponent({ content, isDesktop }: MediaComponentProps) {
               const videoElement = e.target as HTMLVideoElement;
               mobileVideoPauseAndPlayEvent(videoElement);
             }}
-            className="relative w-full h-full z-1 object-contain rounded-xl blur-none"
+            className="relative w-full h-full max-h-120 z-1 object-contain blur-none"
             src={content.url}
           />
           <div className="absolute z-0 top-0 w-full h-full bg-black brightness-50"></div>

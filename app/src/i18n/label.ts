@@ -7,12 +7,12 @@ const module = await loadLanguageFile();
 const language = module.default;
 
 async function loadLanguageFile() {
-  const defaultLanguage = navigator.language ?? "en-US";
+  const defaultLanguage = navigator.language ?? "ko-KR";
 
-  if (defaultLanguage == us) {
-    return import("./l10n/en/label-en.json");
-  } else if (defaultLanguage == kr) {
+  if (defaultLanguage == kr) {
     return import("./l10n/ko/label-ko.json");
+  } else if (defaultLanguage == us) {
+    return import("./l10n/en/label-en.json");
   } else {
     return import("./l10n/en/label-en.json");
   }
@@ -23,7 +23,7 @@ const defaultSetting = {
 };
 
 i18next.init({
-  lng: "en",
+  lng: "ko",
   resources: {
     en: defaultSetting,
     ko: defaultSetting,
