@@ -89,6 +89,7 @@ export default function Search() {
           {(tabIdx == 0 && (
             <LatestDataListView
               people={peopleSearchData.slice(0, 3)}
+              morePeople={peopleSearchData.length > 3}
               posts={postSearchData}
               idxDispatcher={setState}
             />
