@@ -64,7 +64,7 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
       </button>
 
       {/*Media Index*/}
-      {contents.length != 0 && (
+      {contents.length > 1 && (
         <div className="absolute p-0.125 px-2 top-0 right-0 z-10 bg-neutral-800 opacity-80 text-white rounded-lg content-center text-center mx-4 my-4">
           {mediaIndex + 1} / {contents.length}
         </div>
