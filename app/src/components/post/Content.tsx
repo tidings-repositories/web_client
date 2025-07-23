@@ -37,7 +37,7 @@ function Content(post: Post) {
         })
       }
     >
-      <div className="w-full flex flex-col gap-1 rounded-xs py-3 px-8 hover:bg-gray-100">
+      <div className="w-full flex flex-col gap-1 rounded-xs py-3 px-4 hover:bg-gray-100">
         {!post.origin && (
           <MixedButton
             icon="fa-solid fa-repeat"
