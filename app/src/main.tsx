@@ -1,6 +1,7 @@
-import { StrictMode } from "react";
+//import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import Home from "./layouts/Home";
 import Profile from "./layouts/Profile";
 import PostComposer from "./layouts/PostComposer";
@@ -22,31 +23,61 @@ import PrivacyPolicy from "./components/setting/PrivacyPolicy";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/profile/:userId",
+    element: <Profile />,
+  },
+  {
+    path: "/profile/:userId/followers",
+    element: <Follow />,
+  },
+  {
+    path: "/profile/:userId/following",
+    element: <Follow />,
+  },
+  {
+    path: "/post/:postId",
+    element: <Post />,
+  },
+  {
+    path: "/compose/post",
+    element: <PostComposer />,
+  },
+  {
+    path: "/message",
+    element: <Message />,
+  },
+  {
+    path: "/message/:directMessageId",
+    element: <Message />,
+  },
+  {
+    path: "/search",
+    element: <Search />,
+  },
+  {
+    path: "/setting",
+    element: <Setting />,
+  },
+  {
+    path: "/setting/user-agreement",
+    element: <AgreementAdnPolicy child={<UserAgreement />} />,
+  },
+  {
+    path: "/setting/privacy-policy",
+    element: <AgreementAdnPolicy child={<PrivacyPolicy />} />,
+  },
+]);
+
 createRoot(document.getElementById("root")!).render(
+  // <StrictMode>
   <div className="w-screen bg-white">
-    <StrictMode>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile/:userId" element={<Profile />} />
-          <Route path="/profile/:userId/followers" element={<Follow />} />
-          <Route path="/profile/:userId/following" element={<Follow />} />
-          <Route path="/post/:postId" element={<Post />} />
-          <Route path="/compose/post" element={<PostComposer />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/message/:directMessageId" element={<Message />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route
-            path="/setting/user-agreement"
-            element={<AgreementAdnPolicy child={<UserAgreement />} />}
-          />
-          <Route
-            path="/setting/privacy-policy"
-            element={<AgreementAdnPolicy child={<PrivacyPolicy />} />}
-          />
-        </Routes>
-      </Router>
-    </StrictMode>
+    <RouterProvider router={router} />
   </div>
+  // </StrictMode>
 );
