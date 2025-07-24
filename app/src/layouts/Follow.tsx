@@ -6,7 +6,7 @@ import Drawer from "../components/drawer/Drawer";
 import RouterDrawerItem from "../components/drawer/RouterDrawerItem";
 import TabBar from "../components/public/TabBar";
 import FollowTabBarItem from "../components/profile/FollowTabBarItem";
-import Sidebox from "../components/public/Sidebox";
+// import Sidebox from "../components/public/Sidebox";
 import IconButton from "../components/button/IconButton";
 import SimpleUserSlot from "../components/public/SimpleUserSlot";
 import UserSlot from "../components/public/UserSlot";
@@ -26,16 +26,16 @@ export default function Follow() {
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
 
-  const resizeEvent = () => {
-    const sideElement = document.getElementById("side")!;
-    const isSideExist = sideElement.style.display === "block";
+  // const resizeEvent = () => {
+  //   const sideElement = document.getElementById("side")!;
+  //   const isSideExist = sideElement.style.display === "block";
 
-    if (isSideExist && !checkWideView()) {
-      sideElement.style.display = "none";
-    } else if (!isSideExist && checkWideView()) {
-      sideElement.style.display = "block";
-    }
-  };
+  //   if (isSideExist && !checkWideView()) {
+  //     sideElement.style.display = "none";
+  //   } else if (!isSideExist && checkWideView()) {
+  //     sideElement.style.display = "block";
+  //   }
+  // };
 
   useEffect(() => {
     const path = location.pathname.split("/");
@@ -66,8 +66,8 @@ export default function Follow() {
 
     window.scrollTo(0, 0);
 
-    window.addEventListener("resize", resizeEvent);
-    return () => window.removeEventListener("resize", resizeEvent);
+    // window.addEventListener("resize", resizeEvent);
+    // return () => window.removeEventListener("resize", resizeEvent);
   }, []);
 
   return (
