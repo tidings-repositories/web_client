@@ -11,18 +11,6 @@ import SearchTabBarItem from "../components/search/SearchTabBarItem";
 import { Post, UserData } from "../Types";
 import { requestGETWithToken } from "../scripts/requestWithToken";
 import useUserDataStore from "../store/UserDataStore";
-/*
-아이디어: 탭으로 포스트, 사람 순으로 구분
-1. 일단 한 번 검색하면 쿼리에 적합한 일정 이상의 포스트와 사람 목록을 가져옴
-2. 탭에 따라 하단으로 스크롤해 fetch 이벤트가 발생할 경우 해당 목록만 추가로 가져오기
-
-포스트탭: 
-  - 검색어에 적합한 사람을 몇 명 보여줌 `View all` 클릭 시 사람 탭으로 이동
-  - 최신순으로 검색어와 연관된 포스트를 보여줌 (무한 스크롤링 필요)
-
-사람 탭:
-  - 검색어와 적합한 사람을 보여줌 (무한 스크롤링 필요)
-*/
 
 export default function Search() {
   const userId = useUserDataStore((state) => state.user_id);
@@ -89,6 +77,7 @@ export default function Search() {
           {(tabIdx == 0 && (
             <LatestDataListView
               people={peopleSearchData.slice(0, 3)}
+              morePeople={peopleSearchData.length > 3}
               posts={postSearchData}
               idxDispatcher={setState}
             />

@@ -7,12 +7,14 @@ import * as l10n from "i18next";
 
 type LatestDataListViewProps = {
   people: UserData[];
+  morePeople: boolean;
   posts: Post[];
   idxDispatcher: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function LatestDataListView({
   people,
+  morePeople,
   posts,
   idxDispatcher,
 }: LatestDataListViewProps) {
@@ -34,7 +36,7 @@ function LatestDataListView({
         )}
         {/*더보기*/}
         <div className="w-full px-4 pb-2 text-end">
-          {people.length > 4 && (
+          {morePeople && (
             <TextButton
               text={l10n.t("seeMore")}
               fontSize="base"

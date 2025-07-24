@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useBlocker, useNavigationType, useParams } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
@@ -89,6 +89,7 @@ export default function Profile() {
 
   const handlePostScrollFetch = useCallback(async () => {
     const lastPost: Post = postRef.current[postRef.current.length - 1];
+    if (!lastPost) return true;
     const OK = 200;
     const response = await axios
       .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/posts`, {
@@ -110,6 +111,8 @@ export default function Profile() {
   const handleCommentScrollFetch = useCallback(async () => {
     const lastComment: CommentProps =
       commentRef.current[commentRef.current.length - 1];
+    if (!lastComment) return true;
+
     const OK = 200;
     const response = await axios
       .post(`${import.meta.env.VITE_API_URL}/profile/${userId}/comments`, {
@@ -130,6 +133,8 @@ export default function Profile() {
 
   const handleLikePostScrollFetch = useCallback(async () => {
     const lastPost: Post = likePostRef.current[likePostRef.current.length - 1];
+    if (!lastPost) return true;
+
     const OK = 200;
     const lastPostCreatedAt = dayjs(lastPost.like_at ?? lastPost.create_at)
       .tz("Asia/Seoul")
@@ -154,31 +159,102 @@ export default function Profile() {
     }
   }, []);
 
+  const blocker = useBlocker(true);
   useEffect(() => {
-    postRef.current = postList;
-  }, [postList]);
+    if (blocker.proceed) {
+      if (blocker.location.pathname == location.pathname) {
+        return blocker.proceed();
+      }
+      const KEY = "pageStateHistory";
+      const pageStateHistory = sessionStorage.getItem(KEY) ?? "[]";
+      const stack = JSON.parse(pageStateHistory);
 
-  useEffect(() => {
-    likePostRef.current = likePostList;
-  }, [likePostList]);
+      stack.push({
+        path: location.pathname,
+        tab: tabIdx,
+        data:
+          tabIdx == POST
+            ? postList
+            : tabIdx == COMMENT
+            ? commentList
+            : likePostList,
+        scroll: scrollY,
+      });
+      sessionStorage.setItem(KEY, JSON.stringify(stack));
+      blocker.proceed();
+    }
+  }, [blocker]);
 
   useEffect(() => {
     setPostList([]);
     setCommentList([]);
     setLikePostList([]);
-
-    if (tabIdx == POST) getUserPostList();
-    if (tabIdx == COMMENT) getUserCommentList();
-    if (tabIdx == LIKE) getUserLikePostList();
   }, [userId]);
 
+  const navigationType = useNavigationType();
   useEffect(() => {
-    if (tabIdx == POST && postList.length == 0) getUserPostList();
-    if (tabIdx == COMMENT && commentList.length == 0) getUserCommentList();
-    if (tabIdx == LIKE && likePostList.length == 0) getUserLikePostList();
+    const KEY = "pageStateHistory";
+    const pageStateHistory = sessionStorage.getItem(KEY) ?? "[]";
+    const stack = JSON.parse(pageStateHistory);
+    const lastHistory = stack.pop();
 
-    window.scrollTo(0, 0);
-  }, [tabIdx]);
+    if (
+      navigationType == "POP" &&
+      lastHistory &&
+      lastHistory.path == location.pathname
+    ) {
+      sessionStorage.setItem(KEY, JSON.stringify(stack));
+
+      if (lastHistory.tab == POST) setPostList(lastHistory.data);
+      else if (lastHistory.tab == COMMENT) setCommentList(lastHistory.data);
+      else if (lastHistory.tab == LIKE) setLikePostList(lastHistory.data);
+
+      setState(lastHistory.tab);
+      setTimeout(() =>
+        requestAnimationFrame(() => {
+          window.scrollTo(0, lastHistory.scroll);
+        })
+      );
+    } else {
+      if (lastHistory) stack.push(lastHistory);
+      sessionStorage.setItem(KEY, JSON.stringify(stack));
+
+      setPostList((prev) => {
+        if (tabIdx == POST && prev.length == 0) {
+          getUserPostList();
+          window.scrollTo(0, 0);
+        }
+        return prev;
+      });
+      setCommentList((prev) => {
+        if (tabIdx == COMMENT && prev.length == 0) {
+          getUserCommentList();
+          window.scrollTo(0, 0);
+        }
+
+        return prev;
+      });
+      setLikePostList((prev) => {
+        if (tabIdx == LIKE && prev.length == 0) {
+          getUserLikePostList();
+          window.scrollTo(0, 0);
+        }
+        return prev;
+      });
+    }
+  }, [tabIdx, userId]);
+
+  useEffect(() => {
+    postRef.current = postList;
+  }, [postList]);
+
+  useEffect(() => {
+    commentRef.current = commentList;
+  }, [commentList]);
+
+  useEffect(() => {
+    likePostRef.current = likePostList;
+  }, [likePostList]);
 
   useEffect(() => {
     window.addEventListener("resize", resizeEvent);
