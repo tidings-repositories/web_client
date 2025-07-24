@@ -210,8 +210,9 @@ export default function Profile() {
       else if (lastHistory.tab == LIKE) setLikePostList(lastHistory.data);
 
       setState(lastHistory.tab);
-      setTimeout(() =>
-        requestAnimationFrame(() => {
+
+      requestAnimationFrame(() =>
+        setTimeout(() => {
           window.scrollTo(0, lastHistory.scroll);
         })
       );

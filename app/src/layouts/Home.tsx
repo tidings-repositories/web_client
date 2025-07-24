@@ -144,8 +144,8 @@ export default function Home() {
         : setFeedList(lastHistory.data);
       setIdxState(lastHistory.tab);
 
-      setTimeout(() =>
-        requestAnimationFrame(() => {
+      requestAnimationFrame(() =>
+        setTimeout(() => {
           window.scrollTo(0, lastHistory.scroll);
         })
       );
