@@ -3,17 +3,19 @@ import FullScreenImageViewer from "../public/FullScreenImageViewer";
 import ReactDOM from "react-dom/client";
 
 function MyMessage({ ...message }: MessageProps) {
+  const messageSendAt = new Date(message.send_at);
+
   return (
     <div className="flex flex-col gap-1 justify-end items-end px-4">
       {/*message box*/}
       <div className="relative flex justify-end max-w-3/4">
         <div className="flex flex-col gap-2 p-2 rounded-lg bg-yellow-300">
-          {message.media && (
+          {message.image && (
             <button
               className="!p-0"
-              onClick={() => viewImageFullScreen(message.media)}
+              onClick={() => viewImageFullScreen(message.image)}
             >
-              <img src={message.media} />
+              <img src={message.image} />
             </button>
           )}
           {message.text && (
@@ -39,7 +41,7 @@ function MyMessage({ ...message }: MessageProps) {
       </div>
       {/*message create at*/}
       <p className="text-xs text-gray-500">
-        {message.create_at.toLocaleTimeString()}
+        {messageSendAt.toLocaleTimeString()}
       </p>
     </div>
   );
