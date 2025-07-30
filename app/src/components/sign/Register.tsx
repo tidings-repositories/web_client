@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as l10n from "i18next";
 import OutlineButton from "../button/OutlineButton";
 import axios from "axios";
+import iconPack from "../public/IconPack";
 
 function Register() {
   let debounceRef;
@@ -117,13 +118,14 @@ function Register() {
               />
             </form>
             {/*enable or disable icon*/}
-            <i
+            <svg
+              aria-hidden="true"
               id="ableStateIcon"
-              className={
-                idUsableState ? "fa-solid fa-check" : "fa-solid fa-xmark"
-              }
-              style={{ fontSize: 16, color: getColor(idUsableState) }}
-            />
+              style={{ width: 16, height: 16, color: getColor(idUsableState) }}
+            >
+              {iconPack(idUsableState ? "check" : "normal-xmark")}
+              <use xlinkHref={`#${idUsableState ? "check" : "normal-xmark"}`} />
+            </svg>
           </div>
         </div>
         <p

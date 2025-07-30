@@ -78,7 +78,7 @@ function PostBottomBar({
     >
       {origin && (
         <MixedButton
-          icon="fa-solid fa-heart"
+          icon="like"
           text={like_count}
           color={
             likePostTable && likePostTable[post_id] ? "lightcoral" : "gray"
@@ -88,13 +88,13 @@ function PostBottomBar({
         />
       )}
       <MixedButton
-        icon="fa-solid fa-comment"
+        icon="comment"
         text={comment_count}
         gap={1}
         onPressed={commentEvent}
       />
       <MixedButton
-        icon="fa-solid fa-repeat"
+        icon="scrap"
         text={origin ? scrap_count : ""}
         gap={1}
         onPressed={scrapEvent}

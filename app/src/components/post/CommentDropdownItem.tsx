@@ -8,6 +8,7 @@ import Dialog from "../public/Dialog";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
 import ReactDOM from "react-dom/client";
+import iconPack from "../public/IconPack";
 
 type CommentDropdownItemProps = {
   user_id: string;
@@ -28,15 +29,18 @@ function CommentDropdownItem({
         <DropwdownSlot
           text={l10n.t("report")}
           extraBeforeNode={
-            <i
-              className="fa-solid fa-flag"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               style={{
-                fontSize: 14,
                 color: "gray",
-                width: 20,
+                width: 16,
+                height: 16,
                 textAlign: "left",
               }}
-            ></i>
+            >
+              {iconPack("flag")}
+              <use xlinkHref={`#flag`} />
+            </svg>
           }
           behavior={async () => {
             const OK = 200;
@@ -60,15 +64,18 @@ function CommentDropdownItem({
         <DropwdownSlot
           text={l10n.t("deleteComment")}
           extraBeforeNode={
-            <i
-              className="fa-solid fa-trash-can"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               style={{
-                fontSize: 14,
                 color: "gray",
-                width: 20,
+                width: 16,
+                height: 16,
                 textAlign: "left",
               }}
-            ></i>
+            >
+              {iconPack("trash")}
+              <use xlinkHref={`#trash`} />
+            </svg>
           }
           behavior={async () => {
             //TODO: fetch to DELETE request Comment_id

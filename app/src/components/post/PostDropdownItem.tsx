@@ -8,6 +8,7 @@ import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
 import ReactDOM from "react-dom/client";
 import Dialog from "../public/Dialog";
+import iconPack from "../public/IconPack";
 
 type PostDropdownItemProps = {
   user_id: string;
@@ -29,15 +30,18 @@ function PostDropdownItem({
         <DropwdownSlot
           text={l10n.t("report")}
           extraBeforeNode={
-            <i
-              className="fa-solid fa-flag"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               style={{
-                fontSize: 14,
                 color: "gray",
-                width: 20,
+                width: 16,
+                height: 16,
                 textAlign: "left",
               }}
-            ></i>
+            >
+              {iconPack("flag")}
+              <use xlinkHref={`#flag`} />
+            </svg>
           }
           behavior={async () => {
             const OK = 200;
@@ -61,15 +65,18 @@ function PostDropdownItem({
         <DropwdownSlot
           text={l10n.t("deletePost")}
           extraBeforeNode={
-            <i
-              className="fa-solid fa-trash-can"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               style={{
-                fontSize: 14,
                 color: "gray",
-                width: 20,
+                width: 16,
+                height: 16,
                 textAlign: "left",
               }}
-            ></i>
+            >
+              {iconPack("trash")}
+              <use xlinkHref={`#trash`} />
+            </svg>
           }
           behavior={async () => {
             const NO_CONTENT = 204;

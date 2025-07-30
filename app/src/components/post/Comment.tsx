@@ -65,7 +65,7 @@ function Comment({ ...data }: CommentProps) {
                   </div>
                 </div>
                 <IconButton
-                  icon="fa-solid fa-ellipsis"
+                  icon="more"
                   onPressed={(e) => {
                     openCommentDropdown(
                       e,
@@ -92,7 +92,7 @@ function Comment({ ...data }: CommentProps) {
             {data.root && (
               <div className="w-full flex">
                 <MixedButton
-                  icon="fa-solid fa-comment"
+                  icon="comment"
                   gap={2}
                   text={"reply"}
                   onPressed={() => setState((state) => !state)}
@@ -147,7 +147,7 @@ function Comment({ ...data }: CommentProps) {
 
                     const postBottomCommentCountElement = document
                       .getElementById(`${data.post_id}-bottom-bar`)
-                      ?.querySelector(".fa-solid.fa-comment")
+                      ?.querySelector("#comment")
                       ?.closest("div")
                       ?.querySelector("p");
 

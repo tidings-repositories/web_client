@@ -80,7 +80,7 @@ export default function Follow() {
           <div className="sticky top-14 bg-white">
             <div className="flex gap-2 p-2">
               <IconButton
-                icon="fa-solid fa-chevron-left"
+                icon="chevron-left"
                 onPressed={() => navigator(`/profile/${userInfo.user_id}`)}
               />
               <SimpleUserSlot {...userInfo} />

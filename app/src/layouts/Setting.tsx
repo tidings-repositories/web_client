@@ -29,24 +29,24 @@ export default function Setting() {
       <div id="setting" className="flex flex-col gap-2 px-4 pt-20 pb-10">
         {userId && (
           <Slot
-            icon="fa-solid fa-ticket-simple"
+            icon="coupon"
             text={l10n.t("coupon")}
             behavior={openCouponDialog}
           />
         )}
         <Slot
-          icon="fa-solid fa-clipboard-user"
+          icon="agreement"
           text={l10n.t("userAgreement")}
           behavior={() => navigator("/setting/user-agreement")}
         />
         <Slot
-          icon="fa-solid fa-lock"
+          icon="privacy"
           text={l10n.t("privacyPolicy")}
           behavior={() => navigator("/setting/privacy-policy")}
         />
         {userId && (
           <Slot
-            icon="fa-solid fa-arrow-right-from-bracket"
+            icon="signout"
             text={l10n.t("signOut")}
             behavior={() => {
               localStorage.removeItem("accessToken");
@@ -60,7 +60,7 @@ export default function Setting() {
         )}
         {userId && (
           <Slot
-            icon="fa-solid fa-user-large-slash"
+            icon="person-slash"
             text={l10n.t("deleteAccount")}
             color="red"
             behavior={openDeleteAccountDialog}

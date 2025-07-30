@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { PostMediaStructure } from "../../Types";
 import { useSwipeable } from "react-swipeable";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
+import iconPack from "../public/IconPack";
 
 type MediaContentProps = {
   contents: PostMediaStructure[];
@@ -86,16 +87,25 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
                 }}
               >
                 <div
-                  className="absolute w-16 h-1/2 z-3 inset-0 my-auto mr-auto opacity-50 content-center text-center"
+                  className="absolute w-16 h-1/2 z-3 inset-0 my-auto mr-auto opacity-70 content-center"
                   style={{
                     backgroundImage:
                       "radial-gradient(closest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0))",
                   }}
                 >
-                  <i
-                    className="fa-solid fa-chevron-left"
-                    style={{ color: "white", scale: "150%" }}
-                  ></i>
+                  <svg
+                    className="mx-auto"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      width: 24,
+                      height: 24,
+                      color: "white",
+                      scale: "150%",
+                    }}
+                  >
+                    {iconPack("chevron-left")}
+                    <use xlinkHref={`#chevron-left`} />
+                  </svg>
                 </div>
               </button>
             )}
@@ -112,16 +122,25 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
                 }}
               >
                 <div
-                  className="absolute w-16 h-1/2 z-3 inset-0 my-auto ml-auto opacity-50 content-center text-center"
+                  className="absolute w-16 h-1/2 z-3 inset-0 my-auto ml-auto opacity-70 content-center"
                   style={{
                     backgroundImage:
                       "radial-gradient(closest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0))",
                   }}
                 >
-                  <i
-                    className="fa-solid fa-chevron-right"
-                    style={{ color: "white", scale: "150%" }}
-                  ></i>
+                  <svg
+                    className="mx-auto"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      width: 24,
+                      height: 24,
+                      color: "white",
+                      scale: "150%",
+                    }}
+                  >
+                    {iconPack("chevron-right")}
+                    <use xlinkHref={`#chevron-right`} />
+                  </svg>
                 </div>
               </button>
             )}

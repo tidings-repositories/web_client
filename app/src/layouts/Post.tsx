@@ -85,7 +85,7 @@ export default function Post() {
             {!post.origin && (
               <div>
                 <MixedButton
-                  icon="fa-solid fa-repeat"
+                  icon="scrap"
                   text={`clipped by @${post.user_id}`}
                   onPressed={() => navigator(`/profile/${post.user_id}`)}
                   gap={2}
@@ -171,7 +171,7 @@ export default function Post() {
 
                     const postBottomCommentCountElement = document
                       .getElementById(`${postId}-bottom-bar`)
-                      ?.querySelector(".fa-solid.fa-comment")
+                      ?.querySelector("#comment")
                       ?.closest("div")
                       ?.querySelector("p");
 

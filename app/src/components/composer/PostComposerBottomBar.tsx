@@ -56,11 +56,11 @@ function PostComposerBottomBar() {
           }}
         />
         <IconButton
-          icon="fa-solid fa-image"
+          icon="image"
           onPressed={() => document.getElementById("fileSearch")!.click()}
         />
         <IconButton
-          icon="fa-solid fa-hashtag"
+          icon="hashtag"
           onPressed={() => controlTagTextfieldWidthEvent(`tag-textfield-box`)}
         />
         {/*태그 입력창*/}
@@ -91,7 +91,7 @@ function PostComposerBottomBar() {
           </form>
           {/*textfield clear button*/}
           <IconButton
-            icon="fa-solid fa-xmark"
+            icon="xmark"
             onPressed={() => {
               const tagTextfield = document.getElementById(
                 `tag-textfield`

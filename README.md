@@ -73,24 +73,6 @@ npm install i18next
 npm i react-swipeable
 ```
 
-#### Add icon package
-
-- https://fontawesome.com/search?o=r&ic=free&s=solid&ip=classic
-
-```bash
-npm install @fortawesome/fontawesome-free
-```
-
-```html
-<!--index.html-->
-<head>
-  <script
-    src="https://kit.fontawesome.com/98033d33dd.js"
-    crossorigin="anonymous"
-  ></script>
-</head>
-```
-
 #### Add Immer package
 
 ```bash
