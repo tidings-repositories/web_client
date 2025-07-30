@@ -102,12 +102,7 @@ export default function Post() {
               />
               <div className="w-full flex flex-col justify-start gap-2">
                 <PostInfoBar {...post} />
-                <p
-                  className="line-clamp-6 select-text cursor-text"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {post.content.text}
-                </p>
+                <p style={{ whiteSpace: "pre-wrap" }}>{post.content.text}</p>
                 {post.content.media.length >= 1 && (
                   <MediaContent
                     contents={post.content.media}
