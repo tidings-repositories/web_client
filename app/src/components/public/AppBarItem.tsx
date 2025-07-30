@@ -59,7 +59,7 @@ function AppBarItem({
       {/*Drawer button and Logo button*/}
       <div className="flex shrink-0 gap-1">
         {showDrawer && (
-          <IconButton icon="menu" size={18} onPressed={drawerClickEvent} />
+          <IconButton icon="menu" size={24} onPressed={drawerClickEvent} />
         )}
         {showLogo && <Logo />}
       </div>
@@ -73,8 +73,8 @@ function AppBarItem({
             xmlns="http://www.w3.org/2000/svg"
             style={{
               color: "gray",
-              width: 18,
-              height: 18,
+              width: 24,
+              height: 24,
             }}
           >
             {iconPack("search")}
@@ -109,21 +109,21 @@ function AppBarItem({
           {showMessage && (
             <IconButton
               icon="message"
-              size={18}
+              size={24}
               onPressed={() => navigator("/message")}
             />
           )}
           {showCompmoser && (
             <IconButton
               icon="compose"
-              size={18}
+              size={24}
               onPressed={() => navigator("/compose/post")}
             />
           )}
           {showNoti && (
             <IconButton
               icon="bell"
-              size={18}
+              size={24}
               onPressed={(e) =>
                 openNotificationDropdown(e, "notification-dropdown", userId)
               }
