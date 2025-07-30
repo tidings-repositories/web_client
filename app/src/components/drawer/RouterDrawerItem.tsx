@@ -10,34 +10,34 @@ function RouterDrawerItem() {
   return (
     <div className="flex flex-col gap-2">
       <Slot
-        icon="fa-solid fa-house-chimney-window"
+        icon="stellagram"
         text={l10n.t("home")}
         behavior={() => navigator("/")}
       />
       {userId && (
         <Slot
-          icon="fa-solid fa-magnifying-glass"
+          icon="search"
           text={l10n.t("search")}
           behavior={() => navigator("/search")}
         />
       )}
       {userId && (
         <Slot
-          icon="fa-solid fa-user"
+          icon="person"
           text={l10n.t("profile")}
           behavior={() => navigator(`/profile/${userId}`)}
         />
       )}
-      {/* {userId && (
+      {userId && (
         <Slot
-          icon="fa-solid fa-message"
+          icon="message"
           text={l10n.t("message")}
           behavior={() => navigator("/message")}
         />
-      )} */}
+      )}
       {
         <Slot
-          icon="fa-solid fa-gear"
+          icon="setting"
           text={l10n.t("setting")}
           behavior={() => navigator("/setting")}
         />

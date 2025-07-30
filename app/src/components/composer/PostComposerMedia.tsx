@@ -17,7 +17,7 @@ function PostComposerMedia() {
       {mediaFiles.length != 0 && (
         <div className="absolute bg-transparent w-5 h-5 z-1 ml-4 mt-4">
           <IconButton
-            icon="fa-solid fa-xmark-circle"
+            icon="xmark"
             size={18}
             onPressed={() => removeMediaFile(childMediaContext.index)}
           />

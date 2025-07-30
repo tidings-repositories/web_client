@@ -1,5 +1,8 @@
+import { Icons } from "../button/IconButton";
+import iconPack from "../public/IconPack";
+
 type SlotProps = {
-  icon?: string;
+  icon?: Icons;
   text: string;
   color?: string;
   behavior: (e?: any) => void;
@@ -8,17 +11,17 @@ type SlotProps = {
 function Slot({ icon, text, color = "black", behavior }: SlotProps) {
   return (
     <button className="!p-0 " onClick={behavior}>
-      <div className="flex w-full gap-2 py-2 px-4 rounded-lg hover:bg-gray-100 items-center">
+      <div className="flex w-full gap-4 py-2 px-4 rounded-lg hover:bg-gray-100 items-center">
         {icon && (
-          <i
-            className={icon}
+          <svg
             style={{
-              fontSize: 16,
+              width: 16,
+              height: 16,
               color: color,
-              width: 20,
-              textAlign: "left",
             }}
-          ></i>
+          >
+            {iconPack(icon)}
+          </svg>
         )}
         <p className="text-lg" style={{ color: color }}>
           {text}

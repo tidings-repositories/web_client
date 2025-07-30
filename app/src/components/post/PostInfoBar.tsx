@@ -52,7 +52,7 @@ function PostInfoBar({ ...info }: Post) {
         <div className="mx-2 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
       <IconButton
-        icon="fa-solid fa-ellipsis"
+        icon="more"
         onPressed={(e) => {
           e.stopPropagation();
           openPostDropdown(e, "post-menu", info.user_id, info.post_id, context);

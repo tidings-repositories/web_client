@@ -40,7 +40,7 @@ function Content(post: Post) {
       <div className="w-full flex flex-col gap-1 rounded-xs py-3 px-4 hover:bg-gray-100">
         {!post.origin && (
           <MixedButton
-            icon="fa-solid fa-repeat"
+            icon="scrap"
             text={`clipped by @${post.user_id}`}
             onPressed={() => navigator(`/profile/${post.user_id}`)}
             gap={2}

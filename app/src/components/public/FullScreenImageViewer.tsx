@@ -37,7 +37,7 @@ function FullScreenImageViewer({ url }: FullScreenImageViewerProps) {
         <div className="flex justify-between pt-4 pb-2 px-6">
           <div></div>
           <IconButton
-            icon="fa-solid fa-xmark-circle"
+            icon="xmark"
             size={24}
             color="white"
             onPressed={closeImageViewer}

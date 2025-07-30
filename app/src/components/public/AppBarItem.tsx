@@ -11,6 +11,7 @@ import Sign from "../sign/Sign";
 import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
 import useUserDataStore from "../../store/UserDataStore";
+import iconPack from "./IconPack";
 
 function AppBarItem({
   showDrawer,
@@ -30,7 +31,7 @@ function AppBarItem({
   useEffect(() => {
     if (showSearch) {
       const parentElement = document.getElementById(`searchbar`)!;
-      const textElement = parentElement.querySelector(`#search`)!;
+      const textElement = parentElement.querySelector(`#search-input`)!;
       const clearButtonIconElement = parentElement.querySelector("button")!;
       clearButtonIconElement.style.display =
         searchKeyword == "" ? "none" : "block";
@@ -58,11 +59,7 @@ function AppBarItem({
       {/*Drawer button and Logo button*/}
       <div className="flex shrink-0 gap-1">
         {showDrawer && (
-          <IconButton
-            icon="fa-solid fa-bars"
-            size={18}
-            onPressed={drawerClickEvent}
-          />
+          <IconButton icon="menu" size={24} onPressed={drawerClickEvent} />
         )}
         {showLogo && <Logo />}
       </div>
@@ -72,24 +69,30 @@ function AppBarItem({
           id="searchbar"
           className="flex w-full max-w-120 px-2 my-1 gap-2 rounded-xl bg-gray-100 items-center justify-between"
         >
-          <i
-            className="fa-solid fa-magnifying-glass"
-            style={{ fontSize: 18, color: "gray" }}
-          ></i>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              color: "gray",
+              width: 24,
+              height: 24,
+            }}
+          >
+            {iconPack("search")}
+          </svg>
           <form
-            id="search"
+            id="search-input"
             className="w-full"
             onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
-              const query = (formData.get("search") as string) ?? "";
+              const query = (formData.get("search-input") as string) ?? "";
               navigator(`/search?q=${query.trim()}`);
             }}
           >
-            <input type="text" name="search" className="w-full" />
+            <input type="text" name="search-input" className="w-full" />
           </form>
           <IconButton
-            icon="fa-solid fa-xmark"
+            icon="xmark"
             onPressed={() => {
               const tagTextfield = document.getElementById(
                 `search`
@@ -105,22 +108,22 @@ function AppBarItem({
         <div className="content-center items-center flex gap-2">
           {showMessage && (
             <IconButton
-              icon="fa-solid fa-message"
-              size={18}
+              icon="message"
+              size={24}
               onPressed={() => navigator("/message")}
             />
           )}
           {showCompmoser && (
             <IconButton
-              icon="fa-solid fa-pen-to-square"
-              size={18}
+              icon="compose"
+              size={24}
               onPressed={() => navigator("/compose/post")}
             />
           )}
           {showNoti && (
             <IconButton
-              icon="fa-solid fa-bell"
-              size={18}
+              icon="bell"
+              size={24}
               onPressed={(e) =>
                 openNotificationDropdown(e, "notification-dropdown", userId)
               }

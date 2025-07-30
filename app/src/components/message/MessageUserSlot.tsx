@@ -21,7 +21,7 @@ function MessageUserSlot({ data, event }: DirectMessageUserProps) {
       <div className="flex justify-between">
         <SimpleUserSlot direction="row" {...data.userInfo} />
         <IconButton
-          icon="fa-solid fa-ellipsis"
+          icon="more"
           onPressed={(e) => {
             e.stopPropagation();
             openMessageDropdown(e, "message-menu", data.dm_id);

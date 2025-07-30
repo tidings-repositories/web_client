@@ -1,6 +1,7 @@
 import useUserDataStore from "../../store/UserDataStore";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
+import iconPack from "../public/IconPack";
 
 type MessageDropdownItemProps = {
   dm_id: string;
@@ -14,15 +15,17 @@ function MessageDropdownItem({ dm_id }: MessageDropdownItemProps) {
       <DropwdownSlot
         text={l10n.t("report")}
         extraBeforeNode={
-          <i
-            className="fa-solid fa-flag"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
             style={{
-              fontSize: 14,
               color: "gray",
-              width: 20,
+              width: 16,
+              height: 16,
               textAlign: "left",
             }}
-          ></i>
+          >
+            {iconPack("flag")}
+          </svg>
         }
         behavior={() => {
           //TODO: fetch to report dm_id
@@ -32,15 +35,17 @@ function MessageDropdownItem({ dm_id }: MessageDropdownItemProps) {
       <DropwdownSlot
         text={l10n.t("leaveDM")}
         extraBeforeNode={
-          <i
-            className="fa-solid fa-arrow-right-from-bracket"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
             style={{
-              fontSize: 14,
               color: "gray",
-              width: 20,
+              width: 16,
+              height: 16,
               textAlign: "left",
             }}
-          ></i>
+          >
+            {iconPack("signout")}
+          </svg>
         }
         behavior={() => {
           //TODO: fetch to DELETE request dm_id

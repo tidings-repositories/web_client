@@ -16,6 +16,7 @@ import TabBar from "../components/public/TabBar";
 import HomeTabBarItem from "../components/home/HomeTabBarItem";
 import { requestPOSTWithToken } from "../scripts/requestWithToken";
 import { useNavigationType, useBlocker } from "react-router-dom";
+import iconPack from "../components/public/IconPack";
 
 export default function Home() {
   const userId = useUserDataStore((state) => state.user_id);
@@ -254,10 +255,17 @@ export default function Home() {
           className="sticky left-10 bottom-10 w-15 h-15 bg-white rounded-4xl content-center text-center cursor-pointer shadow shadow-md shadow-gray-500"
           onClick={() => window.scrollTo(0, 0)}
         >
-          <i
-            className="fa-solid fa-angle-up"
-            style={{ color: "gray", fontSize: 24 }}
-          />
+          <svg
+            className="mx-auto"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              color: "gray",
+              width: 24,
+              height: 24,
+            }}
+          >
+            {iconPack("chevron-up")}
+          </svg>
         </div>
       )}
     </div>

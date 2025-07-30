@@ -18,7 +18,7 @@ function PostComposerTagBar() {
           {/*delete tag button*/}
           <div className="absolute bg-transparent w-1 h-1 z-1 -top-3 -left-3">
             <IconButton
-              icon="fa-solid fa-xmark-circle"
+              icon="xmark"
               size={16}
               onPressed={() => removeTag(idx)}
             />
