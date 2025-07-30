@@ -9,6 +9,9 @@ import TheirMessage from "./TheirMessage";
 import { produce } from "immer";
 import useUserDataStore from "../../store/UserDataStore";
 
+// import { Client } from "@stomp/stompjs";
+// import SockJs from "sockjs-client";
+
 type DirectMessageProps = {
   directMessageInfo: MessageUserSlotProps | null;
   stateDispatcher: React.Dispatch<React.SetStateAction<number | null>>;
@@ -24,19 +27,43 @@ export default function DirectMessage({
   const [inputImage, setInputImage] = useState(null as string | null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
+  // const webSocketInterfaceRef = useRef<Client | null>(null);
+
   useEffect(() => {
+    const textElement = document.getElementById(
+      "dm-textarea"
+    )! as HTMLTextAreaElement;
+
     //TODO: fetch dm message list with directMessageInfo
     // setMessages(Array.from({ length: 10 }, () => createMockMessage()));
 
     //TODO: reverse infiniteScroll fetch and redering
 
+    //TODO: connect websocket with this room
+    // const webSocketInterface = new Client({
+    //   webSocketFactory: () => new SockJs("http://localhost:8080/message"),
+    //   connectHeaders: {
+    //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //   },
+    //   onConnect: () => {
+    //     webSocketInterface.subscribe(
+    //       `/topic/dm.${directMessageInfo?.dm_id}`,
+    //       (message) => {
+    //         const newMessage = JSON.parse(message.body);
+    //         console.log(newMessage);
+    //       }
+    //     );
+    //   },
+    // });
+
+    // webSocketInterfaceRef.current = webSocketInterface;
+    // webSocketInterface.activate();
+
     //textfield resize event
     const eventHandler = () => {
       textfieldResizeEvent(textElement);
     };
-    const textElement = document.getElementById(
-      "dm-textarea"
-    )! as HTMLTextAreaElement;
+
     if (directMessageInfo) textElement.addEventListener("input", eventHandler);
 
     //message container scroll initialze
@@ -47,6 +74,9 @@ export default function DirectMessage({
     return () => {
       if (directMessageInfo)
         textElement.removeEventListener("input", eventHandler);
+
+      // if (webSocketInterfaceRef.current?.active)
+      //   webSocketInterfaceRef.current.deactivate();
     };
   }, [directMessageInfo]);
 
@@ -87,7 +117,7 @@ export default function DirectMessage({
             className="flex gap-2 p-2 border-b-2 border-gray-300 justify-start"
           >
             <IconButton
-              icon="fa-solid fa-chevron-left"
+              icon="chevron-left"
               onPressed={() => {
                 stateDispatcher(null);
                 navigator("/message", { replace: true });
@@ -105,11 +135,11 @@ export default function DirectMessage({
             id="message-container"
             className="w-full h-full flex flex-col gap-1 px-1 py-4 overflow-y-auto"
           >
-            {messages.map((message) => {
+            {messages.map((message, idx) => {
               return message.user_id == userId ? (
-                <MyMessage key={message.message_id} {...message} />
+                <MyMessage key={idx} {...message} />
               ) : (
-                <TheirMessage key={message.message_id} {...message} />
+                <TheirMessage key={idx} {...message} />
               );
             })}
             <div ref={messageEndRef}></div>
@@ -120,7 +150,7 @@ export default function DirectMessage({
           {directMessageInfo && (
             <div className="flex w-full px-4 py-1 gap-2 bg-gray-200 rounded-xl">
               <IconButton
-                icon="fa-solid fa-image"
+                icon="image"
                 onPressed={() => document.getElementById("fileSearch")!.click()}
               />
               <input
@@ -145,7 +175,7 @@ export default function DirectMessage({
                   <div className="relative w-fit max-w-full max-h-37.5 rounded-xl overflow-hidden">
                     <div className="absolute right-0">
                       <IconButton
-                        icon="fa-solid fa-xmark-circle"
+                        icon="xmark"
                         color="black"
                         onPressed={() => {
                           (document.getElementById(
@@ -191,18 +221,29 @@ export default function DirectMessage({
                       e.currentTarget.querySelector("textarea");
                     textElement!.dispatchEvent(new Event("input"));
 
-                    //TODO: 낙관적 업데이트
-                    console.log("text: ", detail); //TODO: send text
-                    console.log("file: ", image);
+                    // 웹 소켓 publish
+                    // if (
+                    //   webSocketInterfaceRef.current &&
+                    //   webSocketInterfaceRef.current.connected
+                    // ) {
+                    //   webSocketInterfaceRef.current.publish({
+                    //     destination: `/direct-message/direct.sendMessage`,
+                    //     body: JSON.stringify({
+                    //       dm_id: directMessageInfo.dm_id,
+                    //       text: text,
+                    //     }),
+                    //   });
+                    // }
+
+                    //낙관적 업데이트
                     setMessages((prevMessages) =>
                       produce(prevMessages, (state) => {
                         state.push({
-                          create_at: new Date(Date.now()),
+                          send_at: new Date(Date.now()),
                           dm_id: directMessageInfo.dm_id,
-                          message_id: (125125124124 * Math.random()).toString(),
                           user_id: userId,
                           text: text,
-                          media: image ? URL.createObjectURL(image) : null,
+                          image: image ? URL.createObjectURL(image) : null,
                         } as MessageProps);
                       })
                     );
@@ -222,7 +263,7 @@ export default function DirectMessage({
                 </form>
               </div>
               <IconButton
-                icon="fa-solid fa-paper-plane"
+                icon="paper-plane"
                 onPressed={() => {
                   document.querySelector("form")?.requestSubmit();
                 }}
