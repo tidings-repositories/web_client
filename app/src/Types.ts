@@ -90,10 +90,8 @@ export type MessageUserSlotProps = {
 
 export type MessageProps = {
   dm_id: string;
-  message_id: string;
   user_id: string;
-  create_at: Date;
+  send_at: Date;
   text?: string;
-  media?: string;
-  share?: string;
+  image?: string;
 };
