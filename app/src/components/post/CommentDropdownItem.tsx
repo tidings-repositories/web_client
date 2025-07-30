@@ -39,7 +39,6 @@ function CommentDropdownItem({
               }}
             >
               {iconPack("flag")}
-              <use xlinkHref={`#flag`} />
             </svg>
           }
           behavior={async () => {
@@ -74,7 +73,6 @@ function CommentDropdownItem({
               }}
             >
               {iconPack("trash")}
-              <use xlinkHref={`#trash`} />
             </svg>
           }
           behavior={async () => {

@@ -104,7 +104,6 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
                     }}
                   >
                     {iconPack("chevron-left")}
-                    <use xlinkHref={`#chevron-left`} />
                   </svg>
                 </div>
               </button>
@@ -139,7 +138,6 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
                     }}
                   >
                     {iconPack("chevron-right")}
-                    <use xlinkHref={`#chevron-right`} />
                   </svg>
                 </div>
               </button>

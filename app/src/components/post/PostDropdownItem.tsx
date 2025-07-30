@@ -40,7 +40,6 @@ function PostDropdownItem({
               }}
             >
               {iconPack("flag")}
-              <use xlinkHref={`#flag`} />
             </svg>
           }
           behavior={async () => {
@@ -75,7 +74,6 @@ function PostDropdownItem({
               }}
             >
               {iconPack("trash")}
-              <use xlinkHref={`#trash`} />
             </svg>
           }
           behavior={async () => {

@@ -19,13 +19,12 @@ function MessageDropdownItem({ dm_id }: MessageDropdownItemProps) {
             xmlns="http://www.w3.org/2000/svg"
             style={{
               color: "gray",
-              width: 14,
-              height: 14,
+              width: 16,
+              height: 16,
               textAlign: "left",
             }}
           >
             {iconPack("flag")}
-            <use xlinkHref={`#flag`} />
           </svg>
         }
         behavior={() => {
@@ -40,13 +39,12 @@ function MessageDropdownItem({ dm_id }: MessageDropdownItemProps) {
             xmlns="http://www.w3.org/2000/svg"
             style={{
               color: "gray",
-              width: 14,
-              height: 14,
+              width: 16,
+              height: 16,
               textAlign: "left",
             }}
           >
             {iconPack("signout")}
-            <use xlinkHref={`#signout`} />
           </svg>
         }
         behavior={() => {

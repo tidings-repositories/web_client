@@ -265,7 +265,6 @@ export default function Home() {
             }}
           >
             {iconPack("chevron-up")}
-            <use xlinkHref={`#chevron-up`} />
           </svg>
         </div>
       )}

@@ -124,7 +124,6 @@ function Register() {
               style={{ width: 16, height: 16, color: getColor(idUsableState) }}
             >
               {iconPack(idUsableState ? "check" : "normal-xmark")}
-              <use xlinkHref={`#${idUsableState ? "check" : "normal-xmark"}`} />
             </svg>
           </div>
         </div>
