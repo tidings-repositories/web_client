@@ -52,16 +52,11 @@ function LatestDataListView({
         </div>
       </div>
       {/*Search post area*/}
-      <div className="content-center items-center">
-        <p className="py-20 text-2xl text-gray-500 text-center">
-          죄송해요 포스트 검색은 아직 준비중이에요!
-        </p>
-      </div>
-      {/* <InfiniteScroll
+      <InfiniteScroll
         component={Content}
         item={posts}
         loadMore={async () => false}
-      /> */}
+      />
     </div>
   );
 }
