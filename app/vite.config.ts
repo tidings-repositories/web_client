@@ -12,4 +12,5 @@ export default defineConfig({
   esbuild: {
     target: "esnext",
   },
+  define: { global: "window" },
 });

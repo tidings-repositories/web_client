@@ -41,19 +41,18 @@ export default function Search() {
       navigator("/");
       alert("비회원은 검색을 이용할 수 없어요");
     }
-    window.scrollTo(0, 0);
 
     // window.addEventListener("resize", resizeEvent);
     // return () => window.removeEventListener("resize", resizeEvent);
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const OK = 200;
-    const searchUser = async () => {
-      let searchKeyword = query;
-      if (searchKeyword?.startsWith("@"))
-        searchKeyword = searchKeyword.slice(1);
+    let searchKeyword = query;
+    if (searchKeyword?.startsWith("@")) searchKeyword = searchKeyword.slice(1);
 
+    const searchUser = async () => {
       const response = await requestGETWithToken(
         `${import.meta.env.VITE_API_URL}/search/user?q=${searchKeyword}`
       ).catch((_) => _);
@@ -61,8 +60,19 @@ export default function Search() {
       if (response.status == OK) setPeopleState(response.data);
     };
 
+    const searchPost = async () => {
+      const response = await requestGETWithToken(
+        `${import.meta.env.VITE_API_URL}/search/post?q=${searchKeyword}`
+      ).catch((_) => _);
+
+      if (response.status == OK) setPostState(response.data);
+    };
+
     const trimQeury = query ?? "";
-    if (trimQeury !== "" && trimQeury.length > 1) searchUser();
+    if (trimQeury !== "" && trimQeury.length > 1) {
+      searchUser();
+      searchPost();
+    }
   }, [query]);
 
   return (
