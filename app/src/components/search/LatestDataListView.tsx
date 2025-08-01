@@ -21,9 +21,9 @@ function LatestDataListView({
   return (
     <div className="flex flex-col divide-y-2 divide-solid divide-gray-300 py-4">
       {/*Search people area*/}
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center">
         {/*소제목*/}
-        <p className="text-xl pb-4 font-semibold">
+        <p className="text-xl pb-4 pl-4 font-semibold self-start">
           {l10n.t("lookingForSomeone")}
         </p>
         {people.map((person, idx) => (
