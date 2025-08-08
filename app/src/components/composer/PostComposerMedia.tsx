@@ -2,10 +2,11 @@ import { PostMediaStructure } from "../../Types";
 import MediaContent from "../post/MediaContent";
 import IconButton from "../button/IconButton";
 import usePostComposerStore from "../../store/PostComposerStore";
+import { useState } from "react";
 
 function PostComposerMedia() {
   const POST_MEDIAFIELD_ID = "post-media";
-  const childMediaContext = { index: 0 };
+  const [mediaIndex, setState] = useState(0);
   const mediaFiles = usePostComposerStore((state) => state.mediaContentList);
   const removeMediaFile = usePostComposerStore(
     (state) => state.removeMediaContent
@@ -19,7 +20,11 @@ function PostComposerMedia() {
           <IconButton
             icon="xmark"
             size={18}
-            onPressed={() => removeMediaFile(childMediaContext.index)}
+            onPressed={() => {
+              if (mediaIndex == mediaFiles.length - 1)
+                setState((prev) => prev - 1);
+              removeMediaFile(mediaIndex);
+            }}
           />
         </div>
       )}
@@ -31,7 +36,7 @@ function PostComposerMedia() {
               type: file.type.split("/")[0],
             } as PostMediaStructure;
           })}
-          context={childMediaContext}
+          context={[mediaIndex, setState]}
           post_id="mediafield"
         />
       )}
