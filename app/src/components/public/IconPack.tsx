@@ -17,15 +17,15 @@ export default function iconPack(iconName) {
         <svg id="compose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             d="M16.4745 5.40801L18.5917 7.52524M17.8358 3.54289L12.1086 9.27005C11.8131 9.56562 11.6116 9.94206 11.5296 10.3519L11 13L13.6481 12.4704C14.0579 12.3884 14.4344 12.1869 14.7299 11.8914L20.4571 6.16423C21.181 5.44037 21.181 4.26676 20.4571 3.5429C19.7332 2.81904 18.5596 2.81903 17.8358 3.54289Z"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.6"
           />
           <path
             d="M19 15V18C19 19.1046 18.1046 20 17 20H6C4.89543 20 4 19.1046 4 18V7C4 5.89543 4.89543 5 6 5H9"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.4"
           />
         </svg>
       );
@@ -70,16 +70,16 @@ export default function iconPack(iconName) {
           <title />
           <g data-name="1" id="_1">
             <path
-              stroke-width="10"
-              d="M441.13,166.52h-372a15,15,0,1,1,0-30h372a15,15,0,0,1,0,30Z"
+              strokeWidth="10"
+              d="M441.13,146.52h-372a15,15,0,1,1,0-30h372a15,15,0,0,1,0,30Z"
             />
             <path
-              stroke-width="10"
+              strokeWidth="10"
               d="M441.13,279.72h-372a15,15,0,1,1,0-30h372a15,15,0,0,1,0,30Z"
             />
             <path
-              stroke-width="10"
-              d="M441.13,392.92h-372a15,15,0,1,1,0-30h372a15,15,0,0,1,0,30Z"
+              strokeWidth="10"
+              d="M441.13,412.92h-372a15,15,0,1,1,0-30h372a15,15,0,0,1,0,30Z"
             />
           </g>
         </svg>
@@ -93,9 +93,9 @@ export default function iconPack(iconName) {
           viewBox="0 0 512 512"
         >
           <g>
-            <circle cx="256" cy="256" r="32" stroke-width="40" />
-            <circle cx="88.4" cy="256" r="32" stroke-width="40" />
-            <circle cx="424" cy="256" r="32" stroke-width="40" />
+            <circle cx="256" cy="256" r="32" strokeWidth="40" />
+            <circle cx="88.4" cy="256" r="32" strokeWidth="40" />
+            <circle cx="424" cy="256" r="32" strokeWidth="40" />
           </g>
         </svg>
       );
@@ -179,9 +179,9 @@ export default function iconPack(iconName) {
           id="signout"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
           viewBox="0 0 24 24"
         >
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -231,9 +231,9 @@ export default function iconPack(iconName) {
           id="chevron-left"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           viewBox="0 0 24 24"
         >
           <polyline points="15 18 9 12 15 6" />
@@ -245,9 +245,9 @@ export default function iconPack(iconName) {
           id="chevron-right"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           viewBox="0 0 24 24"
         >
           <polyline points="9 6 15 12 9 18" />
@@ -259,9 +259,9 @@ export default function iconPack(iconName) {
           id="chevron-right"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           viewBox="0 0 24 24"
         >
           <polyline points="6 15 12 9 18 15" />
@@ -311,9 +311,9 @@ export default function iconPack(iconName) {
           id="check"
           fill="none"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           viewBox="0 0 24 24"
         >
           <polyline points="20 6 9 17 4 12" />

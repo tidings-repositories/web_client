@@ -8,16 +8,22 @@ import iconPack from "../public/IconPack";
 type MediaContentProps = {
   contents: PostMediaStructure[];
   post_id: string;
-  context?: { index: number };
+  context?: [
+    mediaIndex: number,
+    setState: React.Dispatch<React.SetStateAction<number>>
+  ];
 };
 
 function MediaContent({ contents, post_id, context }: MediaContentProps) {
-  const [mediaIndex, setState] = useState(0);
+  const [mediaIndex, setState] = context ?? useState(0);
   const userAgent = navigator.userAgent.toLowerCase();
   const isDesktop = !/mobile|tablet|ip(ad|hone|od)|android/i.test(userAgent);
 
-  if (mediaIndex >= contents.length) setState(contents.length - 1);
-  if (context != null) context.index = mediaIndex;
+  if (mediaIndex >= contents.length) {
+    setState(contents.length - 1);
+    return <></>;
+  }
+  // if (context != null) context.index = mediaIndex;
 
   useEffect(() => {
     if (isDesktop) {
