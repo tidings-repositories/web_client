@@ -37,16 +37,16 @@ export default function Profile() {
   const wideViewStandard = 1000;
   const checkWideView = () => window.innerWidth > wideViewStandard;
 
-  const resizeEvent = () => {
-    const sideElement = document.getElementById("side")!;
-    const isSideExist = sideElement.style.display === "block";
+  // const resizeEvent = () => {
+  //   const sideElement = document.getElementById("side")!;
+  //   const isSideExist = sideElement.style.display === "block";
 
-    if (isSideExist && !checkWideView()) {
-      sideElement.style.display = "none";
-    } else if (!isSideExist && checkWideView()) {
-      sideElement.style.display = "block";
-    }
-  };
+  //   if (isSideExist && !checkWideView()) {
+  //     sideElement.style.display = "none";
+  //   } else if (!isSideExist && checkWideView()) {
+  //     sideElement.style.display = "block";
+  //   }
+  // };
 
   const deletePost = (postId: string) => {
     setPostList((prev) => prev.filter((post) => post.post_id !== postId));
@@ -257,10 +257,10 @@ export default function Profile() {
     likePostRef.current = likePostList;
   }, [likePostList]);
 
-  useEffect(() => {
-    window.addEventListener("resize", resizeEvent);
-    return () => window.removeEventListener("resize", resizeEvent);
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("resize", resizeEvent);
+  //   return () => window.removeEventListener("resize", resizeEvent);
+  // }, []);
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
