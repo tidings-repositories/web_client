@@ -28,7 +28,7 @@ function Content(post: Post) {
   };
 
   return (
-    <div
+    <article
       role="button"
       className="cursor-pointer"
       onClick={() =>
@@ -79,7 +79,7 @@ function Content(post: Post) {
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
