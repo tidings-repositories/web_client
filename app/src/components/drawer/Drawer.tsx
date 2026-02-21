@@ -1,38 +1,37 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 type DrawerProps = {
-  child: React.ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  children: React.ReactNode;
 };
 
-function Drawer({ child }: DrawerProps) {
-  const closeDrawer = () => {
-    const drawerComponent = document.getElementById("drawer")!;
-    drawerComponent.style.display = "none";
-  };
-
-  const drawerClickEvent = (e: Event) => {
-    if ((e.target as HTMLElement).id == "drawer-background") closeDrawer();
-  };
-
+function Drawer({ open, onOpenChange, children }: DrawerProps) {
   useEffect(() => {
-    const drawerComponent = document.getElementById("drawer")!;
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open, onOpenChange]);
 
-    drawerComponent.addEventListener("click", drawerClickEvent);
-  }, []);
+  if (!open) return null;
 
-  return (
-    <div id="drawer" className="hidden">
-      {/*background*/}
+  return createPortal(
+    <div className="fixed top-0 right-0 bottom-0 left-0 z-49">
+      {/*backdrop*/}
       <div
-        id="drawer-background"
-        className="fixed top-0 right-0 bottom-0 left-0 bg-black/50 z-49 content-start"
-      >
-        {/*drawer*/}
-        <div className="bg-white opacity-100 h-full w-70 flex flex-col p-2 py-18 rounded-r-xl">
-          {child}
-        </div>
+        className="absolute top-0 right-0 bottom-0 left-0 bg-black/50"
+        onClick={() => onOpenChange(false)}
+      />
+      {/*panel*/}
+      <div className="relative bg-white h-full w-70 flex flex-col p-2 py-18 rounded-r-xl">
+        {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

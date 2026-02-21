@@ -3,7 +3,7 @@ import OutlineButton from "../button/OutlineButton";
 import * as l10n from "i18next";
 import { requestPOSTWithToken } from "../../scripts/requestWithToken";
 
-function UseCoupon() {
+function UseCoupon({ onClose }: { onClose?: () => void }) {
   const [couponUsableState, setState] = useState(null as boolean | null);
   const [couponStatusMessage, setStatusMessage] = useState("");
 
@@ -29,8 +29,7 @@ function UseCoupon() {
       setState(true);
       setStatusMessage("successfulUsedCoupon");
       setTimeout(() => {
-        const closeEvent = new MouseEvent("click", { bubbles: true });
-        document.getElementById("dialog-background")?.dispatchEvent(closeEvent);
+        onClose?.();
       }, 1000);
     } else if (response.status == FORBIDDEN) {
       setState(false);

@@ -22,6 +22,7 @@ export default function Home() {
   const userId = useUserDataStore((state) => state.user_id);
   const [scrolled, setScrollState] = useState(false);
   const [tabIdx, setIdxState] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const postRef = useRef<Post[]>([]);
   const [postList, setPostList] = useState<Post[]>([]);
@@ -202,8 +203,10 @@ export default function Home() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div id="home" className="flex justify-center gap-10 pt-16">
         <div className="flex flex-col">
           <div id="dummy-area" className="w-[98vw] max-w-173"></div>

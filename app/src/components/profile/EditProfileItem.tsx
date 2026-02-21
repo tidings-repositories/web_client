@@ -18,6 +18,7 @@ type EditProfileItemProps = {
   profile_image_file?: File | null;
   badge: BadgeProps | null;
   onChange: React.Dispatch<any>;
+  onClose?: () => void;
 };
 
 function EditProfileItem({ ...origin }: EditProfileItemProps) {
@@ -132,7 +133,7 @@ function EditProfileItem({ ...origin }: EditProfileItemProps) {
           }}
         >
           <div
-            className="w-fit h-fit border border-3 rounded-md"
+            className="w-fit h-fit border-2 rounded-md"
             style={{
               borderColor: !profileData.badge ? "gold" : "transparent",
             }}
@@ -155,7 +156,7 @@ function EditProfileItem({ ...origin }: EditProfileItemProps) {
             }}
           >
             <div
-              className="w-fit h-fit border border-3 rounded-md"
+              className="w-fit h-fit border-2 rounded-md"
               style={{
                 borderColor:
                   profileData.badge?.id === thisBadge.id
@@ -229,17 +230,13 @@ async function updateProfileData(
         profileUpdateRequestBody["profile_image"] = PRESIGNED_URL;
         changedProps.delete("profile_image_file");
       } else {
-        document
-          .getElementById("dialog-background")
-          ?.dispatchEvent(new Event("click", { bubbles: true }));
+        profileData.onClose?.();
         return;
       }
     }
 
     if (imageUploadErrorFlag) {
-      document
-        .getElementById("dialog-background")
-        ?.dispatchEvent(new Event("click", { bubbles: true }));
+      profileData.onClose?.();
       return;
     }
 
@@ -272,9 +269,7 @@ async function updateProfileData(
     );
   }
 
-  document
-    .getElementById("dialog-background")
-    ?.dispatchEvent(new Event("click", { bubbles: true }));
+  profileData.onClose?.();
 }
 
 function checkTextfieldMaxLine(

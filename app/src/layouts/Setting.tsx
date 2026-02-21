@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import Slot from "../components/drawer/Slot";
 import useUserDataStore from "../store/UserDataStore";
 import * as l10n from "i18next";
 import Dialog from "../components/public/Dialog";
-import ReactDOM from "react-dom/client";
 import DeleteAccount from "../components/sign/DeleteAccount";
 import AppBar from "../components/public/AppBar";
 import Drawer from "../components/drawer/Drawer";
@@ -17,6 +16,10 @@ export default function Setting() {
 
   const navigator = useNavigate();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [couponDialogOpen, setCouponDialogOpen] = useState(false);
+  const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
+
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
       <AppBar
@@ -24,14 +27,17 @@ export default function Setting() {
         showMessage={false}
         showNoti={false}
         showCompmoser={false}
+        onDrawerOpen={() => setDrawerOpen(true)}
       />
-      <Drawer child={<RouterDrawerItem />} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div id="setting" className="flex flex-col gap-2 px-4 pt-20 pb-10">
         {userId && (
           <Slot
             icon="coupon"
             text={l10n.t("coupon")}
-            behavior={openCouponDialog}
+            behavior={() => setCouponDialogOpen(true)}
           />
         )}
         <Slot
@@ -63,28 +69,18 @@ export default function Setting() {
             icon="person-slash"
             text={l10n.t("deleteAccount")}
             color="red"
-            behavior={openDeleteAccountDialog}
+            behavior={() => setDeleteAccountDialogOpen(true)}
           />
         )}
       </div>
+
+      <Dialog open={couponDialogOpen} onOpenChange={setCouponDialogOpen}>
+        <UseCoupon onClose={() => setCouponDialogOpen(false)} />
+      </Dialog>
+
+      <Dialog open={deleteAccountDialogOpen} onOpenChange={setDeleteAccountDialogOpen}>
+        <DeleteAccount />
+      </Dialog>
     </div>
   );
-}
-
-/*---------------*/
-
-function openCouponDialog() {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<Dialog child={<UseCoupon />} />);
-}
-
-function openDeleteAccountDialog() {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<Dialog child={<DeleteAccount />} />);
 }

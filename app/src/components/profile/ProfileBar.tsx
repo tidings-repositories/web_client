@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { UserData } from "../../Types";
-import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
-import IconButton from "../button/IconButton";
 import OutlineButton from "../button/OutlineButton";
 import TextButton from "../button/TextButton";
-import Dropdown from "../public/Dropdown";
 import Badge from "./Badge";
 import Dialog from "../public/Dialog";
 import EditProfileItem from "./EditProfileItem";
@@ -29,6 +26,8 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
   const [profileFound, setFound] = useState(true);
 
   const [profileData, setState] = useState({} as UserData);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -60,7 +59,7 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
           {/*profile image*/}
           <button
             className="!p-0"
-            onClick={() => viewImageFullScreen(profileData.profile_image)}
+            onClick={() => setViewerOpen(true)}
           >
             <img
               id="profile-image"
@@ -77,7 +76,7 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
                 color="gray"
                 fontSize="base"
                 radius={16}
-                onPressed={() => openDialog(profileData, setState)}
+                onPressed={() => setEditDialogOpen(true)}
               />
             </div>
           ) : (
@@ -140,6 +139,20 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
             }}
           />
         </div>
+
+        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+          <EditProfileItem
+            {...profileData}
+            onChange={setState}
+            onClose={() => setEditDialogOpen(false)}
+          />
+        </Dialog>
+
+        <FullScreenImageViewer
+          url={profileData.profile_image ?? ""}
+          open={viewerOpen}
+          onOpenChange={setViewerOpen}
+        />
       </div>
     )
   ) : profileFound ? (
@@ -165,46 +178,6 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
       <p className="my-auto text-3xl">{"존재하지 않는 사용자입니다"}</p>
     </div>
   );
-}
-
-/*-----------*/
-
-function openPostDropdown(e, dropdownId) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pos = {
-    x: rect.right,
-    y: rect.bottom,
-  };
-
-  const newDropdown = document.createElement("div");
-  newDropdown.id = `${dropdownId}-box`;
-  document.querySelector("body")!.appendChild(newDropdown);
-  const root = ReactDOM.createRoot(newDropdown);
-  root.render(
-    <Dropdown
-      id={dropdownId}
-      position={pos}
-      child={<div className="w-60 h-10 bg-transparent"></div>}
-    />
-  );
-}
-
-function openDialog(profileData: UserData, onChange: React.Dispatch<any>) {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(
-    <Dialog child={<EditProfileItem {...profileData} onChange={onChange} />} />
-  );
-}
-
-function viewImageFullScreen(url) {
-  const newDialog = document.createElement("div");
-  newDialog.id = "fullscreen-image-box";
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<FullScreenImageViewer url={url} />);
 }
 
 export default ProfileBar;

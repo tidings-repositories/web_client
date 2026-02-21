@@ -1,14 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DropdownMenu } from "radix-ui";
 import IconButton from "../button/IconButton";
 import Logo from "../public/Logo";
 import OutlineButton from "../button/OutlineButton";
 import MiniProfile from "../public/MiniProfile";
 import NotificationDropdownItem from "../notification/NotificationDropdownItem";
-import Dropdown from "../public/Dropdown";
 import Dialog from "../public/Dialog";
 import Sign from "../sign/Sign";
-import ReactDOM from "react-dom/client";
 import * as l10n from "i18next";
 import useUserDataStore from "../../store/UserDataStore";
 import iconPack from "./IconPack";
@@ -23,10 +22,13 @@ function AppBarItem({
   showProfile,
   showLogin,
   searchKeyword,
+  onDrawerOpen,
 }) {
   const userId = useUserDataStore((state) => state.user_id);
   const profileImage = useUserDataStore((state) => state.profile_image);
   const navigator = useNavigate();
+
+  const [signDialogOpen, setSignDialogOpen] = useState(false);
 
   useEffect(() => {
     if (showSearch) {
@@ -59,7 +61,7 @@ function AppBarItem({
       {/*Drawer button and Logo button*/}
       <div className="flex shrink-0 gap-1">
         {showDrawer && (
-          <IconButton icon="menu" size={24} onPressed={drawerClickEvent} />
+          <IconButton icon="menu" size={24} onPressed={() => onDrawerOpen?.()} />
         )}
         {showLogo && <Logo />}
       </div>
@@ -121,13 +123,19 @@ function AppBarItem({
             />
           )}
           {showNoti && (
-            <IconButton
-              icon="bell"
-              size={24}
-              onPressed={(e) =>
-                openNotificationDropdown(e, "notification-dropdown", userId)
-              }
-            />
+            <DropdownMenu.Root modal={false}>
+              <DropdownMenu.Trigger asChild>
+                <IconButton icon="bell" size={24} onPressed={() => {}} />
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  align="end"
+                  className="py-1 bg-gray-200 z-[51] rounded-lg"
+                >
+                  <NotificationDropdownItem user_id={userId} />
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
           )}
           {showProfile && (
             <MiniProfile user_id={userId} img_url={profileImage ?? ""} />
@@ -137,26 +145,23 @@ function AppBarItem({
         showLogin && (
           <OutlineButton
             fontSize="sm"
-            color="gray" //TODO: 컬러 테마 설정
+            color="gray"
             text={`${l10n.t("signIn")}`}
             radius={12}
-            onPressed={openDialog}
+            onPressed={() => setSignDialogOpen(true)}
           />
         )
       )}
+
+      {/*Sign In Dialog*/}
+      <Dialog open={signDialogOpen} onOpenChange={setSignDialogOpen}>
+        <Sign />
+      </Dialog>
     </div>
   );
 }
 
 /*--------------*/
-function openDialog() {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<Dialog child={<Sign />} />);
-}
-
 function changeViewStateClearButtonEvent(
   event: Event,
   clearButtonIconElement: HTMLElement
@@ -170,40 +175,10 @@ function changeViewStateClearButtonEvent(
   }
 }
 
-function drawerClickEvent() {
-  const drawer = document.getElementById("drawer")!;
-  if (drawer.style.display === "none" || !drawer.style.display)
-    drawer.style.display = "block";
-  else drawer.style.display = "none";
-}
-
 const resizeEvent = () => {
   if (window.innerWidth < 550)
     document.getElementById("typography")!.style.display = "none";
   else document.getElementById("typography")!.style.display = "block";
 };
-
-function openNotificationDropdown(e, dropdownId, userId) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pos = {
-    x: rect.right,
-    y: -window.scrollY,
-  };
-
-  const newDropdown = document.createElement("div");
-  newDropdown.id = `${dropdownId}-box`;
-  newDropdown.style.zIndex = "51";
-  newDropdown.style.top = `${rect.bottom}px`;
-  newDropdown.style.position = "fixed";
-  document.querySelector("body")!.appendChild(newDropdown);
-  const root = ReactDOM.createRoot(newDropdown);
-  root.render(
-    <Dropdown
-      id={dropdownId}
-      position={pos}
-      child={<NotificationDropdownItem user_id={userId} />}
-    />
-  );
-}
 
 export default AppBarItem;

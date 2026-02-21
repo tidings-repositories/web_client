@@ -1,18 +1,20 @@
+import { useState } from "react";
 import * as l10n from "i18next";
+import { DropdownMenu } from "radix-ui";
 import { Post } from "../../Types";
 import IconButton from "../button/IconButton";
-import Dropdown from "../public/Dropdown";
 import Badge from "../profile/Badge";
 import PostDropdownItem from "./PostDropdownItem";
-import ReactDOM from "react-dom/client";
+import Dialog from "../public/Dialog";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import PostContext, { PostContextType } from "../../context/PostContext";
+import PostContext from "../../context/PostContext";
 
 function PostInfoBar({ ...info }: Post) {
   const navigator = useNavigate();
   const contentCreateFrom = createTimeDifferenceText(new Date(info.create_at));
   const context = useContext(PostContext);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
 
   let isDragging = false;
   const handleMouseDown = () => {
@@ -51,13 +53,35 @@ function PostInfoBar({ ...info }: Post) {
         </div>
         <div className="mx-2 text-gray-500 font-light">{contentCreateFrom}</div>
       </div>
-      <IconButton
-        icon="more"
-        onPressed={(e) => {
-          e.stopPropagation();
-          openPostDropdown(e, "post-menu", info.user_id, info.post_id, context);
-        }}
-      />
+      <DropdownMenu.Root modal={false}>
+        <DropdownMenu.Trigger asChild>
+          <IconButton
+            icon="more"
+            onPressed={(e) => e.stopPropagation()}
+          />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            align="end"
+            className="py-1 bg-gray-200 z-20 rounded-lg"
+          >
+            <PostDropdownItem
+              user_id={info.user_id}
+              post_id={info.post_id}
+              context={context}
+              onReportSuccess={() => setReportDialogOpen(true)}
+            />
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+
+      <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
+        <div className="pt-10 pb-20">
+          <p className="whitespace-pre-line text-2xl text-center">
+            {l10n.t("thanksReport")}
+          </p>
+        </div>
+      </Dialog>
     </div>
   );
 }
@@ -90,34 +114,6 @@ function createTimeDifferenceText(createAt: Date) {
       Math.floor(timePerSecond / hourPerSecond).toString() + l10n.t("hourUnit")
     );
   }
-}
-
-function openPostDropdown(
-  e,
-  dropdownId,
-  userId,
-  postId,
-  context: PostContextType | null
-) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pos = {
-    x: rect.right,
-    y: rect.bottom,
-  };
-
-  const newDropdown = document.createElement("div");
-  newDropdown.id = `${dropdownId}-box`;
-  document.querySelector("body")!.appendChild(newDropdown);
-  const root = ReactDOM.createRoot(newDropdown);
-  root.render(
-    <Dropdown
-      id={dropdownId}
-      position={pos}
-      child={
-        <PostDropdownItem user_id={userId} post_id={postId} context={context} />
-      }
-    />
-  );
 }
 
 export default PostInfoBar;

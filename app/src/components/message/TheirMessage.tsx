@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { MessageProps } from "../../Types";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
-import ReactDOM from "react-dom/client";
 
 function TheirMessage({ ...message }: MessageProps) {
   const messageSendAt = new Date(message.send_at);
+  const [viewerOpen, setViewerOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-1 justify-start items-start px-4">
@@ -13,7 +14,7 @@ function TheirMessage({ ...message }: MessageProps) {
           {message.image && (
             <button
               className="!p-0"
-              onClick={() => viewImageFullScreen(message.image)}
+              onClick={() => setViewerOpen(true)}
             >
               <img src={message.image} />
             </button>
@@ -33,9 +34,9 @@ function TheirMessage({ ...message }: MessageProps) {
         </div>
         {/*message box tail*/}
         <div
-          className="absolute 
-          -left-2 bottom-0 w-1 h-1 -z-1 
-          border-20 border-transparent border-r-gray-300 
+          className="absolute
+          -left-2 bottom-0 w-1 h-1 -z-1
+          border-20 border-transparent border-r-gray-300
           border-l-0 border-b-0"
         />
       </div>
@@ -43,17 +44,14 @@ function TheirMessage({ ...message }: MessageProps) {
       <p className="text-xs text-gray-500">
         {messageSendAt.toLocaleTimeString()}
       </p>
+
+      <FullScreenImageViewer
+        url={message.image ?? ""}
+        open={viewerOpen}
+        onOpenChange={setViewerOpen}
+      />
     </div>
   );
-}
-
-/*------------------*/
-function viewImageFullScreen(url) {
-  const newDialog = document.createElement("div");
-  newDialog.id = "fullscreen-image-box";
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<FullScreenImageViewer url={url} />);
 }
 
 export default TheirMessage;

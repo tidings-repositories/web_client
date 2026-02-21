@@ -18,6 +18,7 @@ export default function Follow() {
   const location = useLocation();
   const tabName = location.pathname.split("/").pop();
   const [userInfo, setUserInfo] = useState(location.state as UserData);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [tabIdx, setState] = useState(tabName == "following" ? 0 : 1);
 
   const [userFollowing, setUserFollowing] = useState([] as UserData[]);
@@ -72,8 +73,10 @@ export default function Follow() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar showSearch={false} />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar showSearch={false} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div id="follow" className="flex justify-center gap-10 pt-14">
         <div className="sticky flex flex-col left-0" style={{ top: 1 }}>
           {/*sticky top size is appbar size*/}

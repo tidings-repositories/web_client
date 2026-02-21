@@ -23,6 +23,7 @@ export default function Profile() {
   const likePostInjection = useLikePostStore((state) => state.dataInjection);
 
   const [tabIdx, setState] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const { userId } = useParams();
 
   const postRef = useRef<Post[]>([]);
@@ -264,8 +265,10 @@ export default function Profile() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar showSearch={false} />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar showSearch={false} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div id="profile" className="flex justify-center gap-10 pt-14">
         <div className="sticky left-0 ">
           <ProfileBar profileUser={userId!} />
