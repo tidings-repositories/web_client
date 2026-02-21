@@ -28,6 +28,7 @@ dist-ssr
 
 # Dev
 dev/
+.claude/
 
 # Environment
 .env
