@@ -6,7 +6,7 @@ type TabBarProps = {
 
 function TabBar({ child }: TabBarProps) {
   return (
-    <div className="w-[98vw] max-w-173 min-h-14 mx-auto flex border-b-2 border-solid border-gray-300">
+    <div className="w-[98vw] max-w-173 min-h-14 mx-auto flex border-b-1 border-solid border-gray-300">
       {child}
     </div>
   );
