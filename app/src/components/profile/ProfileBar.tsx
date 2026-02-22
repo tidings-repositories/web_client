@@ -53,7 +53,7 @@ function ProfileBar({ profileUser }: ProfileBarProps) {
 
   return profileAvailable ? (
     profileData.user_id && (
-      <div className="w-full min-h-60 px-8 py-6 mx-auto flex flex-col gap-4 border-b-2 border-solid border-gray-300">
+      <div className="w-full min-h-60 px-8 py-6 mx-auto flex flex-col gap-4 border-b-1 border-solid border-gray-300">
         {/*프로필 사진, 프로필 수정(본인)/팔로우&언팔로우(타인)+DM+misc(차단, 신고 등..)*/}
         <div className="w-full flex justify-between">
           {/*profile image*/}
