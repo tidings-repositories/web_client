@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useEffect, useRef, useState } from "react";
 import { PostMediaStructure } from "../../Types";
 import { useSwipeable } from "react-swipeable";
 import FullScreenImageViewer from "../public/FullScreenImageViewer";
@@ -16,8 +15,37 @@ type MediaContentProps = {
 
 function MediaContent({ contents, post_id, context }: MediaContentProps) {
   const [mediaIndex, setState] = context ?? useState(0);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerUrl, setViewerUrl] = useState("");
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const userAgent = navigator.userAgent.toLowerCase();
   const isDesktop = !/mobile|tablet|ip(ad|hone|od)|android/i.test(userAgent);
+
+  // Viewport-based preloading: load all media when component enters viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          contents.forEach((content) => {
+            if (content.type === "image") {
+              const img = new Image();
+              img.src = content.url;
+            } else if (content.type === "video") {
+              const video = document.createElement("video");
+              video.preload = "metadata";
+              video.src = content.url;
+              video.load();
+            }
+          });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   if (mediaIndex >= contents.length) {
     setState(contents.length - 1);
@@ -38,10 +66,6 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
   const mobileMediaSwapEvent = useSwipeable({
     onSwipedLeft: () => {
       if (mediaIndex < contents.length - 1) setState((prev) => prev + 1);
-
-      //preload
-      if (mediaIndex + 1 < contents.length - 1)
-        preloadNextMedia(contents[mediaIndex + 2]);
     },
 
     onSwipedRight: () => {
@@ -50,9 +74,16 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
     preventScrollOnSwipe: true,
   });
 
+  const { ref: swipeableRef, ...swipeableHandlers } = mobileMediaSwapEvent;
+  const mergedRef = (node: HTMLDivElement | null) => {
+    containerRef.current = node;
+    if (typeof swipeableRef === "function") swipeableRef(node);
+  };
+
   return (
     <div
-      {...mobileMediaSwapEvent}
+      ref={mergedRef}
+      {...swipeableHandlers}
       id={`${post_id}-media`}
       className="relative grid max-w-auto h-full max-h-120 z-0 bg-transparent rounded-xl overflow-hidden"
       onClick={(event) => event.stopPropagation()}
@@ -63,8 +94,10 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
           cursor: contents[mediaIndex].type == "image" ? "pointer" : "auto",
         }}
         onClick={() => {
-          if (contents[mediaIndex].type == "image")
-            viewImageFullScreen(contents[mediaIndex].url);
+          if (contents[mediaIndex].type == "image") {
+            setViewerUrl(contents[mediaIndex].url);
+            setViewerOpen(true);
+          }
         }}
       >
         <MediaComponent content={contents[mediaIndex]} isDesktop={isDesktop} />
@@ -120,10 +153,6 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
                   event.stopPropagation();
                   if (mediaIndex < contents.length - 1)
                     setState((prev) => prev + 1);
-
-                  //preload
-                  if (mediaIndex + 1 < contents.length - 1)
-                    preloadNextMedia(contents[mediaIndex + 2]);
                 }}
               >
                 <div
@@ -152,6 +181,12 @@ function MediaContent({ contents, post_id, context }: MediaContentProps) {
         </>
       )}
       {/*End of Media Navigator*/}
+
+      <FullScreenImageViewer
+        url={viewerUrl}
+        open={viewerOpen}
+        onOpenChange={setViewerOpen}
+      />
     </div>
   );
 }
@@ -232,27 +267,6 @@ function desktopMediaSwapEvent(post_id: string) {
 function mobileVideoPauseAndPlayEvent(videoComponent: HTMLVideoElement) {
   if (videoComponent!.paused) videoComponent!.play();
   else videoComponent!.pause();
-}
-
-function preloadNextMedia(content: PostMediaStructure) {
-  if (content.type === "image") {
-    const img = new Image();
-    img.src = content.url;
-  } else if (content.type === "video") {
-    //비디오의 경우 metadata만 preload
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    video.src = content.url;
-    video.load();
-  }
-}
-
-function viewImageFullScreen(url) {
-  const newDialog = document.createElement("div");
-  newDialog.id = "fullscreen-image-box";
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(<FullScreenImageViewer url={url} />);
 }
 
 export default MediaContent;

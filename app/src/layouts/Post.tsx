@@ -32,6 +32,7 @@ export default function Post() {
   const location = useLocation();
   const [post, setState] = useState(location.state ?? {});
   const [commentList, setComments] = useState([] as CommentProps[]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const deleteComment = (commentId: string) => {
     setComments((prev) =>
@@ -76,9 +77,11 @@ export default function Post() {
 
   return (
     <div id="scaffold" className="w-screen h-screen mx-auto content-start">
-      <AppBar showSearch={false} />
-      <Drawer child={<RouterDrawerItem />} />
-      <div className="w-full flex flex-col justify-center gap-2 pt-20 pb-10 divide-y-2 divide-solid divide-gray-300">
+      <AppBar showSearch={false} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
+      <div className="w-full flex flex-col justify-center gap-2 pt-20 pb-10 divide-y divide-solid divide-gray-300">
         {/*Post Content*/}
         {post.post_id ? (
           <div className="w-full max-w-200 flex flex-col px-8 mx-auto">
@@ -130,7 +133,7 @@ export default function Post() {
         {userId && (
           <div
             id="comment-input"
-            className="flex gap-2 w-full max-w-200 h-40 py-3 px-8 mx-auto border-2 border-gray-400 rounded-xl items-start"
+            className="flex gap-2 w-full max-w-200 h-40 py-3 px-8 mx-auto border border-gray-400 rounded-xl items-start"
           >
             {/*미니 프로필*/}
             <div className="min-w-12 items-center">

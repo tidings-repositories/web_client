@@ -16,6 +16,7 @@ export default function Search() {
   const userId = useUserDataStore((state) => state.user_id);
   const [searchParams] = useSearchParams();
   const [tabIdx, setState] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [peopleSearchData, setPeopleState] = useState([] as UserData[]);
   const [postSearchData, setPostState] = useState([] as Post[]);
   const query = searchParams.get("q");
@@ -77,8 +78,10 @@ export default function Search() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar searchKeyword={query ?? ""} />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar searchKeyword={query ?? ""} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div id="search" className="flex justify-center gap-10 pt-14">
         <div>
           <TabBar

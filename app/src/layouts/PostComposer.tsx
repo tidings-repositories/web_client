@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as l10n from "i18next";
 import AppBar from "../components/public/AppBar";
 import PostComposerBottomBar from "../components/composer/PostComposerBottomBar";
@@ -17,6 +17,7 @@ export default function PostComposer() {
 
   const navigator = useNavigate();
   const userId = useUserDataStore((state) => state.user_id);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const changeTextState = usePostComposerStore(
     (state) => state.changeTextContent
@@ -42,8 +43,10 @@ export default function PostComposer() {
 
   return (
     <div id="scaffold" className="w-full h-screen mx-auto content-start">
-      <AppBar showSearch={false} showCompmoser={false} showLogin={false} />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar showSearch={false} showCompmoser={false} showLogin={false} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       <div
         id="post-composer"
         className="w-[80vw] h-max px-8 pb-10 mt-14 pt-10 mx-auto flex flex-col gap-4 rounded-xs border-b-2 border-solid border-gray-300"

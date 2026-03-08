@@ -4,22 +4,22 @@ import {
   requestPOSTWithToken,
 } from "../../scripts/requestWithToken";
 import useUserDataStore from "../../store/UserDataStore";
-import Dialog from "../public/Dialog";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
-import ReactDOM from "react-dom/client";
 import iconPack from "../public/IconPack";
 
 type CommentDropdownItemProps = {
   user_id: string;
   comment_id: string;
   context: CommentContextType | null;
+  onReportSuccess?: () => void;
 };
 
 function CommentDropdownItem({
   user_id,
   comment_id,
   context,
+  onReportSuccess,
 }: CommentDropdownItemProps) {
   const userId = useUserDataStore((state) => state.user_id);
 
@@ -49,12 +49,7 @@ function CommentDropdownItem({
             ).catch((_) => _);
 
             if (response.status == OK) {
-              const dropdownCloseEvent = new MouseEvent("mousedown", {
-                bubbles: true,
-              });
-              document.dispatchEvent(dropdownCloseEvent);
-
-              openDialog();
+              onReportSuccess?.();
             }
           }}
         />
@@ -84,33 +79,11 @@ function CommentDropdownItem({
 
             if (response.status == NO_CONTENT && context) {
               context?.deleteComment(comment_id);
-              const dropdownCloseEvent = new MouseEvent("mousedown", {
-                bubbles: true,
-              });
-              document.dispatchEvent(dropdownCloseEvent);
             }
           }}
         />
       )}
     </div>
-  );
-}
-
-function openDialog() {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(
-    <Dialog
-      child={
-        <div className="pt-10 pb-20">
-          <p className="whitespace-pre-line text-2xl text-center">
-            {l10n.t("thanksReport")}
-          </p>
-        </div>
-      }
-    />
   );
 }
 

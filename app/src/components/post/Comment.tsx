@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { DropdownMenu } from "radix-ui";
 import { CommentProps, UserData } from "../../Types";
 import MiniProfile from "../public/MiniProfile";
 import Badge from "../profile/Badge";
@@ -6,8 +7,7 @@ import IconButton from "../button/IconButton";
 import MixedButton from "../button/MixedButton";
 import CommentDropdownItem from "./CommentDropdownItem";
 import OutlineButton from "../button/OutlineButton";
-import Dropdown from "../public/Dropdown";
-import ReactDOM from "react-dom/client";
+import Dialog from "../public/Dialog";
 import * as l10n from "i18next";
 import useUserDataStore from "../../store/UserDataStore";
 import { requestPOSTWithToken } from "../../scripts/requestWithToken";
@@ -22,6 +22,7 @@ function Comment({ ...data }: CommentProps) {
   const context = useContext(CommentContext);
 
   const [replyAvailable, setState] = useState(false);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
   const [replies, setReplyState] = useState([
     ...(data.reply ?? []),
   ] as CommentProps[]);
@@ -44,7 +45,7 @@ function Comment({ ...data }: CommentProps) {
           {/*MiniProfile / comment height line*/}
           <div className="flex flex-col items-center">
             <MiniProfile user_id={data.user_id} img_url={data.profile_image} />
-            <div className="w-4 h-full mr-2 rounded-bl-xl border-l-2 border-b-2 border-gray-300 self-end"></div>
+            <div className="w-4 h-full mr-2 rounded-bl-xl border-l border-b border-gray-300 self-end"></div>
           </div>
           {/*name, id, createAt, option / text*/}
           <div className="w-full p-* flex flex-col gap-2">
@@ -64,18 +65,32 @@ function Comment({ ...data }: CommentProps) {
                     {commentCreateFrom}
                   </div>
                 </div>
-                <IconButton
-                  icon="more"
-                  onPressed={(e) => {
-                    openCommentDropdown(
-                      e,
-                      "comment-menu",
-                      data.user_id,
-                      data.comment_id,
-                      context
-                    );
-                  }}
-                />
+                <DropdownMenu.Root modal={false}>
+                  <DropdownMenu.Trigger asChild>
+                    <IconButton icon="more" onPressed={() => {}} />
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Portal>
+                    <DropdownMenu.Content
+                      align="end"
+                      className="py-1 bg-gray-200 z-20 rounded-lg"
+                    >
+                      <CommentDropdownItem
+                        user_id={data.user_id}
+                        comment_id={data.comment_id}
+                        context={context}
+                        onReportSuccess={() => setReportDialogOpen(true)}
+                      />
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Portal>
+                </DropdownMenu.Root>
+
+                <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
+                  <div className="pt-10 pb-20">
+                    <p className="whitespace-pre-line text-2xl text-center">
+                      {l10n.t("thanksReport")}
+                    </p>
+                  </div>
+                </Dialog>
               </div>
             )}
             <p
@@ -106,7 +121,7 @@ function Comment({ ...data }: CommentProps) {
         {userId && replyAvailable && (
           <div
             id={`${data.comment_id}-reply-input`}
-            className="flex gap-2 w-full max-w-200 h-40 py-3 px-4 mx-auto border-2 border-gray-400 rounded-xl items-start"
+            className="flex gap-2 w-full max-w-200 h-40 py-3 px-4 mx-auto border border-gray-400 rounded-xl items-start"
           >
             {/*미니 프로필*/}
             <div className="min-w-12 items-center">
@@ -256,33 +271,6 @@ function createTimeDifferenceText(createAt: Date) {
       Math.floor(timePerSecond / hourPerSecond).toString() + l10n.t("hourUnit")
     );
   }
-}
-
-function openCommentDropdown(e, dropdownId, userId, commentId, context) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pos = {
-    x: rect.right,
-    y: rect.bottom,
-  };
-
-  const newDropdown = document.createElement("div");
-  newDropdown.id = `${dropdownId}-box`;
-
-  document.querySelector("body")!.appendChild(newDropdown);
-  const root = ReactDOM.createRoot(newDropdown);
-  root.render(
-    <Dropdown
-      id={dropdownId}
-      position={pos}
-      child={
-        <CommentDropdownItem
-          user_id={userId}
-          comment_id={commentId}
-          context={context}
-        />
-      }
-    />
-  );
 }
 
 function checkTextfieldMaxLine(

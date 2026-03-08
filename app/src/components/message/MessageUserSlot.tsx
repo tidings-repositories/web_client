@@ -1,7 +1,6 @@
+import { DropdownMenu } from "radix-ui";
 import { MessageUserSlotProps } from "../../Types";
-import ReactDOM from "react-dom/client";
 import SimpleUserSlot from "../public/SimpleUserSlot";
-import Dropdown from "../public/Dropdown";
 import IconButton from "../button/IconButton";
 import * as l10n from "i18next";
 import MessageDropdownItem from "./MessageDropdownItem";
@@ -20,13 +19,22 @@ function MessageUserSlot({ data, event }: DirectMessageUserProps) {
     >
       <div className="flex justify-between">
         <SimpleUserSlot direction="row" {...data.userInfo} />
-        <IconButton
-          icon="more"
-          onPressed={(e) => {
-            e.stopPropagation();
-            openMessageDropdown(e, "message-menu", data.dm_id);
-          }}
-        />
+        <DropdownMenu.Root modal={false}>
+          <DropdownMenu.Trigger asChild>
+            <IconButton
+              icon="more"
+              onPressed={(e) => e.stopPropagation()}
+            />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="end"
+              className="py-1 bg-gray-200 z-20 rounded-lg"
+            >
+              <MessageDropdownItem dm_id={data.dm_id} />
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
       <div className="flex justify-between pl-2 pr-2 gap-2">
         <p
@@ -74,27 +82,6 @@ function createTimeDifferenceText(createAt: Date) {
       Math.floor(timePerSecond / hourPerSecond).toString() + l10n.t("hourUnit")
     );
   }
-}
-
-function openMessageDropdown(e, dropdownId, dmId) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const pos = {
-    x: rect.right,
-    y: rect.bottom,
-  };
-
-  const newDropdown = document.createElement("div");
-  newDropdown.id = `${dropdownId}-box`;
-
-  document.querySelector("body")!.appendChild(newDropdown);
-  const root = ReactDOM.createRoot(newDropdown);
-  root.render(
-    <Dropdown
-      id={dropdownId}
-      position={pos}
-      child={<MessageDropdownItem dm_id={dmId} />}
-    />
-  );
 }
 
 export default MessageUserSlot;

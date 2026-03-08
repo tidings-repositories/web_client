@@ -6,20 +6,20 @@ import {
 import useUserDataStore from "../../store/UserDataStore";
 import { DropwdownSlot } from "../public/Dropdown";
 import * as l10n from "i18next";
-import ReactDOM from "react-dom/client";
-import Dialog from "../public/Dialog";
 import iconPack from "../public/IconPack";
 
 type PostDropdownItemProps = {
   user_id: string;
   post_id: string;
   context: PostContextType | null;
+  onReportSuccess?: () => void;
 };
 
 function PostDropdownItem({
   user_id,
   post_id,
   context,
+  onReportSuccess,
 }: PostDropdownItemProps) {
   const admin = "Stellagram";
   const userId = useUserDataStore((state) => state.user_id);
@@ -50,12 +50,7 @@ function PostDropdownItem({
             ).catch((_) => _);
 
             if (response.status == OK) {
-              const dropdownCloseEvent = new MouseEvent("mousedown", {
-                bubbles: true,
-              });
-              document.dispatchEvent(dropdownCloseEvent);
-
-              openDialog();
+              onReportSuccess?.();
             }
           }}
         />
@@ -84,11 +79,6 @@ function PostDropdownItem({
 
             if (response.status == NO_CONTENT && context) {
               context.deletePost(post_id);
-
-              const dropdownCloseEvent = new MouseEvent("mousedown", {
-                bubbles: true,
-              });
-              document.dispatchEvent(dropdownCloseEvent);
             }
 
             const path = window.location.pathname.split("/");
@@ -97,24 +87,6 @@ function PostDropdownItem({
         />
       )}
     </div>
-  );
-}
-
-function openDialog() {
-  const newDialog = document.createElement("div");
-  newDialog.id = `dialog-box`;
-  document.querySelector("body")!.appendChild(newDialog);
-  const root = ReactDOM.createRoot(newDialog);
-  root.render(
-    <Dialog
-      child={
-        <div className="pt-10 pb-20">
-          <p className="whitespace-pre-line text-2xl text-center">
-            {l10n.t("thanksReport")}
-          </p>
-        </div>
-      }
-    />
   );
 }
 

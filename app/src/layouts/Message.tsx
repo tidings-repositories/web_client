@@ -14,6 +14,7 @@ export default function Message() {
   const userId = useUserDataStore((state) => state.user_id);
   const [messageList, setMessageList] = useState([] as MessageUserSlotProps[]);
   const [selectedIdx, setSelectedDM] = useState(null as number | null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const navigator = useNavigate();
   const wideViewStandard = 1000;
@@ -31,12 +32,14 @@ export default function Message() {
 
   return (
     <div id="scaffold" className="w-screen h-screen mx-auto content-start">
-      <AppBar showSearch={false} showMessage={false} showLogin={false} />
-      <Drawer child={<RouterDrawerItem />} />
+      <AppBar showSearch={false} showMessage={false} showLogin={false} onDrawerOpen={() => setDrawerOpen(true)} />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <RouterDrawerItem />
+      </Drawer>
       {(checkWideView() && (
         <div
           id="message"
-          className="flex h-full justify-center px-4 pt-20 divide-x-2 divide-solid divide-gray-300"
+          className="flex h-full justify-center px-4 pt-20 divide-x divide-solid divide-gray-300"
         >
           <MessageList
             directMessages={messageList}

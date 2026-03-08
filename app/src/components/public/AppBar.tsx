@@ -17,6 +17,18 @@ function AppBar({
   showProfile = true,
   showLogin = true,
   searchKeyword = "",
+  onDrawerOpen,
+}: {
+  showDrawer?: boolean;
+  showLogo?: boolean;
+  showSearch?: boolean;
+  showMessage?: boolean;
+  showCompmoser?: boolean;
+  showNoti?: boolean;
+  showProfile?: boolean;
+  showLogin?: boolean;
+  searchKeyword?: string;
+  onDrawerOpen?: () => void;
 }) {
   const userId = useUserDataStore((state) => state.user_id);
   const userDataInjection = useUserDataStore((state) => state.dataInjection);
@@ -86,7 +98,7 @@ function AppBar({
   return (
     <div
       id="appbar"
-      className="fixed top-0 left-0 w-full h-14 px-4 bg-white border-solid border-b-2 border-gray-100 z-50 content-center"
+      className="fixed top-0 left-0 w-full h-14 px-4 bg-white z-50 content-center"
     >
       <AppBarItem
         showDrawer={showDrawer}
@@ -98,6 +110,7 @@ function AppBar({
         showProfile={showProfile}
         showLogin={showLogin}
         searchKeyword={searchKeyword}
+        onDrawerOpen={onDrawerOpen}
       />
     </div>
   );

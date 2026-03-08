@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import iconPack from "../public/IconPack";
 
 export type Icons =
@@ -37,9 +38,19 @@ type IconButtonProps = {
   onPressed: (e: any) => void;
 };
 
-function IconButton({ icon, size, color, onPressed }: IconButtonProps) {
+const IconButton = forwardRef<
+  HTMLButtonElement,
+  IconButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ icon, size, color, onPressed, onClick, ...rest }, ref) => {
   return (
-    <button onClick={onPressed}>
+    <button
+      ref={ref}
+      {...rest}
+      onClick={(e) => {
+        onPressed(e);
+        onClick?.(e);
+      }}
+    >
       <div className={`flex items-center`}>
         <svg
           aria-hidden="true"
@@ -54,6 +65,6 @@ function IconButton({ icon, size, color, onPressed }: IconButtonProps) {
       </div>
     </button>
   );
-}
+});
 
 export default IconButton;

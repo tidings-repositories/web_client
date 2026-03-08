@@ -27,7 +27,7 @@ function InfiniteScroll<T>({
   return (
     <div
       id="infinite-area"
-      className="w-full max-w-173 pb-10 divide-y-2 divide-solid divide-gray-300"
+      className="w-full max-w-173 pb-10 divide-y divide-solid divide-gray-300"
     >
       {item.map((data, idx) => (
         <ItemComponent key={idx} {...data} as T />
